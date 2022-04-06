@@ -1,0 +1,69 @@
+{
+  "name": "socialgambling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "start:dev": "nodemon index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reborncor/socialgambling.git"
+  },
+  "engines": {
+    "node": "12.14.1"
+  },
+  "author": "Reborn CORP",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reborncor/socialgambling/issues"
+  },
+  "homepage": "https://github.com/reborncor/socialgambling#readme",
+  "dependencies": {
+    "@mollie/api-client": "^3.5.1",
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^16.11.1",
+    "@types/socket.io": "^2.1.13",
+    "awesome-phonenumber": "^2.64.0",
+    "bcrypt": "^5.0.1",
+    "bson": "^4.5.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "cryptr": "^6.0.2",
+    "dotenv": "^16.0.0",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.3",
+    "express-validator": "^6.13.0",
+    "fs": "0.0.1-security",
+    "husky": "^7.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "monk": "^7.3.4",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.13",
+    "socket.io": "^2.4.1",
+    "stripe": "^8.195.0",
+    "ts-dotenv": "^0.8.3",
+    "ts-node": "^10.3.0",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.1",
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.13",
+    "ts-dotenv": "^0.8.3",
+    "ts-node": "^10.3.0",
+    "typescript": "^4.4.4"
+  }
+}
