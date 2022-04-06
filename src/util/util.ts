@@ -9,3 +9,6 @@ export const emailInvalid = "Email invalide"
 export const wrongPassword = "mot de passe incorrect"
 export const accountNotConnected = "Utilisateur non connecté";
 export const accountDoesntExist = "L'utilisateur n'existe pas"
+export const accountAlreadyFollow = "Vous suivez déjà cet utilisateur"
+export const accountNotFollowed = "Vous ne suivez pas cet utilisateur"
+export const accountIsHimself = "Utilisateur invalide"

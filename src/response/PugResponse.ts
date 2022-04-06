@@ -10,10 +10,12 @@ export interface PugResponse{
     imageData : string;
     details : PugDetail[];
     like : number;
+    date : number;
 }
 
 export function pugToResponse(pug : Pug) : PugResponse{
     return {
+        date : pug.date,
         details : pug.details? pug.details : [],
         imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",

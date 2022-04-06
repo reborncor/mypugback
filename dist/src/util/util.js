@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.successCode = exports.errorCode = void 0;
+exports.errorCode = 1;
+exports.successCode = 0;
+exports.usernameInvalid = "nom d'utilisateur invalide";
+exports.passwordInvalid = "mot de passe invalide";
+exports.phoneNumberInvalid = "numéro de téléphone invalide";
+exports.emailInvalid = "Email invalide";
+exports.wrongPassword = "mot de passe incorrect";
+exports.accountNotConnected = "Utilisateur non connecté";
+exports.accountDoesntExist = "L'utilisateur n'existe pas";

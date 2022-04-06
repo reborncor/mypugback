@@ -15,15 +15,15 @@ export default class PugRepository{
 
     static async addNewPug(user: User, pug :Pug): Promise<UserPug> {
         const call = db.get(collectionName);
-        const result =  await call.findOneAndUpdate(
+        let result =  await call.findOneAndUpdate(
             {username: user.username},
             {
-                $push:{pugs : pug
+                $push:{pugs : {$each :[pug], $position:0}
                 }
             }
         );
         if(!result){
-           return await this.insert(user, pug)
+           result =  await this.insert(user, pug)
         }
         return result;
     }

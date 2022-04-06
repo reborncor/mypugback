@@ -14,6 +14,7 @@ export function userToUserResponse(user : User): UserResponse{
         admin : user.admin,
         phoneNumber : user.phoneNumber,
         followers: user.followers, following: user.following,
-        password: ""
+        password: "",
+        pugs : user.pugs,
     }
 }

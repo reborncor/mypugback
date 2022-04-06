@@ -1,6 +1,7 @@
 import {
-    accountDoesntExist,
-    accountNotConnected,
+    accountAlreadyFollow,
+    accountDoesntExist, accountIsHimself,
+    accountNotConnected, accountNotFollowed,
     emailInvalid,
     errorCode,
     passwordInvalid,
@@ -62,10 +63,24 @@ export function checkThatUserIsConnected(token : string) {
     }
 }
 
-
+export function checkThatUserisntHimself(user: User, userToAdd : User) {
+    if (user.username == userToAdd.username) {
+        throw new CustomError(errorCode,accountIsHimself , {});
+    }
+}
 export function checkThatUserExistsOrThrow(user: User) {
     if (!user) {
         throw new CustomError(errorCode, accountDoesntExist, {});
     }
 }
+export function checkThatUserIsNotAlreadyFollow(user: any) {
+    if (user) {
+        throw new CustomError(errorCode,accountAlreadyFollow , {});
+    }
+}
 
+export function checkThatUserNotFollowed(user: User) {
+    if (!user) {
+        throw new CustomError(errorCode,accountNotFollowed , {});
+    }
+}

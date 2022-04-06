@@ -10,5 +10,7 @@ export interface User {
      phoneNumber:string;
      following :number;
      followers : number;
+     pugs : number
      followersUser? : Follower[];
+
 }

@@ -8,6 +8,7 @@ export interface Pug{
      imageDescription : string;
      imageFormat : string;
      imageData : string;
+     date : number;
     details : PugDetail[];
     like : number;
 }

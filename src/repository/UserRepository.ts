@@ -21,4 +21,32 @@ export default class UserRepository{
             _id: id,
         });
     }
+
+    static async updateUserPug(user: User, numberOfPug : number): Promise<User> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {username: user.username},
+            {
+                $set:{pugs : user.pugs+numberOfPug}
+            }
+        );
+    }
+    static async updateUserFollower(user: User, number : number): Promise<User> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {username: user.username},
+            {
+                $set:{followers : user.followers+number}
+            }
+        );
+    }
+    static async updateUserFollowing(user: User, number : number): Promise<User> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {username: user.username},
+            {
+                $set:{following : user.following+number}
+            }
+        );
+    }
 }
