@@ -9,6 +9,7 @@ import {Pug} from "../../../models/Pug";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {PugDetail} from "../../../models/PugDetail";
+import {ObjectId} from "bson";
 const fs = require('fs').promises;
 
 
@@ -51,6 +52,8 @@ const execute = async (userId: string, path: string | undefined, format: string 
     }
     const date = moment().unix();
     const newPug : Pug = {
+        id : new ObjectId(),
+        usersLike: [],
         date : date,
         imageData: contents, imageFormat: format? format : "",
         details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0

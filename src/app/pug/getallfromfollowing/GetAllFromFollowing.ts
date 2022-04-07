@@ -7,22 +7,22 @@ import {CustomError} from "../../../util/error/CustomError";
 import {Pug} from "../../../models/Pug";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
-import {UserPug} from "../../../models/UserPug";
 import {successCode} from "../../../util/util";
-import {UserPugResponse, userPugToResponse} from "../../../response/UserPugResponse";
-const fs = require('fs').promises;
+import FollowerRepository from "../../../repository/FollowerRepository";
+import {Follower} from "../../../models/Follower";
+import {PugResponse, pugToResponse} from "../../../response/PugResponse";
 
 
 
 
 
-export const getAllPugs = async  (req : Request, res : Response) =>{
+export const getAllPugsFromFollowing = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {userId} = decodeToken(token);
         const  result = await execute(userId);
-        res.status(200).json({code : successCode, message :"Pugs Utilisateur", payload : result});
+        res.status(200).json({code : successCode, message :"Pugs Utilisateur", payload : {pugs : result}});
     }catch (err : any){
 
         if(err instanceof CustomError){
@@ -37,12 +37,18 @@ export const getAllPugs = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string): Promise<UserPugResponse> => {
+const execute = async (userId: string): Promise<any> => {
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
+    const data : Follower[] = await FollowerRepository.findAllFollowingFromUser(currentUser.username);
+    const usernames : string[] = [];
+    data.forEach(value => usernames.push(value.username))
+    const result = await PugRepository.getAllPugsFromFollowing(usernames);
 
-    const result = await PugRepository.getAllPugsFromUser( currentUser.username);
-    return userPugToResponse(result);
+    const pugsResponse : PugResponse[] = [];
+    result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username)))
+    return pugsResponse;
+
 }
 

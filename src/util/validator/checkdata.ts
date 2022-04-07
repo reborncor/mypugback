@@ -1,9 +1,9 @@
 import {
     accountAlreadyFollow,
     accountDoesntExist, accountIsHimself,
-    accountNotConnected, accountNotFollowed,
+    accountNotConnected, accountNotFollowed, alreadyLiked,
     emailInvalid,
-    errorCode,
+    errorCode, notAlreadyliked,
     passwordInvalid,
     phoneNumberInvalid,
     usernameInvalid,
@@ -71,6 +71,18 @@ export function checkThatUserisntHimself(user: User, userToAdd : User) {
 export function checkThatUserExistsOrThrow(user: User) {
     if (!user) {
         throw new CustomError(errorCode, accountDoesntExist, {});
+    }
+}
+
+export function checkThatUserNotAlreadyLike(user: any) {
+    if (user) {
+        throw new CustomError(errorCode, alreadyLiked, {});
+    }
+}
+
+export function checkThatUserHasLiked(user: any) {
+    if (!user) {
+        throw new CustomError(errorCode, notAlreadyliked, {});
     }
 }
 export function checkThatUserIsNotAlreadyFollow(user: any) {

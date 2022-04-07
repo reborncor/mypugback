@@ -11,4 +11,5 @@ export interface Pug{
      date : number;
     details : PugDetail[];
     like : number;
+    usersLike : string[],
 }

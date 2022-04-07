@@ -3,12 +3,18 @@ import {signUp} from "../app/auth/signup/SignUp";
 import {signIn} from "../app/auth/signin/SignIn";
 import {addPug} from "../app/pug/add/AddPug";
 import {getAllPugs} from "../app/pug/getall/GetAllPug";
+import {getAllPugsFromFollowing} from "../app/pug/getallfromfollowing/GetAllFromFollowing";
+import {likePug} from "../app/pug/like/Like";
+import {unLikePug} from "../app/pug/unlike/UnLike";
 
 const pugRouter = Router();
 
 const add = "/add";
 const get = "/get";
 const getAll = "/getall";
+const actuality = "/actuality";
+const like = "/like";
+const unlike = "/unlike";
 
 
 ///
@@ -21,7 +27,6 @@ const storage = multer.diskStorage({
         const date = new Date().toISOString().replace(':','-').replace(':','-').replace('.','-')
         const name = date+file.originalname
         callback(null, name)
-
     }
 })
 const fileFilter = (req : any, file : any, cb : any) =>{
@@ -46,6 +51,9 @@ const upload = multer( {
 pugRouter.post(add, upload.single('newimage'),addPug)
 pugRouter.get(get,signIn)
 pugRouter.get(getAll,getAllPugs)
+pugRouter.get(actuality,getAllPugsFromFollowing)
+pugRouter.put(like,likePug)
+pugRouter.put(unlike,unLikePug)
 
 
 export default pugRouter;

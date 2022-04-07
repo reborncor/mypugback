@@ -3,6 +3,7 @@ import {PugDetail} from "../models/PugDetail";
 import {Pug} from "../models/Pug";
 
 export interface PugResponse{
+    id? : ObjectId;
     imageURL : string;
     imageTitle : string;
     imageDescription : string;
@@ -11,10 +12,14 @@ export interface PugResponse{
     details : PugDetail[];
     like : number;
     date : number;
+    isLiked : boolean
 }
 
-export function pugToResponse(pug : Pug) : PugResponse{
+export function pugToResponse(pug : Pug,username : string) : PugResponse{
+    let isLiked = false;
+    pug.usersLike.forEach(value => {if(value == username){isLiked = true}});
     return {
+        id : pug.id,
         date : pug.date,
         details : pug.details? pug.details : [],
         imageData: pug.imageData,
@@ -22,7 +27,8 @@ export function pugToResponse(pug : Pug) : PugResponse{
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle? pug.imageTitle : "",
         imageURL: pug.imageURL ? pug.imageURL : "",
-        like: pug.like
+        like: pug.like,
+        isLiked : isLiked,
 
     }
 }

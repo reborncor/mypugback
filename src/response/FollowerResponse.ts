@@ -11,7 +11,7 @@ export  interface UserPugResponse{
 
 export function userPugToResponse(userPug : UserPug) : UserPugResponse {
     const pugsResponse : PugResponse[] = [];
-    userPug.pugs.forEach(value => pugsResponse.push(pugToResponse(value)))
+    userPug.pugs.forEach(value => pugsResponse.push(pugToResponse(value, userPug.username)))
     return {
         pugs : pugsResponse,
         username : userPug.username
