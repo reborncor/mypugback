@@ -21,9 +21,9 @@ export const unLikePug = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
-        const {pugId} = req.body;
+        const {pugId, username} = req.body;
         const {userId} = decodeToken(token);
-        const  result = await execute(userId,pugId);
+        const  result = await execute(userId,pugId, username);
         res.status(200).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
 
@@ -39,19 +39,19 @@ export const unLikePug = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string, pugId :string): Promise<any> => {
+const execute = async (userId: string, pugId :string, username : string): Promise<any> => {
 
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
 
-    const data = await PugRepository.findById(pugId);
+    const data = await PugRepository.findById(pugId,username);
+    const pug : Pug = data.pugs[0]
 
-    const pug : Pug =data[0].pugs[0];
-    const test = await PugRepository.findUserInPugLike(currentUser.username, pug);
+    const test = await PugRepository.findUserInPugLike(currentUser.username, pug, username);
     checkThatUserHasLiked(test);
 
-    const result =  await PugRepository.unLikePug(currentUser, pug);
+    const result =  await PugRepository.unLikePug(currentUser, pug, username);
     return {code: 0, message:"Like retiré",payload :""}
 
 }

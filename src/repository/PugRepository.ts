@@ -13,11 +13,11 @@ export default class PugRepository{
         return await call.insert(newPug);
     }
 
-    static async findById(id: string): Promise<any> {
+    static async findById(id: string, username : string): Promise<any> {
         const call = db.get(collectionName);
         // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
 
-        return await call.find({"pugs.id" : new ObjectId(id) },{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
+        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
     }
 
     static async addNewPug(user: User, pug :Pug): Promise<UserPug> {
@@ -30,7 +30,22 @@ export default class PugRepository{
             }
         );
         if(!result){
-           result =  await this.insert(user, pug)
+            result =  await this.insert(user, pug)
+        }
+        return result;
+    }
+
+    static async deletePug(user: User, pug :Pug): Promise<UserPug> {
+        const call = db.get(collectionName);
+        let result =  await call.findOneAndUpdate(
+            {username: user.username, "pugs.id" : new ObjectId(pug.id)},
+            {
+                $push:{pugs : {$each :[pug], $position:0}
+                }
+            }
+        );
+        if(!result){
+            result =  await this.insert(user, pug)
         }
         return result;
     }
@@ -42,10 +57,10 @@ export default class PugRepository{
         });
     }
 
-    static async likeUserPug(user :User,pug : Pug): Promise<UserPug> {
+    static async likeUserPug(user :User,pug : Pug, username : string): Promise<UserPug> {
         const call = db.get(collectionName);
          await call.findOneAndUpdate(
-             {"pugs.id":pug.id},
+             {"pugs.id":pug.id, username : username},
             {
                 $push:{"pugs.$.usersLike" : {$each :[user.username], $position:0},
 
@@ -53,7 +68,7 @@ export default class PugRepository{
             }
         );
         return  await call.findOneAndUpdate(
-            { "pugs.id":pug.id},
+            { "pugs.id":pug.id, username : username},
             {
                 $set :{"pugs.$.like" : pug.like+1},
 
@@ -61,17 +76,17 @@ export default class PugRepository{
         );
     }
 
-    static async unLikePug(user :User,pug : Pug): Promise<UserPug> {
+    static async unLikePug(user :User,pug : Pug, pugName : string): Promise<UserPug> {
         const call = db.get(collectionName);
         await call.findOneAndUpdate(
-            { "pugs.id":pug.id},
+            { "pugs.id":pug.id, username : pugName},
             {
                 $pull:{"pugs.$.usersLike" : user.username},
 
             }
         );
         return  await call.findOneAndUpdate(
-            {"pugs.id":pug.id},
+            {"pugs.id":pug.id, username : pugName},
             {
                 $set :{"pugs.$.like" : pug.like-1},
 
@@ -79,15 +94,15 @@ export default class PugRepository{
         );
     }
 
-    static async findUserInPugLike(username : string,pug: Pug): Promise<any> {
+    static async findUserInPugLike(username : string,pug: Pug, pugname : string): Promise<any> {
         const call = db.get(collectionName);
         return await call.findOne(
-            {"pugs.id":pug.id, "pugs.usersLike":username},
-
+            {"pugs.id":pug.id, username : pugname, "pugs.usersLike" : username},
             {
-                projection :{pugs : {projection :{ usersLike:username}}},
-
+                projection :{"pugs.usersLike" : 1},
             }
+
+
 
         );
     }

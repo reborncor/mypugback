@@ -15,6 +15,11 @@ export default class UserRepository{
             username,
         });
     }
+
+    static async findUsersByUsername(username: string): Promise<User[]> {
+        const call = db.get(collectionName);
+        return await call.find({username: {$regex:  new RegExp('^'+username), $options : 'i'}}, );
+    }
     static async findById(id: string): Promise<User> {
         const call = db.get(collectionName);
         return await call.findOne({

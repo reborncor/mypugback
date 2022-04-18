@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {checkThatUserExistsOrThrow,} from "../../../util/validator/checkdata";
+import {checkThatUserExistsOrThrow, checkThatUsersExistsOrThrow,} from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import {CustomError} from "../../../util/error/CustomError";
@@ -8,20 +8,22 @@ import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
 import {UserPugResponse, userPugToResponse} from "../../../response/UserPugResponse";
 import UserResponse, {userToUserResponse} from "../../../response/UserResponse";
+import {User} from "../../../models/User";
+import {UserResponseForFind, userToUserResponseForFind} from "../../../response/UserResponseForFind";
 const fs = require('fs').promises;
 
 
 
 
 
-export const getUserWithName = async  (req : Request, res : Response) =>{
+export const findUsers = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {userId} = decodeToken(token);
         const {username} = req.query;
         const  result = await execute(userId,<string>username);
-        res.status(200).json({code : successCode, message :"Information utilisateur", payload : result});
+        res.status(200).json({code : successCode, message :"Liste des utilisateur", payload : result});
     }catch (err : any){
 
         if(err instanceof CustomError){
@@ -36,13 +38,15 @@ export const getUserWithName = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string, username :string): Promise<UserResponse> => {
+const execute = async (userId: string, username :string): Promise<UserResponseForFind[]> => {
 
     const currentUser = await UserRepository.findById(userId);
-    const otherUser = await UserRepository.findByUsername(username);
+    const otherUsers = await UserRepository.findUsersByUsername(username);
     checkThatUserExistsOrThrow(currentUser);
-    checkThatUserExistsOrThrow(otherUser);
+    checkThatUsersExistsOrThrow(otherUsers);
 
-    return userToUserResponse(otherUser);
+    const result : UserResponseForFind[] = [];
+    otherUsers.forEach(value => result.push(userToUserResponseForFind(value)));
+    return result;
 }
 

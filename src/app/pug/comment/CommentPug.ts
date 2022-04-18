@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import BaseResponse from "../../../response/BaseResponse";
 import {checkThatUserExistsOrThrow, checkThatUserNotAlreadyLike,} from "../../../util/validator/checkdata";
+import moment from "moment";
 
 import UserRepository from "../../../repository/UserRepository";
 import {CustomError} from "../../../util/error/CustomError";
@@ -12,11 +13,11 @@ import {Pug} from "../../../models/Pug";
 
 
 
-export const likePug = async  (req : Request, res : Response) =>{
+export const commentPug = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
-        const {pugId, username} = req.body;
+        const {pugId,comment, username} = req.body;
         const {userId} = decodeToken(token);
         const  result = await execute(userId,pugId, username);
         res.status(200).json({code : result.code, message : result.message, payload : result.payload});
@@ -34,7 +35,7 @@ export const likePug = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string, pugId :string, username : string): Promise<any> => {
+const execute = async (userId: string, pugId :string, username: string): Promise<any> => {
 
     const currentUser = await UserRepository.findById(userId);
 
@@ -42,15 +43,11 @@ const execute = async (userId: string, pugId :string, username : string): Promis
 
     const data = await PugRepository.findById(pugId,username);
 
-    const pug : Pug = data.pugs[0]
-    const test = await PugRepository.findUserInPugLike(currentUser.username,pug,username);
-    console.log(test)
-
+    const pug : Pug =data[0].pugs[0];
+    const test = await PugRepository.findUserInPugLike(currentUser.username, pug,username);
     checkThatUserNotAlreadyLike(test);
 
-
-    const result = await PugRepository.likeUserPug(currentUser, pug, username);
-
+    const result = await PugRepository.likeUserPug(currentUser, pug,username);
     return {code: 0, message: "Nouveau pug like",payload :""}
 
 

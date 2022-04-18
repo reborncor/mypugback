@@ -6,6 +6,7 @@ import {getAllPugs} from "../app/pug/getall/GetAllPug";
 import {getAllPugsFromFollowing} from "../app/pug/getallfromfollowing/GetAllFromFollowing";
 import {likePug} from "../app/pug/like/Like";
 import {unLikePug} from "../app/pug/unlike/UnLike";
+import {commentPug} from "../app/pug/comment/CommentPug";
 
 const pugRouter = Router();
 
@@ -15,6 +16,7 @@ const getAll = "/getall";
 const actuality = "/actuality";
 const like = "/like";
 const unlike = "/unlike";
+const comment = "/comment";
 
 
 ///
@@ -54,6 +56,7 @@ pugRouter.get(getAll,getAllPugs)
 pugRouter.get(actuality,getAllPugsFromFollowing)
 pugRouter.put(like,likePug)
 pugRouter.put(unlike,unLikePug)
+pugRouter.put(comment,commentPug)
 
 
 export default pugRouter;

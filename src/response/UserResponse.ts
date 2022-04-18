@@ -18,3 +18,5 @@ export function userToUserResponse(user : User): UserResponse{
         pugs : user.pugs,
     }
 }
+
+

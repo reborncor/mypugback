@@ -1,5 +1,6 @@
 import {PugDetail} from "./PugDetail";
 import {ObjectId} from "bson";
+import {Comment} from "./Comment";
 
 export interface Pug{
      id? : ObjectId;
@@ -8,7 +9,9 @@ export interface Pug{
      imageDescription : string;
      imageFormat : string;
      imageData : string;
-     date : number;
+     comments : Comment[];
+
+    date : number;
     details : PugDetail[];
     like : number;
     usersLike : string[],

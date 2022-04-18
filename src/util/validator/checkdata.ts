@@ -74,6 +74,12 @@ export function checkThatUserExistsOrThrow(user: User) {
     }
 }
 
+export function checkThatUsersExistsOrThrow(user: User[]) {
+    if (!user) {
+        throw new CustomError(errorCode, accountDoesntExist, {});
+    }
+}
+
 export function checkThatUserNotAlreadyLike(user: any) {
     if (user) {
         throw new CustomError(errorCode, alreadyLiked, {});
