@@ -1,6 +1,7 @@
 import {ObjectId} from "bson";
 import {PugDetail} from "../models/PugDetail";
 import {Pug} from "../models/Pug";
+import {Comment} from "../models/Comment";
 
 export interface PugResponse{
     id? : ObjectId;
@@ -12,10 +13,12 @@ export interface PugResponse{
     details : PugDetail[];
     like : number;
     date : number;
-    isLiked : boolean
+    isLiked : boolean;
+    comments : Comment[];
+    author : string;
 }
 
-export function pugToResponse(pug : Pug,username : string) : PugResponse{
+export function pugToResponse(pug : Pug,username : string, author : string) : PugResponse{
     let isLiked = false;
     pug.usersLike.forEach(value => {if(value == username){isLiked = true}});
     return {
@@ -29,6 +32,8 @@ export function pugToResponse(pug : Pug,username : string) : PugResponse{
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked : isLiked,
+        comments: pug.comments,
+        author : author
 
     }
 }

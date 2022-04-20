@@ -16,3 +16,13 @@ export const accountNotFollowed = "Vous ne suivez pas cet utilisateur"
 export const accountIsHimself = "Utilisateur invalide"
 export const alreadyLiked = "Vous avez déjà liké cette photo"
 export const notAlreadyliked = "Vous n'avez pas liké cette photo"
+
+export const conversationDoesntExist = "La conversation n'existe pas"
+export const conversationsDoesntExist = "Vous n'avez aucune conversation"
+export const conversationAlreadyExist = "La conversation a déjà été crée"
+
+export const accountAlreadyExist = "Un utilisateur avec cette adresse email existe déja"
+export const accountAlreadyExistWithUsername = "Un utilisateur avec ce nom existe déjà"
+export const accountAlreadyExistWithPhoneNumber = "Un utilisateur avec ce numéro existe déjà"
+
+export const allUsersConnected = new Map();

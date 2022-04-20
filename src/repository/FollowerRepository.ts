@@ -57,7 +57,7 @@ export default class FollowerRepository {
 
     static async deleteUserFromFollowing(user: User, follower : Follower): Promise<any> {
         const call = db.get(collectionName);
-        console.log("Follower",follower);
+
         return await call.findOneAndUpdate(
             {username: user.username},
             {

@@ -8,6 +8,8 @@ import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {Pug} from "../../../models/Pug";
+import {Comment} from "../../../models/Comment";
+import {ObjectId} from "bson";
 
 
 
@@ -19,7 +21,7 @@ export const commentPug = async  (req : Request, res : Response) =>{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {pugId,comment, username} = req.body;
         const {userId} = decodeToken(token);
-        const  result = await execute(userId,pugId, username);
+        const  result = await execute(userId,pugId, username, comment);
         res.status(200).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
 
@@ -35,20 +37,22 @@ export const commentPug = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string, pugId :string, username: string): Promise<any> => {
+const execute = async (userId: string, pugId :string, pugName: string, content : string): Promise<any> => {
 
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
 
-    const data = await PugRepository.findById(pugId,username);
+    const data = await PugRepository.findById(pugId,pugName);
 
-    const pug : Pug =data[0].pugs[0];
-    const test = await PugRepository.findUserInPugLike(currentUser.username, pug,username);
-    checkThatUserNotAlreadyLike(test);
 
-    const result = await PugRepository.likeUserPug(currentUser, pug,username);
-    return {code: 0, message: "Nouveau pug like",payload :""}
+    const pug : Pug =data.pugs[0];
+    const date  = moment().unix().toString()
+    const comment : Comment = {content, author : currentUser.username, date : date,id : new ObjectId(),
+    }
+    await PugRepository.commentUserPug(comment, pug,pugName);
+
+    return {code: 0, message: "Nouveau commentaire ajotué",payload :""}
 
 
 

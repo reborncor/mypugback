@@ -1,5 +1,10 @@
-import {Message} from "./Message";
+import {ObjectId} from "bson";
 
-export interface Comment extends Message{
+export interface Comment {
+
+    id? : ObjectId
+    author : string;
+    content : string;
+    date : string;
 
 }

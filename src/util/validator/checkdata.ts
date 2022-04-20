@@ -1,7 +1,9 @@
 import {
+    accountAlreadyExist, accountAlreadyExistWithPhoneNumber,
+    accountAlreadyExistWithUsername,
     accountAlreadyFollow,
     accountDoesntExist, accountIsHimself,
-    accountNotConnected, accountNotFollowed, alreadyLiked,
+    accountNotConnected, accountNotFollowed, alreadyLiked, conversationDoesntExist, conversationsDoesntExist,
     emailInvalid,
     errorCode, notAlreadyliked,
     passwordInvalid,
@@ -14,6 +16,7 @@ import * as EmailValidator from 'email-validator';
 import {CustomError} from "../error/CustomError";
 import {isSame} from "../security/passwordManagement";
 import {User} from "../../models/User";
+import Conversation from "../../models/Conversation";
 
 export function checkThatUserSignUpCredentialsOrThrow(email : string, password : string, phoneNumber : string, username : string) {
 
@@ -102,3 +105,31 @@ export function checkThatUserNotFollowed(user: User) {
         throw new CustomError(errorCode,accountNotFollowed , {});
     }
 }
+export function checkThatConversationExist(conversations: Conversation) {
+    if (!conversations) {
+        throw new CustomError(errorCode, conversationDoesntExist, {});
+    }
+}export function checkThatConversationsExist(conversations: Conversation[]) {
+    if (conversations.length == 0) {
+        throw new CustomError(errorCode, conversationsDoesntExist, {});
+    }
+}
+
+export function checkThatUserWithUsernameDoesntExistOrThrow(user: User) {
+    if (user) {
+        throw new CustomError(errorCode, accountAlreadyExistWithUsername, {});
+    }
+}
+export function checkThatUserDoesntExistOrThrow(user: User) {
+    if (user) {
+        throw new CustomError(errorCode, accountAlreadyExist, {});
+    }
+}
+
+export function checkThatUserWithPhoneNumberDoesntExistOrThrow(user: User) {
+    if (user) {
+        throw new CustomError(errorCode, accountAlreadyExistWithPhoneNumber, {});
+    }
+}
+
+

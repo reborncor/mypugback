@@ -43,6 +43,7 @@ const execute = async (userId: string, pugId :string, username : string): Promis
     const data = await PugRepository.findById(pugId,username);
 
     const pug : Pug = data.pugs[0]
+
     const test = await PugRepository.findUserInPugLike(currentUser.username,pug,username);
     console.log(test)
 

@@ -22,7 +22,7 @@ export const editPug = async  (req : Request, res : Response) =>{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const { imageTitle, imageDescription, details} = req.body
         const {userId} = decodeToken(token);
-        console.log("Data : ",req.body);
+
         const  result = await execute(userId,req.file?.path, req.file?.mimetype,imageTitle, imageDescription, details );
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){

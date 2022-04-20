@@ -1,9 +1,10 @@
 import {ObjectId} from "bson";
 
 export interface Message {
-    id? : ObjectId
-    author : string;
-    content : string;
-    date : string;
+    _id? : ObjectId
+    senderUsername : string;
+    receiverUsername : string;
+    time : string;
+    content : string
 
 }

@@ -47,7 +47,16 @@ const execute = async (userId: string): Promise<any> => {
     const result = await PugRepository.getAllPugsFromFollowing(usernames);
 
     const pugsResponse : PugResponse[] = [];
-    result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username)))
+    // result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username, author)))
+    result.forEach((value : any)  =>
+    {
+        if(value.pugs){
+            value.pugs.forEach((elem : Pug) =>{pugsResponse.push(pugToResponse(elem, currentUser.username, value.username))
+            })
+        }
+    }
+    )
+
     return pugsResponse;
 
 }

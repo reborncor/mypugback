@@ -3,6 +3,7 @@ import {User} from "../models/User";
 import {Pug} from "../models/Pug";
 import {UserPug} from "../models/UserPug";
 import {ObjectId} from "bson";
+import {Comment} from "../models/Comment";
 
 const collectionName = "pugs";
 
@@ -19,6 +20,14 @@ export default class PugRepository{
 
         return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
     }
+
+    static async findByIdWithCommentsOnly(id: string, username : string): Promise<any> {
+        const call = db.get(collectionName);
+        // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
+        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username}, {projection : {"pugs.comments":1}});
+    }
+
+
 
     static async addNewPug(user: User, pug :Pug): Promise<UserPug> {
         const call = db.get(collectionName);
@@ -62,9 +71,7 @@ export default class PugRepository{
          await call.findOneAndUpdate(
              {"pugs.id":pug.id, username : username},
             {
-                $push:{"pugs.$.usersLike" : {$each :[user.username], $position:0},
-
-                }
+                $push:{"pugs.$.usersLike" : user.username,}
             }
         );
         return  await call.findOneAndUpdate(
@@ -73,6 +80,17 @@ export default class PugRepository{
                 $set :{"pugs.$.like" : pug.like+1},
 
                 }
+        );
+    }
+
+    static async commentUserPug(comment : Comment,pug : Pug, username : string): Promise<UserPug> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {"pugs.id":pug.id, username : username},
+            {
+                $push:{"pugs.$.comments" : comment},
+
+            }
         );
     }
 
@@ -112,10 +130,12 @@ export default class PugRepository{
 
         const call = db.get(collectionName);
         //Avec ID
-        // return await call.find({username : {$in :['alpha','beta']} },{fields :{'username':1}});
+        // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
+        return await call.find({username : {$in :usernames} },{projection : {"pugs.comments" :{$slice : -1}, }});
 
         //Sans ID
-        return await call.distinct("pugs",{username : {$in :usernames} });
+        // return await call.distinct("pugs",{username : {$in :usernames} });
+        // return  await call.aggregate([{$group : {}}])
 
     }
 }

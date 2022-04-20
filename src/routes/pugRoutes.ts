@@ -7,12 +7,16 @@ import {getAllPugsFromFollowing} from "../app/pug/getallfromfollowing/GetAllFrom
 import {likePug} from "../app/pug/like/Like";
 import {unLikePug} from "../app/pug/unlike/UnLike";
 import {commentPug} from "../app/pug/comment/CommentPug";
+import {getComments} from "../app/pug/getcomment/GetComment";
+import {getAllPugsFromUser} from "../app/pug/getallfromuser/GetAllFromUser";
 
 const pugRouter = Router();
 
 const add = "/add";
 const get = "/get";
 const getAll = "/getall";
+const getAllFromUser = "/getallfromuser";
+
 const actuality = "/actuality";
 const like = "/like";
 const unlike = "/unlike";
@@ -51,12 +55,14 @@ const upload = multer( {
 
 
 pugRouter.post(add, upload.single('newimage'),addPug)
-pugRouter.get(get,signIn)
+pugRouter.get(get,getAllPugs);
 pugRouter.get(getAll,getAllPugs)
+pugRouter.get(getAllFromUser,getAllPugsFromUser)
+
 pugRouter.get(actuality,getAllPugsFromFollowing)
 pugRouter.put(like,likePug)
 pugRouter.put(unlike,unLikePug)
 pugRouter.put(comment,commentPug)
-
+pugRouter.get(comment,getComments)
 
 export default pugRouter;
