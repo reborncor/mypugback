@@ -77,11 +77,11 @@ export default class FollowerRepository {
         );
     }
 
-    static async findAllFollowersFromUser(username : string): Promise<any> {
+    static async findAllFollowersFromUser(username : string): Promise<Follower[]> {
         const call = db.get(collectionName);
         return await call.distinct("followers",{"username":username})
     }
-    static async findAllFollowingFromUser(username : string): Promise<any> {
+    static async findAllFollowingFromUser(username : string): Promise<Follower[]> {
         const call = db.get(collectionName);
         return await call.distinct("following",{"username":username})
     }

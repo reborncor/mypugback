@@ -51,7 +51,7 @@ const signUpUser = async (email :string, username :string , password :string, ph
 
     const hashedPassword = await encodePassword(password)
     const newUser : User = {
-        admin: false, email, password: hashedPassword, phoneNumber, username,followersUser : [],followers : 0, following : 0,
+        admin: false, email, password: hashedPassword, phoneNumber, username,followers : 0, following : 0,
         pugs : 0
     }
 

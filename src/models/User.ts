@@ -1,4 +1,3 @@
-import {Follower} from "./Follower";
 import {ObjectId} from "bson";
 
 export interface User {
@@ -11,6 +10,5 @@ export interface User {
      following :number;
      followers : number;
      pugs : number
-     followersUser? : Follower[];
 
 }

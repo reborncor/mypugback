@@ -1,19 +1,24 @@
-import {ObjectId} from "bson";
-import {UserPug} from "../models/UserPug";
-import {Pug} from "../models/Pug";
-import {PugResponse, pugToResponse} from "./PugResponse";
+import {User} from "../models/User";
+import UserResponse from "./UserResponse";
+import {Follower} from "../models/Follower";
 
-export  interface UserPugResponse{
-    _id? : ObjectId;
+
+export interface FollowerResponse{
     username : string;
-    pugs : PugResponse[];
+
 }
 
-export function userPugToResponse(userPug : UserPug) : UserPugResponse {
-    const pugsResponse : PugResponse[] = [];
-    userPug.pugs.forEach(value => pugsResponse.push(pugToResponse(value, userPug.username)))
+export function followerToResponse(follower : Follower): FollowerResponse{
+
     return {
-        pugs : pugsResponse,
-        username : userPug.username
+        username : follower.username,
     }
+}
+
+export  function  followersToResponse(followers : Follower[]) : FollowerResponse[]{
+
+    const result : FollowerResponse[] = [];
+    followers.forEach(value => result.push(followerToResponse(value)))
+    return result;
+
 }
