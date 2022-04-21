@@ -5,7 +5,7 @@ import ConversationRepository from "../../repository/ConversationRepository";
 import {Message} from "../../models/Message";
 import {successCode} from "../../util/util";
 import {ObjectId} from "bson";
-import moment from "Moment";
+import moment from "moment";
 
 export const sendMessage = async (currentUsername : string, receiverUsername : string, content: string): Promise<any> => {
 

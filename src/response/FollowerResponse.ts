@@ -1,5 +1,4 @@
-import {User} from "../models/User";
-import UserResponse from "./UserResponse";
+
 import {Follower} from "../models/Follower";
 
 
