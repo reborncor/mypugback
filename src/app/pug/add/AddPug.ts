@@ -11,6 +11,7 @@ import PugRepository from "../../../repository/PugRepository";
 import {PugDetail} from "../../../models/PugDetail";
 import {ObjectId} from "bson";
 const fs = require('fs').promises;
+const { promisify } = require('util')
 
 
 
@@ -24,6 +25,7 @@ export const addPug = async  (req : Request, res : Response) =>{
         const {userId} = decodeToken(token);
         console.log("Data : ",req.body);
         const  result = await execute(userId,req.file?.path, req.file?.mimetype,imageTitle, imageDescription, details );
+        await unlinkAsync(req.file?.path)
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
 
@@ -38,6 +40,7 @@ export const addPug = async  (req : Request, res : Response) =>{
     }
 
 }
+const unlinkAsync = promisify(fs.unlink)
 
 const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, imageTitle : string, details : PugDetail[]): Promise<BaseResponse<null>> => {
 

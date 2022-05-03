@@ -63,7 +63,10 @@ export default class PugRepository{
         const call = db.get(collectionName);
         return await call.findOne({
             username,
-        });
+
+        },
+            {projection : {"pugs.comments" :{$slice : -1}, }}
+        );
     }
 
     static async likeUserPug(user :User,pug : Pug, username : string): Promise<UserPug> {
@@ -138,4 +141,25 @@ export default class PugRepository{
         // return  await call.aggregate([{$group : {}}])
 
     }
+    static async getAllPugsFromFollowingPageable(usernames : string[], startInd : number,endInd :number) : Promise<any>{
+
+        const call = db.get(collectionName);
+        //Avec ID
+        // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
+        return await call.find({username : {$in :usernames} },
+            {
+                //"pugs.comments" :{$slice : -1},
+                // projection : { "pugs" :{$slice :[startInd,endInd]}, }
+                projection : {"pugs" :{$slice :[startInd,endInd] }
+
+            }});
+
+        //Sans ID
+        // return await call.distinct("pugs",{username : {$in :usernames} });
+        // return  await call.aggregate([{$group : {}}])
+
+    }
+
 }
+
+

@@ -6,8 +6,8 @@ import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
-import {UserPugResponse, userPugToResponse} from "../../../response/UserPugResponse";
-import UserResponse, {userToUserResponse} from "../../../response/UserResponse";
+import UserResponse, {userToResponseProfile, userToUserResponse} from "../../../response/UserResponse";
+import FollowerRepository from "../../../repository/FollowerRepository";
 const fs = require('fs').promises;
 
 
@@ -40,9 +40,13 @@ const execute = async (userId: string, username :string): Promise<UserResponse> 
 
     const currentUser = await UserRepository.findById(userId);
     const otherUser = await UserRepository.findByUsername(username);
+
     checkThatUserExistsOrThrow(currentUser);
     checkThatUserExistsOrThrow(otherUser);
 
-    return userToUserResponse(otherUser);
+    const userAlreadyFollow = await FollowerRepository.findUserInFollwingList(currentUser.username, otherUser.username);
+
+
+    return userToResponseProfile(otherUser,userAlreadyFollow);
 }
 
