@@ -24,7 +24,9 @@ export default class PugRepository{
     static async findByIdWithCommentsOnly(id: string, username : string): Promise<any> {
         const call = db.get(collectionName);
         // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
-        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username}, {projection : {"pugs.comments":1}});
+        // return await call.findOne({"pugs.id" : new ObjectId(id) , username : username}, {projection : {"pugs.comments":1}});
+        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
+
     }
 
 
@@ -118,9 +120,9 @@ export default class PugRepository{
     static async findUserInPugLike(username : string,pug: Pug, pugname : string): Promise<any> {
         const call = db.get(collectionName);
         return await call.findOne(
-            {"pugs.id":pug.id, username : pugname, "pugs.usersLike" : username},
+            {pugs : {$elemMatch : {usersLike : username, id : new ObjectId(pug.id)}}, username : pugname},
             {
-                projection :{"pugs.usersLike" : 1},
+                projection :{"pugs.id" : 1},
             }
 
 

@@ -44,6 +44,7 @@ const execute = async (userId: string, pugId :string, pugName: string, content :
     checkThatUserExistsOrThrow(currentUser);
 
     const data = await PugRepository.findById(pugId,pugName);
+    console.log("Data :",data.pugs[0]);
 
 
     const pug : Pug =data.pugs[0];

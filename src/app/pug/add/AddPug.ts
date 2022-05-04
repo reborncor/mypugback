@@ -25,8 +25,8 @@ export const addPug = async  (req : Request, res : Response) =>{
         const {userId} = decodeToken(token);
         console.log("Data : ",req.body);
         const  result = await execute(userId,req.file?.path, req.file?.mimetype,imageTitle, imageDescription, details );
-        await unlinkAsync(req.file?.path)
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
+        await unlinkAsync(req.file?.path)
     }catch (err : any){
 
         if(err instanceof CustomError){
