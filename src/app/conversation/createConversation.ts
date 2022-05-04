@@ -45,7 +45,7 @@ const execute = async (userId : string, receiverUsername : string) => {
 
   if(result){
     let conversation = conversationToResponse(result)
-    conversation.chat.reverse();
+    // conversation.chat.reverse();
     return {conversation, exist :true}
   }
   else{

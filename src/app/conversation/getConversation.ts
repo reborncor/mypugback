@@ -9,6 +9,7 @@ export const getConversationFromId = async (conversationId : string): Promise<an
   const conversation = await ConversationRepository.findById(conversationId);
 
   checkThatConversationExist(conversation);
+  conversation.chat.reverse();
   return {code : 0, payload : conversation, message : "Conversation exist. Sending messages..."}
 
 }
