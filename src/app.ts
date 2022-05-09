@@ -22,8 +22,8 @@ const init = () => {
 
 
     app.get('/', (req : any, res: any) => {
-        console.log('Bloden server');
-        res.status(200).send('Bloden Server working..');
+        console.log('MyPug server');
+        res.status(200).send('MyPug Server working..');
     });
 
     app.use(express.json());

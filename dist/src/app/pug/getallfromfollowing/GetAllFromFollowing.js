@@ -12,26 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addPug = void 0;
+exports.getAllPugsFromFollowing = void 0;
 const checkdata_1 = require("../../../util/validator/checkdata");
-const moment_1 = __importDefault(require("moment"));
 const UserRepository_1 = __importDefault(require("../../../repository/UserRepository"));
 const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
-const bson_1 = require("bson");
-const fs = require('fs').promises;
-const { promisify } = require('util');
-const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+const util_1 = require("../../../util/util");
+const FollowerRepository_1 = __importDefault(require("../../../repository/FollowerRepository"));
+const PugResponse_1 = require("../../../response/PugResponse");
+const getAllPugsFromFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
-        const { imageTitle, imageDescription, details } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        console.log("Data : ", req.body);
-        const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.path, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageTitle, imageDescription, details);
-        res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
-        // await unlinkAsync(req.file?.path)
+        const result = yield execute(userId);
+        res.status(200).json({ code: util_1.successCode, message: "Pugs Utilisateur", payload: { pugs: result } });
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -43,28 +39,22 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
 });
-exports.addPug = addPug;
-const unlinkAsync = promisify(fs.unlink);
-const execute = (userId, path, format, imageDescription, imageTitle, details) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllPugsFromFollowing = getAllPugsFromFollowing;
+const execute = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    console.log("PATH", path);
-    const contents = yield fs.readFile(path, { encoding: 'base64' });
-    if (details) {
-        details.forEach(value => { value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString())); });
-    }
-    const date = (0, moment_1.default)().unix();
-    const newPug = {
-        comments: [],
-        id: new bson_1.ObjectId(),
-        usersLike: [],
-        date: date,
-        imageData: contents, imageFormat: format ? format : "",
-        details: details ? details : [], imageDescription, imageTitle, imageURL: path ? path : "", like: 0
-    };
-    yield PugRepository_1.default.addNewPug(currentUser, newPug);
-    yield UserRepository_1.default.updateUserPug(currentUser, 1);
-    return {
-        code: 0, message: "Nouveau pug ajouté avec succès",
-    };
+    const data = yield FollowerRepository_1.default.findAllFollowingFromUser(currentUser.username);
+    const usernames = [];
+    data.forEach(value => usernames.push(value.username));
+    const result = yield PugRepository_1.default.getAllPugsFromFollowing(usernames);
+    const pugsResponse = [];
+    // result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username, author)))
+    result.forEach((value) => {
+        if (value.pugs) {
+            value.pugs.forEach((elem) => {
+                pugsResponse.push((0, PugResponse_1.pugToResponse)(elem, currentUser.username, value.username));
+            });
+        }
+    });
+    return pugsResponse;
 });

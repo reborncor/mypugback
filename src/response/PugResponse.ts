@@ -9,7 +9,7 @@ export interface PugResponse{
     imageTitle : string;
     imageDescription : string;
     imageFormat : string;
-    imageData : string;
+    imageData? : string;
     details : PugDetail[];
     like : number;
     date : number;
@@ -45,7 +45,7 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         id : pug.id,
         date : pug.date,
         details : pug.details? pug.details : [],
-        imageData: pug.imageData,
+        // imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle? pug.imageTitle : "",

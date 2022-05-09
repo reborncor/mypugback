@@ -12,26 +12,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addPug = void 0;
+exports.unFollowUser = void 0;
 const checkdata_1 = require("../../../util/validator/checkdata");
-const moment_1 = __importDefault(require("moment"));
 const UserRepository_1 = __importDefault(require("../../../repository/UserRepository"));
 const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
-const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
+const FollowerRepository_1 = __importDefault(require("../../../repository/FollowerRepository"));
 const bson_1 = require("bson");
-const fs = require('fs').promises;
-const { promisify } = require('util');
-const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+const unFollowUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    // console.log("DATA :", req.body)
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
-        const { imageTitle, imageDescription, details } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        console.log("Data : ", req.body);
-        const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.path, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageTitle, imageDescription, details);
-        res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
-        // await unlinkAsync(req.file?.path)
+        const { username } = req.body;
+        const user = yield execute(userId, username);
+        res.status(200).json({ code: user.code, message: user.message, payload: user.payload });
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -43,28 +39,25 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
 });
-exports.addPug = addPug;
-const unlinkAsync = promisify(fs.unlink);
-const execute = (userId, path, format, imageDescription, imageTitle, details) => __awaiter(void 0, void 0, void 0, function* () {
+exports.unFollowUser = unFollowUser;
+const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
+    const otherUser = yield UserRepository_1.default.findByUsername(username);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    console.log("PATH", path);
-    const contents = yield fs.readFile(path, { encoding: 'base64' });
-    if (details) {
-        details.forEach(value => { value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString())); });
-    }
-    const date = (0, moment_1.default)().unix();
-    const newPug = {
-        comments: [],
-        id: new bson_1.ObjectId(),
-        usersLike: [],
-        date: date,
-        imageData: contents, imageFormat: format ? format : "",
-        details: details ? details : [], imageDescription, imageTitle, imageURL: path ? path : "", like: 0
+    (0, checkdata_1.checkThatUserExistsOrThrow)(otherUser);
+    const userNotFollow = yield FollowerRepository_1.default.findUserInFollwingList(currentUser.username, otherUser.username);
+    (0, checkdata_1.checkThatUserNotFollowed)(userNotFollow);
+    const follower = {
+        _id: new bson_1.ObjectId(otherUser._id), username: otherUser.username
     };
-    yield PugRepository_1.default.addNewPug(currentUser, newPug);
-    yield UserRepository_1.default.updateUserPug(currentUser, 1);
+    const following = {
+        _id: new bson_1.ObjectId(otherUser._id), username: currentUser.username
+    };
+    yield FollowerRepository_1.default.deleteUserFromFollowing(currentUser, follower);
+    yield FollowerRepository_1.default.deleteUserFromFollower(otherUser, following);
+    yield UserRepository_1.default.updateUserFollowing(currentUser, -1);
+    yield UserRepository_1.default.updateUserFollower(otherUser, -1);
     return {
-        code: 0, message: "Nouveau pug ajouté avec succès",
+        code: 0, message: "Nouvel utilisateur unfollow"
     };
 });

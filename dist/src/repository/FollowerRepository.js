@@ -10,12 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("./db");
-const collectionName = "users";
-class UserRepository {
-    static insert(user) {
+const collectionName = "userfriends";
+class FollowerRepository {
+    static insert(model) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            return yield call.insert(user);
+            return yield call.insert(model);
         });
     }
     static findByUsername(username) {
@@ -26,28 +26,6 @@ class UserRepository {
             });
         });
     }
-    static findByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const call = db_1.db.get(collectionName);
-            return yield call.findOne({
-                email,
-            });
-        });
-    }
-    static findByPhoneNumber(phoneNumber) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const call = db_1.db.get(collectionName);
-            return yield call.findOne({
-                phoneNumber,
-            });
-        });
-    }
-    static findUsersByUsername(username) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const call = db_1.db.get(collectionName);
-            return yield call.find({ username: { $regex: new RegExp('^' + username), $options: 'i' } });
-        });
-    }
     static findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
@@ -56,29 +34,73 @@ class UserRepository {
             });
         });
     }
-    static updateUserPug(user, numberOfPug) {
+    static addUserToFollowing(user, follower) {
         return __awaiter(this, void 0, void 0, function* () {
+            const exist = yield this.findByUsername(user.username);
+            if (!exist) {
+                const dataset = { following: [], followers: [], username: user.username };
+                yield this.insert(dataset);
+            }
             const call = db_1.db.get(collectionName);
             return yield call.findOneAndUpdate({ username: user.username }, {
-                $set: { pugs: user.pugs + numberOfPug }
+                $push: { following: follower
+                }
             });
         });
     }
-    static updateUserFollower(user, number) {
+    static addUserToFollower(user, follower) {
         return __awaiter(this, void 0, void 0, function* () {
+            const exist = yield this.findByUsername(user.username);
+            if (!exist) {
+                const dataset = { following: [], followers: [], username: user.username };
+                yield this.insert(dataset);
+            }
             const call = db_1.db.get(collectionName);
             return yield call.findOneAndUpdate({ username: user.username }, {
-                $set: { followers: user.followers + number }
+                $push: { followers: follower
+                }
             });
         });
     }
-    static updateUserFollowing(user, number) {
+    static deleteUserFromFollowing(user, follower) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
             return yield call.findOneAndUpdate({ username: user.username }, {
-                $set: { following: user.following + number }
+                $pull: { following: follower
+                }
+            });
+        });
+    }
+    static deleteUserFromFollower(user, follower) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $pull: { followers: follower
+                }
+            });
+        });
+    }
+    static findAllFollowersFromUser(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.distinct("followers", { "username": username });
+        });
+    }
+    static findAllFollowingFromUser(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.distinct("following", { "username": username });
+        });
+    }
+    static findUserInFollwingList(username, userToFollow) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOne({
+                username, "following.username": userToFollow
+            }, {
+                projection: { following: { $elemMatch: { username: userToFollow } } }
             });
         });
     }
 }
-exports.default = UserRepository;
+exports.default = FollowerRepository;

@@ -4,7 +4,7 @@ exports.userPugToResponse = void 0;
 const PugResponse_1 = require("./PugResponse");
 function userPugToResponse(userPug) {
     const pugsResponse = [];
-    userPug.pugs.forEach(value => pugsResponse.push((0, PugResponse_1.pugToResponse)(value)));
+    userPug.pugs.forEach(value => pugsResponse.push((0, PugResponse_1.pugToResponse)(value, userPug.username, userPug.username)));
     return {
         pugs: pugsResponse,
         username: userPug.username

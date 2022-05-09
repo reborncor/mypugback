@@ -152,9 +152,8 @@ export default class PugRepository{
             {
                 //"pugs.comments" :{$slice : -1},
                 // projection : { "pugs" :{$slice :[startInd,endInd]}, }
-                projection : {"pugs" :{$slice :[startInd,endInd] }
-
-            }});
+                projection : {"pugs" :{$slice :[startInd,endInd],  }  }
+            });
 
         //Sans ID
         // return await call.distinct("pugs",{username : {$in :usernames} });

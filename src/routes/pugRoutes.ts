@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
     },
     filename : (req : any, file: any, callback: any)=> {
         const date = new Date().toISOString().replace(':','-').replace(':','-').replace('.','-')
-        const name = date+file.originalname
+        const name = date+file.originalname+".png"
         callback(null, name)
     }
 })

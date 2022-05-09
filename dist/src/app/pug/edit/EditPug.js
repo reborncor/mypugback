@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addPug = void 0;
+exports.editPug = void 0;
 const checkdata_1 = require("../../../util/validator/checkdata");
 const moment_1 = __importDefault(require("moment"));
 const UserRepository_1 = __importDefault(require("../../../repository/UserRepository"));
@@ -21,17 +21,14 @@ const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
 const bson_1 = require("bson");
 const fs = require('fs').promises;
-const { promisify } = require('util');
-const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const editPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
         const { imageTitle, imageDescription, details } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        console.log("Data : ", req.body);
         const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.path, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageTitle, imageDescription, details);
         res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
-        // await unlinkAsync(req.file?.path)
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -43,8 +40,7 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
     }
 });
-exports.addPug = addPug;
-const unlinkAsync = promisify(fs.unlink);
+exports.editPug = editPug;
 const execute = (userId, path, format, imageDescription, imageTitle, details) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);

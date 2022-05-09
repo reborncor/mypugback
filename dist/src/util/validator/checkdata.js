@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkThatUserExistsOrThrow = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
 const util_1 = require("../util");
 var awPhoneNumber = require('awesome-phonenumber');
 const EmailValidator = __importStar(require("email-validator"));
@@ -77,9 +77,75 @@ function checkThatUserIsConnected(token) {
     }
 }
 exports.checkThatUserIsConnected = checkThatUserIsConnected;
+function checkThatUserisntHimself(user, userToAdd) {
+    if (user.username == userToAdd.username) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountIsHimself, {});
+    }
+}
+exports.checkThatUserisntHimself = checkThatUserisntHimself;
 function checkThatUserExistsOrThrow(user) {
     if (!user) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
     }
 }
 exports.checkThatUserExistsOrThrow = checkThatUserExistsOrThrow;
+function checkThatUsersExistsOrThrow(user) {
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
+    }
+}
+exports.checkThatUsersExistsOrThrow = checkThatUsersExistsOrThrow;
+function checkThatUserNotAlreadyLike(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.alreadyLiked, {});
+    }
+}
+exports.checkThatUserNotAlreadyLike = checkThatUserNotAlreadyLike;
+function checkThatUserHasLiked(user) {
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.notAlreadyliked, {});
+    }
+}
+exports.checkThatUserHasLiked = checkThatUserHasLiked;
+function checkThatUserIsNotAlreadyFollow(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyFollow, {});
+    }
+}
+exports.checkThatUserIsNotAlreadyFollow = checkThatUserIsNotAlreadyFollow;
+function checkThatUserNotFollowed(user) {
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotFollowed, {});
+    }
+}
+exports.checkThatUserNotFollowed = checkThatUserNotFollowed;
+function checkThatConversationExist(conversations) {
+    if (!conversations) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.conversationDoesntExist, {});
+    }
+}
+exports.checkThatConversationExist = checkThatConversationExist;
+function checkThatConversationsExist(conversations) {
+    if (conversations.length == 0) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.conversationsDoesntExist, {});
+    }
+}
+exports.checkThatConversationsExist = checkThatConversationsExist;
+function checkThatUserWithUsernameDoesntExistOrThrow(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithUsername, {});
+    }
+}
+exports.checkThatUserWithUsernameDoesntExistOrThrow = checkThatUserWithUsernameDoesntExistOrThrow;
+function checkThatUserDoesntExistOrThrow(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExist, {});
+    }
+}
+exports.checkThatUserDoesntExistOrThrow = checkThatUserDoesntExistOrThrow;
+function checkThatUserWithPhoneNumberDoesntExistOrThrow(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithPhoneNumber, {});
+    }
+}
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = checkThatUserWithPhoneNumberDoesntExistOrThrow;
