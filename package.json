@@ -1,5 +1,5 @@
 {
-  "name": "socialgambling",
+  "name": "mypug",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "postinstall": "tsc",
+    "build": "tsc -p",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "start:dev": "nodemon index.ts"
@@ -48,6 +49,7 @@
     "moment": "^2.29.1",
     "monk": "^7.3.4",
     "multer": "^1.4.3",
+    "node-static": "^0.7.11",
     "nodemon": "^2.0.13",
     "socket.io": "^2.4.1",
     "stripe": "^8.195.0",

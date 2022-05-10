@@ -21,6 +21,7 @@ export default class PugRepository{
         return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
     }
 
+
     static async findByIdWithCommentsOnly(id: string, username : string): Promise<any> {
         const call = db.get(collectionName);
         // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
@@ -46,19 +47,15 @@ export default class PugRepository{
         return result;
     }
 
-    static async deletePug(user: User, pug :Pug): Promise<UserPug> {
+    static async deletePug( pug :Pug,username : string): Promise<UserPug> {
         const call = db.get(collectionName);
-        let result =  await call.findOneAndUpdate(
-            {username: user.username, "pugs.id" : new ObjectId(pug.id)},
+        return  await call.findOneAndUpdate(
+            {pugs : {$elemMatch : { id : new ObjectId(pug.id)}}, username : username},
             {
-                $push:{pugs : {$each :[pug], $position:0}
+                $pull:{pugs :  pug
                 }
             }
         );
-        if(!result){
-            result =  await this.insert(user, pug)
-        }
-        return result;
     }
 
     static async getAllPugsFromUser(username :string): Promise<UserPug> {
@@ -86,6 +83,8 @@ export default class PugRepository{
 
                 }
         );
+
+
     }
 
     static async commentUserPug(comment : Comment,pug : Pug, username : string): Promise<UserPug> {

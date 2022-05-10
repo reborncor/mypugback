@@ -24,7 +24,7 @@ export const addPug = async  (req : Request, res : Response) =>{
         const { imageTitle, imageDescription, details} = req.body
         const {userId} = decodeToken(token);
         console.log("Data : ",req.body);
-        const  result = await execute(userId,req.file?.path, req.file?.mimetype,imageTitle, imageDescription, details );
+        const  result = await execute(userId,req.file?.filename, req.file?.mimetype,imageTitle, imageDescription, details );
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
         // await unlinkAsync(req.file?.path)
     }catch (err : any){
@@ -49,7 +49,7 @@ const execute = async (userId: string, path: string | undefined, format: string 
 
     console.log("PATH",path);
 
-    const contents = await fs.readFile(path, {encoding: 'base64'});
+    // const contents = await fs.readFile(path, {encoding: 'base64'});
     if(details) {
         details.forEach(value => {value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString()))})
     }
@@ -59,7 +59,7 @@ const execute = async (userId: string, path: string | undefined, format: string 
         id : new ObjectId(),
         usersLike: [],
         date : date,
-        imageData: contents, imageFormat: format? format : "",
+        imageData: "", imageFormat: format? format : "",
         details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0
     }
     await PugRepository.addNewPug( currentUser, newPug);

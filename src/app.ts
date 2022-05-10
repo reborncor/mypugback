@@ -6,12 +6,15 @@ import router from "./routes/routes";
 import {Socket} from "socket.io";
 import {allUsersConnected} from "./util/util";
 import {sendMessage} from "./app/conversation/sendMessage";
+const path = require('path')
+
 const multer = require('multer');
 
 
 const init = () => {
 
     const app = express();
+
 
 
     //Client Side
@@ -27,7 +30,9 @@ const init = () => {
     });
 
     app.use(express.json());
+
     app.use(router);
+    app.use('/pugs', express.static(path.join(__dirname.replace("src",""), 'uploads')))
 
     const httpServer =  require("http").createServer(app);
     const io = require("socket.io")(httpServer,{});

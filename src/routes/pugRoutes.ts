@@ -10,11 +10,13 @@ import {commentPug} from "../app/pug/comment/CommentPug";
 import {getComments} from "../app/pug/getcomment/GetComment";
 import {getAllPugsFromUser} from "../app/pug/getallfromuser/GetAllFromUser";
 import {getAllPugsFromFollowingPagealble} from "../app/pug/getallfromfollowing/GetAllFromFollowingPageable";
+import {deletePug} from "../app/pug/delete/DeletePug";
 
 const pugRouter = Router();
 
 const add = "/add";
 const get = "/get";
+const deletePath = "/delete"
 const getAll = "/getall";
 const getAllFromUser = "/getallfromuser";
 const actualitypageable = "/actualitypageable";
@@ -64,6 +66,7 @@ pugRouter.get(getAllFromUser,getAllPugsFromUser)
 pugRouter.get(actuality,getAllPugsFromFollowing)
 pugRouter.get(actualitypageable,getAllPugsFromFollowingPagealble)
 
+pugRouter.put(deletePath,deletePug)
 pugRouter.put(like,likePug)
 pugRouter.put(unlike,unLikePug)
 pugRouter.put(comment,commentPug)
