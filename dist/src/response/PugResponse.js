@@ -31,7 +31,7 @@ function pugToResponsePageable(pug, username, author) {
         id: pug.id,
         date: pug.date,
         details: pug.details ? pug.details : [],
-        imageData: pug.imageData,
+        // imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle ? pug.imageTitle : "",

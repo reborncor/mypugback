@@ -48,17 +48,13 @@ class PugRepository {
             return result;
         });
     }
-    static deletePug(user, pug) {
+    static deletePug(pug, username) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            let result = yield call.findOneAndUpdate({ username: user.username, "pugs.id": new bson_1.ObjectId(pug.id) }, {
-                $push: { pugs: { $each: [pug], $position: 0 }
+            return yield call.findOneAndUpdate({ pugs: { $elemMatch: { id: new bson_1.ObjectId(pug.id) } }, username: username }, {
+                $pull: { pugs: pug
                 }
             });
-            if (!result) {
-                result = yield this.insert(user, pug);
-            }
-            return result;
         });
     }
     static getAllPugsFromUser(username) {
@@ -126,8 +122,7 @@ class PugRepository {
             return yield call.find({ username: { $in: usernames } }, {
                 //"pugs.comments" :{$slice : -1},
                 // projection : { "pugs" :{$slice :[startInd,endInd]}, }
-                projection: { "pugs": { $slice: [startInd, endInd] }
-                }
+                projection: { "pugs": { $slice: [startInd, endInd], } }
             });
             //Sans ID
             // return await call.distinct("pugs",{username : {$in :usernames} });

@@ -15,10 +15,16 @@ const init = () => {
 
     const app = express();
 
+    let finalPath = path.basename(__dirname);
+    finalPath = path.join("/usr/src/app/", 'uploads');
 
 
     //Client Side
     app.get('/file', (req : any, res: any) => {
+        console.log("DIR : ",__dirname)
+
+        console.log("DIR  2: ",finalPath)
+
         res.sendFile(__dirname + '/index.html');
     });
     //
@@ -32,7 +38,8 @@ const init = () => {
     app.use(express.json());
 
     app.use(router);
-    app.use('/pugs', express.static(path.join(__dirname.replace("src",""), 'uploads')))
+    // app.use('/pugs', express.static(path.join(__dirname.replace("src",""), 'uploads')))
+    app.use('/pugs', express.static(path.join("", 'uploads')))
 
     const httpServer =  require("http").createServer(app);
     const io = require("socket.io")(httpServer,{});

@@ -7,6 +7,8 @@ import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {Pug} from "../../../models/Pug";
+import {promisify} from "util";
+import {promises as fs} from "fs";
 
 
 
@@ -20,6 +22,8 @@ export const deletePug = async  (req : Request, res : Response) =>{
         const {userId} = decodeToken(token);
         const  result = await execute(userId,pugId, username);
         res.status(200).json({code : result.code, message : result.message, payload : result.payload});
+        await unlinkAsync("uploads/"+result.pugFilePath);
+
     }catch (err : any){
 
         if(err instanceof CustomError){
@@ -39,13 +43,19 @@ const execute = async (userId: string, pugId :string, username : string): Promis
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
-
+    console.log("Info :",pugId, username);
     const data = await PugRepository.findById(pugId,username);
-    const pug : Pug = data.pugs[0]
+    console.log("Data :"+data);
+    const pug : Pug = data.pugs[0];
     const result = await PugRepository.deletePug(pug,username);
-    return {code: 0, message: "Pug Supprimé",payload :""}
+    await UserRepository.updateUserPug(currentUser, -1);
+
+    return {code: 0, message: "Pug Supprimé",payload :"", pugFilePath : pug.imageURL}
 
 
 
 }
+
+const unlinkAsync = promisify(fs.unlink)
+
 

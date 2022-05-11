@@ -18,11 +18,16 @@ const config_1 = require("./util/config");
 const routes_1 = __importDefault(require("./routes/routes"));
 const util_1 = require("./util/util");
 const sendMessage_1 = require("./app/conversation/sendMessage");
+const path = require('path');
 const multer = require('multer');
 const init = () => {
     const app = (0, express_1.default)();
+    let finalPath = path.basename(__dirname);
+    finalPath = path.join("/usr/src/app/", 'uploads');
     //Client Side
     app.get('/file', (req, res) => {
+        console.log("DIR : ", __dirname);
+        console.log("DIR  2: ", finalPath);
         res.sendFile(__dirname + '/index.html');
     });
     //
@@ -32,6 +37,8 @@ const init = () => {
     });
     app.use(express_1.default.json());
     app.use(routes_1.default);
+    // app.use('/pugs', express.static(path.join(__dirname.replace("src",""), 'uploads')))
+    app.use('/pugs', express_1.default.static(path.join("", 'uploads')));
     const httpServer = require("http").createServer(app);
     const io = require("socket.io")(httpServer, {});
     httpServer.listen(config_1.env.PORT, () => {
