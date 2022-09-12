@@ -10,11 +10,13 @@ import {commentPug} from "../app/pug/comment/CommentPug";
 import {getComments} from "../app/pug/getcomment/GetComment";
 import {getAllPugsFromUser} from "../app/pug/getallfromuser/GetAllFromUser";
 import {getAllPugsFromFollowingPagealble} from "../app/pug/getallfromfollowing/GetAllFromFollowingPageable";
+import {deletePug} from "../app/pug/delete/DeletePug";
 
 const pugRouter = Router();
 
 const add = "/add";
 const get = "/get";
+const deletePath = "/delete"
 const getAll = "/getall";
 const getAllFromUser = "/getallfromuser";
 const actualitypageable = "/actualitypageable";
@@ -25,7 +27,7 @@ const unlike = "/unlike";
 const comment = "/comment";
 
 
-///
+
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination : (req: any, file: any, callback: (arg0: null, arg1: string) => void) => {
@@ -33,7 +35,7 @@ const storage = multer.diskStorage({
     },
     filename : (req : any, file: any, callback: any)=> {
         const date = new Date().toISOString().replace(':','-').replace(':','-').replace('.','-')
-        const name = date+file.originalname
+        const name = date+file.originalname+".png"
         callback(null, name)
     }
 })
@@ -51,9 +53,10 @@ const upload = multer( {
     limits :{
         fileSize :1024 * 1024 *5
     },
-    // fileFilter : fileFilter
+
+
     });
-///
+
 
 
 pugRouter.post(add, upload.single('newimage'),addPug)
@@ -64,6 +67,7 @@ pugRouter.get(getAllFromUser,getAllPugsFromUser)
 pugRouter.get(actuality,getAllPugsFromFollowing)
 pugRouter.get(actualitypageable,getAllPugsFromFollowingPagealble)
 
+pugRouter.put(deletePath,deletePug)
 pugRouter.put(like,likePug)
 pugRouter.put(unlike,unLikePug)
 pugRouter.put(comment,commentPug)

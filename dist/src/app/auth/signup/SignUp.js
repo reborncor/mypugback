@@ -17,12 +17,14 @@ const checkdata_1 = require("../../../util/validator/checkdata");
 const passwordManagement_1 = require("../../../util/security/passwordManagement");
 const UserRepository_1 = __importDefault(require("../../../repository/UserRepository"));
 const CustomError_1 = require("../../../util/error/CustomError");
+const tokenManagement_1 = require("../../../util/security/tokenManagement");
+const UserResponse_1 = require("../../../response/UserResponse");
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, phoneNumber, password } = req.body;
     // console.log("DATA :", req.body)
     try {
         const user = yield signUpUser(email, username, password, phoneNumber);
-        res.status(201).json({ code: user.code, message: user.message, payload: user.payload });
+        res.status(201).json({ code: 0, message: "inscription réalisée avec succès", payload: (0, UserResponse_1.userToUserResponse)(user), token: (0, tokenManagement_1.generateAccessToken)(user) });
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -37,19 +39,16 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.signUp = signUp;
 const signUpUser = (email, username, password, phoneNumber) => __awaiter(void 0, void 0, void 0, function* () {
     (0, checkdata_1.checkThatUserSignUpCredentialsOrThrow)(email, password, phoneNumber, username);
-    // const existingUser = await UserRepository.findByEmail(email);
-    // const existingUserWithUserName = await UserRepository.findByUsername(username);
-    // const existingUserWithPhoneNumber = await UserRepository.findByPhoneNumber(phoneNumber);
-    // console.log("User : ",existingUser);
-    // checkThatUserDoesntExistOrThrow(existingUser);
-    // checkThatUserWithUsernameDoesntExistOrThrow(existingUserWithUserName);
-    // checkThatUserWithPhoneNumberDoesntExistOrThrow(existingUserWithPhoneNumber);
+    const existingUser = yield UserRepository_1.default.findByEmail(email);
+    const existingUserWithUserName = yield UserRepository_1.default.findByUsername(username);
+    const existingUserWithPhoneNumber = yield UserRepository_1.default.findByPhoneNumber(phoneNumber);
+    (0, checkdata_1.checkThatUserDoesntExistOrThrow)(existingUser);
+    (0, checkdata_1.checkThatUserWithUsernameDoesntExistOrThrow)(existingUserWithUserName);
+    (0, checkdata_1.checkThatUserWithPhoneNumberDoesntExistOrThrow)(existingUserWithPhoneNumber);
     const hashedPassword = yield (0, passwordManagement_1.encodePassword)(password);
     const newUser = {
-        admin: false, email, password: hashedPassword, phoneNumber, username, followersUser: [], followers: 0, following: 0,
+        admin: false, email, password: hashedPassword, phoneNumber, username, followers: 0, following: 0,
+        pugs: 0
     };
-    yield UserRepository_1.default.insert(newUser);
-    return {
-        code: 0, message: "Inscription réalisée avec succès",
-    };
+    return yield UserRepository_1.default.insert(newUser);
 });

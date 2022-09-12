@@ -41,27 +41,27 @@ export const editPug = async  (req : Request, res : Response) =>{
 
 const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, imageTitle : string, details : PugDetail[]): Promise<BaseResponse<null>> => {
 
-    const currentUser = await UserRepository.findById(userId);
-    checkThatUserExistsOrThrow(currentUser);
-
-    console.log("PATH",path);
-
-    const contents = await fs.readFile(path, {encoding: 'base64'});
-    if(details) {
-        details.forEach(value => {value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString()))})
-    }
-    const date = moment().unix();
-    const newPug : Pug = {
-        comments: [],
-        id : new ObjectId(),
-        usersLike: [],
-        date : date,
-        imageData: contents, imageFormat: format? format : "",
-        details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0
-    }
-    await PugRepository.addNewPug( currentUser, newPug);
-    await UserRepository.updateUserPug(currentUser, 1);
-
+    // const currentUser = await UserRepository.findById(userId);
+    // checkThatUserExistsOrThrow(currentUser);
+    //
+    // console.log("PATH",path);
+    //
+    // const contents = await fs.readFile(path, {encoding: 'base64'});
+    // if(details) {
+    //     details.forEach(value => {value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString()))})
+    // }
+    // const date = moment().unix();
+    // const newPug : Pug = {
+    //     comments: [],
+    //     id : new ObjectId(),
+    //     usersLike: [],
+    //     date : date,
+    //     imageData: contents, imageFormat: format? format : "",
+    //     details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0
+    // }
+    // await PugRepository.addNewPug( currentUser, newPug);
+    // await UserRepository.updateUserPug(currentUser, 1);
+    //
     return  {
         code: 0, message: "Nouveau pug ajouté avec succès",
     }

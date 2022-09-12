@@ -21,12 +21,11 @@ export const addPug = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
-        const { imageTitle, imageDescription, details} = req.body
+        const { imageTitle, imageDescription, details, isCrop} = req.body
         const {userId} = decodeToken(token);
-        console.log("Data : ",req.body);
-        const  result = await execute(userId,req.file?.path, req.file?.mimetype,imageTitle, imageDescription, details );
+
+        const  result = await execute(userId,req.file?.filename, req.file?.mimetype,imageTitle, imageDescription, details, isCrop);
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
-        await unlinkAsync(req.file?.path)
     }catch (err : any){
 
         if(err instanceof CustomError){
@@ -42,14 +41,14 @@ export const addPug = async  (req : Request, res : Response) =>{
 }
 const unlinkAsync = promisify(fs.unlink)
 
-const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, imageTitle : string, details : PugDetail[]): Promise<BaseResponse<null>> => {
+const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, imageTitle : string, details : PugDetail[], isCrop : boolean): Promise<BaseResponse<null>> => {
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
 
     console.log("PATH",path);
 
-    const contents = await fs.readFile(path, {encoding: 'base64'});
+    // const contents = await fs.readFile(path, {encoding: 'base64'});
     if(details) {
         details.forEach(value => {value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString()))})
     }
@@ -59,9 +58,11 @@ const execute = async (userId: string, path: string | undefined, format: string 
         id : new ObjectId(),
         usersLike: [],
         date : date,
-        imageData: contents, imageFormat: format? format : "",
+        imageData: "", imageFormat: format? format : "",
+        isCrop  : isCrop ? true : false,
         details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0
     }
+    console.log(newPug)
     await PugRepository.addNewPug( currentUser, newPug);
     await UserRepository.updateUserPug(currentUser, 1);
 

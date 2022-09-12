@@ -9,13 +9,14 @@ export interface PugResponse{
     imageTitle : string;
     imageDescription : string;
     imageFormat : string;
-    imageData : string;
+    imageData? : string;
     details : PugDetail[];
     like : number;
     date : number;
     isLiked : boolean;
     comments : Comment[];
     author : string;
+    isCrop : boolean;
 }
 
 export function pugToResponse(pug : Pug,username : string, author : string) : PugResponse{
@@ -32,6 +33,8 @@ export function pugToResponse(pug : Pug,username : string, author : string) : Pu
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked : isLiked,
+        isCrop : pug.isCrop ? pug.isCrop : false,
+
         comments: pug.comments,
         author : author
 
@@ -45,13 +48,15 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         id : pug.id,
         date : pug.date,
         details : pug.details? pug.details : [],
-        imageData: pug.imageData,
+        // imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle? pug.imageTitle : "",
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked : isLiked,
+        isCrop : pug.isCrop ? pug.isCrop : false,
+
         comments: pug.comments.slice(-1),
         author : author
 
