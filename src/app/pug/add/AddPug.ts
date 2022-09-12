@@ -23,11 +23,9 @@ export const addPug = async  (req : Request, res : Response) =>{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const { imageTitle, imageDescription, details, isCrop} = req.body
         const {userId} = decodeToken(token);
-        // console.log("Data : ",req.file?.path);
 
         const  result = await execute(userId,req.file?.filename, req.file?.mimetype,imageTitle, imageDescription, details, isCrop);
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
-        // await unlinkAsync(req.file?.path)
     }catch (err : any){
 
         if(err instanceof CustomError){
