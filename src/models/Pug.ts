@@ -10,6 +10,7 @@ export interface Pug{
      imageFormat : string;
      imageData : string;
      comments : Comment[];
+     isCrop : boolean;
 
     date : number;
     details : PugDetail[];

@@ -26,10 +26,10 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
-        const { imageTitle, imageDescription, details } = req.body;
+        const { imageTitle, imageDescription, details, isCrop } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        console.log("Data : ", req.body);
-        const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.filename, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageTitle, imageDescription, details);
+        // console.log("Data : ",req.file?.path);
+        const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.filename, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageTitle, imageDescription, details, isCrop);
         res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
         // await unlinkAsync(req.file?.path)
     }
@@ -45,7 +45,7 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.addPug = addPug;
 const unlinkAsync = promisify(fs.unlink);
-const execute = (userId, path, format, imageDescription, imageTitle, details) => __awaiter(void 0, void 0, void 0, function* () {
+const execute = (userId, path, format, imageDescription, imageTitle, details, isCrop) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     console.log("PATH", path);
@@ -60,8 +60,10 @@ const execute = (userId, path, format, imageDescription, imageTitle, details) =>
         usersLike: [],
         date: date,
         imageData: "", imageFormat: format ? format : "",
+        isCrop: isCrop ? true : false,
         details: details ? details : [], imageDescription, imageTitle, imageURL: path ? path : "", like: 0
     };
+    console.log(newPug);
     yield PugRepository_1.default.addNewPug(currentUser, newPug);
     yield UserRepository_1.default.updateUserPug(currentUser, 1);
     return {

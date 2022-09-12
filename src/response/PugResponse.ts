@@ -16,6 +16,7 @@ export interface PugResponse{
     isLiked : boolean;
     comments : Comment[];
     author : string;
+    isCrop : boolean;
 }
 
 export function pugToResponse(pug : Pug,username : string, author : string) : PugResponse{
@@ -32,6 +33,8 @@ export function pugToResponse(pug : Pug,username : string, author : string) : Pu
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked : isLiked,
+        isCrop : pug.isCrop ? pug.isCrop : false,
+
         comments: pug.comments,
         author : author
 
@@ -52,6 +55,8 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked : isLiked,
+        isCrop : pug.isCrop ? pug.isCrop : false,
+
         comments: pug.comments.slice(-1),
         author : author
 

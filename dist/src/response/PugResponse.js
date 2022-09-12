@@ -17,6 +17,7 @@ function pugToResponse(pug, username, author) {
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked: isLiked,
+        isCrop: pug.isCrop ? pug.isCrop : false,
         comments: pug.comments,
         author: author
     };
@@ -38,6 +39,7 @@ function pugToResponsePageable(pug, username, author) {
         imageURL: pug.imageURL ? pug.imageURL : "",
         like: pug.like,
         isLiked: isLiked,
+        isCrop: pug.isCrop ? pug.isCrop : false,
         comments: pug.comments.slice(-1),
         author: author
     };

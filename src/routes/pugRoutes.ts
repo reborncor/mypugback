@@ -27,7 +27,7 @@ const unlike = "/unlike";
 const comment = "/comment";
 
 
-///
+
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination : (req: any, file: any, callback: (arg0: null, arg1: string) => void) => {
@@ -53,9 +53,10 @@ const upload = multer( {
     limits :{
         fileSize :1024 * 1024 *5
     },
-    // fileFilter : fileFilter
+
+
     });
-///
+
 
 
 pugRouter.post(add, upload.single('newimage'),addPug)

@@ -1,6 +1,5 @@
 import express, {Request, Router} from "express";
 
-import {Map} from "bson";
 import {env} from "./util/config";
 import router from "./routes/routes";
 import {Socket} from "socket.io";
