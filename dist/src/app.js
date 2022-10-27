@@ -18,6 +18,7 @@ const config_1 = require("./util/config");
 const routes_1 = __importDefault(require("./routes/routes"));
 const util_1 = require("./util/util");
 const sendMessage_1 = require("./app/conversation/sendMessage");
+const seenConversation_1 = require("./app/conversation/seenConversation");
 const path = require('path');
 const multer = require('multer');
 const init = () => {
@@ -56,6 +57,17 @@ const init = () => {
         socket.on('credentials', (msg) => {
             util_1.allUsersConnected.set(msg, socket.id);
         });
+        socket.on("seenConversation", (msg) => __awaiter(void 0, void 0, void 0, function* () {
+            const result = yield (0, seenConversation_1.seenConversation)(msg.senderUsername, msg.receiverUsername);
+            if (result.code == 0) {
+                console.log("Message vu");
+                socket.emit("messagesuccess", result.code.toString());
+            }
+            else {
+                // console.log("Miss : ", result.code)
+                socket.emit("messagesuccess", result.code.toString());
+            }
+        }));
         socket.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {
             const result = yield (0, sendMessage_1.sendMessage)(msg.senderUsername, msg.receiverUsername, msg.content);
             if (result.code == 0) {

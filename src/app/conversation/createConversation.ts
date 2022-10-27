@@ -18,7 +18,7 @@ export const createConversation = async (req : Request, res : Response): Promise
     const {username} = req.body;
     const  {conversation, exist} = await execute(userId,username);
     const message  = exist ? "Already Exist, sending data.." : "created"
-    res.status(200).json({code : successCode, message : "Conversation : " + message, payload : {conversation: conversation}});
+    res.status(200).json({code : successCode, message : "Conversation : " + message, payload : conversation});
   }catch (err : any){
     if(err instanceof CustomError){
       console.log(err);
@@ -49,7 +49,7 @@ const execute = async (userId : string, receiverUsername : string) => {
     return {conversation, exist :true}
   }
   else{
-    const newConversation : Conversation = {members : [currentUser.username,receiverUser.username], chat : []}
+    const newConversation : Conversation = {members : [currentUser.username,receiverUser.username], chat : [], seen : [currentUser.username]}
     await ConversationRepository.insert(newConversation);
     return {conversation : newConversation,exist :false};
 

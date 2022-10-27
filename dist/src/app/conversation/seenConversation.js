@@ -12,17 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendMessage = void 0;
+exports.seenConversation = void 0;
 const CustomError_1 = require("../../util/error/CustomError");
 const UserRepository_1 = __importDefault(require("../../repository/UserRepository"));
 const checkdata_1 = require("../../util/validator/checkdata");
 const ConversationRepository_1 = __importDefault(require("../../repository/ConversationRepository"));
 const util_1 = require("../../util/util");
-const bson_1 = require("bson");
-const moment_1 = __importDefault(require("moment"));
-const sendMessage = (currentUsername, receiverUsername, content) => __awaiter(void 0, void 0, void 0, function* () {
+const seenConversation = (currentUsername, conversationId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const message = yield execute(currentUsername, receiverUsername, content);
+        const message = yield execute(currentUsername, conversationId);
         return { message, code: util_1.successCode };
     }
     catch (err) {
@@ -35,16 +33,12 @@ const sendMessage = (currentUsername, receiverUsername, content) => __awaiter(vo
         }
     }
 });
-exports.sendMessage = sendMessage;
-const execute = (currentUsername, receiverUsername, content) => __awaiter(void 0, void 0, void 0, function* () {
+exports.seenConversation = seenConversation;
+const execute = (currentUsername, conversationId) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findByUsername(currentUsername);
-    const receiverUser = yield UserRepository_1.default.findByUsername(receiverUsername);
+    const conversation = yield ConversationRepository_1.default.findById(conversationId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    (0, checkdata_1.checkThatUserExistsOrThrow)(receiverUser);
-    const conversation = yield ConversationRepository_1.default.findByMembers([currentUser.username, receiverUser.username]);
-    const time = (0, moment_1.default)().unix().toString();
-    const message = { content, time, senderUsername: currentUser.username, receiverUsername: receiverUsername, _id: new bson_1.ObjectId() };
-    yield ConversationRepository_1.default.addMessageToConversation(message, conversation);
-    yield ConversationRepository_1.default.updateConversationOnNotSeen(conversation, receiverUser);
-    return message;
+    (0, checkdata_1.checkThatConversationExist)(conversation);
+    yield ConversationRepository_1.default.updateConversationOnSeen(conversation, currentUser);
+    return "Conversation vu";
 });

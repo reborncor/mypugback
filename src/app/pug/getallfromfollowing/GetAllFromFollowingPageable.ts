@@ -49,7 +49,6 @@ const execute = async (userId: string, startInd : number,endInd :number): Promis
     const result = await PugRepository.getAllPugsFromFollowingPageable(usernames, startInd, endInd);
 
     const pugsResponse : PugResponse[] = [];
-    // result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username, author)))
     result.forEach((value : any)  =>
         {
             if(value.pugs){

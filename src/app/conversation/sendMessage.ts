@@ -38,6 +38,7 @@ const execute = async (currentUsername : string, receiverUsername : string, cont
   const message : Message = {content, time, senderUsername : currentUser.username, receiverUsername : receiverUsername, _id : new ObjectId()}
 
   await  ConversationRepository.addMessageToConversation(message, conversation);
+  await  ConversationRepository.updateConversationOnNotSeen(conversation, receiverUser)
   return message;
 
 }

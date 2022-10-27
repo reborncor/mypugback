@@ -11,6 +11,7 @@ export interface Pug{
      imageData : string;
      comments : Comment[];
      isCrop : boolean;
+     height : number;
 
     date : number;
     details : PugDetail[];

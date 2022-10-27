@@ -5,5 +5,6 @@ export default interface Conversation {
   _id?: ObjectId;
   members : string[];
   chat : Message[];
+  seen : string[];
 }
 

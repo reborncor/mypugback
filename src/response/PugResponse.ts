@@ -17,6 +17,7 @@ export interface PugResponse{
     comments : Comment[];
     author : string;
     isCrop : boolean;
+    height : number;
 }
 
 export function pugToResponse(pug : Pug,username : string, author : string) : PugResponse{
@@ -34,9 +35,9 @@ export function pugToResponse(pug : Pug,username : string, author : string) : Pu
         like: pug.like,
         isLiked : isLiked,
         isCrop : pug.isCrop ? pug.isCrop : false,
-
+        height : pug.height? pug.height : 1,
         comments: pug.comments,
-        author : author
+        author : author,
 
     }
 }
@@ -48,7 +49,6 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         id : pug.id,
         date : pug.date,
         details : pug.details? pug.details : [],
-        // imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle? pug.imageTitle : "",
@@ -56,7 +56,7 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         like: pug.like,
         isLiked : isLiked,
         isCrop : pug.isCrop ? pug.isCrop : false,
-
+        height : pug.height? pug.height : 1,
         comments: pug.comments.slice(-1),
         author : author
 

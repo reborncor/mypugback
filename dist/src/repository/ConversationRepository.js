@@ -22,9 +22,37 @@ class ConversationRepository {
     static addMessageToConversation(message, conversation) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            return yield call.findOneAndUpdate({ members: conversation.members }, {
+            let result = yield call.findOneAndUpdate({ members: conversation.members }, {
                 $push: {
                     chat: { $each: [(0, MessageResponse_1.messageToResponse)(message)], $position: 0 }
+                }
+            });
+            if (!result) {
+                yield call.findOneAndUpdate({ members: conversation.members.reverse() }, {
+                    $push: {
+                        chat: { $each: [(0, MessageResponse_1.messageToResponse)(message)], $position: 0 }
+                    }
+                });
+            }
+            return result;
+        });
+    }
+    static updateConversationOnSeen(conversation, user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ members: conversation.members }, {
+                $push: {
+                    seen: user.username
+                }
+            });
+        });
+    }
+    static updateConversationOnNotSeen(conversation, user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ members: conversation.members }, {
+                $pull: {
+                    seen: user.username
                 }
             });
         });

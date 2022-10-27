@@ -53,7 +53,7 @@ const execute = (userId, receiverUsername) => __awaiter(void 0, void 0, void 0, 
         return { conversation, exist: true };
     }
     else {
-        const newConversation = { members: [currentUser.username, receiverUser.username], chat: [] };
+        const newConversation = { members: [currentUser.username, receiverUser.username], chat: [], seen: [currentUser.username] };
         yield ConversationRepository_1.default.insert(newConversation);
         return { conversation: newConversation, exist: false };
     }

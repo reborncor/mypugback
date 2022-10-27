@@ -21,10 +21,10 @@ export const addPug = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
-        const { imageTitle, imageDescription, details, isCrop} = req.body
+        const {imageDescription, details, isCrop, height} = req.body
         const {userId} = decodeToken(token);
 
-        const  result = await execute(userId,req.file?.filename, req.file?.mimetype,imageTitle, imageDescription, details, isCrop);
+        const  result = await execute(userId,req.file?.filename, req.file?.mimetype, imageDescription, details, isCrop, height);
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
 
@@ -41,7 +41,7 @@ export const addPug = async  (req : Request, res : Response) =>{
 }
 const unlinkAsync = promisify(fs.unlink)
 
-const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, imageTitle : string, details : PugDetail[], isCrop : boolean): Promise<BaseResponse<null>> => {
+const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, details : PugDetail[], isCrop : boolean, height : number): Promise<BaseResponse<null>> => {
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
@@ -60,7 +60,8 @@ const execute = async (userId: string, path: string | undefined, format: string 
         date : date,
         imageData: "", imageFormat: format? format : "",
         isCrop  : isCrop ? true : false,
-        details: details ? details : [], imageDescription, imageTitle, imageURL: path? path : "", like: 0
+        height : height,
+        details: details ? details : [], imageDescription, imageTitle : "", imageURL: path? path : "", like: 0
     }
     console.log(newPug)
     await PugRepository.addNewPug( currentUser, newPug);

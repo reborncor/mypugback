@@ -5,6 +5,7 @@ import router from "./routes/routes";
 import {Socket} from "socket.io";
 import {allUsersConnected} from "./util/util";
 import {sendMessage} from "./app/conversation/sendMessage";
+import {seenConversation} from "./app/conversation/seenConversation";
 const path = require('path')
 
 const multer = require('multer');
@@ -63,8 +64,22 @@ const init = () => {
         })
 
 
+        socket.on("seenConversation", async (msg: any) => {
+            const result = await seenConversation(msg.senderUsername, msg.conversationId)
+            if(result.code == 0){
+                console.log("Message vu")
+                socket.emit("seenCallback",result.code.toString())
+            }
+            else {
+                // console.log("Miss : ", result.code)
+                socket.emit("seenCallback",result.code.toString())
+            }
+        });
+
+
         socket.on("message", async (msg: any) => {
-            const result = await sendMessage(msg.senderUsername, msg.receiverUsername, msg.content);
+            const result = await sendMessage(msg.senderUsername, msg.receiverUsername, msg.content)
+
 
             if(result.code == 0){
                 // console.log("Receiver :"+ msg.receiverUsername)

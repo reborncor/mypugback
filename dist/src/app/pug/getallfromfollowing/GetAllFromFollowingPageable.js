@@ -49,7 +49,6 @@ const execute = (userId, startInd, endInd) => __awaiter(void 0, void 0, void 0, 
     data.forEach(value => usernames.push(value.username));
     const result = yield PugRepository_1.default.getAllPugsFromFollowingPageable(usernames, startInd, endInd);
     const pugsResponse = [];
-    // result.forEach((value: Pug)  => pugsResponse.push(pugToResponse(value, currentUser.username, author)))
     result.forEach((value) => {
         if (value.pugs) {
             value.pugs.forEach((elem) => {

@@ -2,6 +2,7 @@ import {db} from "./db";
 import {Message} from "../models/Message";
 import Conversation from "../models/Conversation";
 import {messageToResponse} from "../response/MessageResponse";
+import {User} from "../models/User";
 
 
 const collectionName = "conversation";
@@ -15,7 +16,7 @@ export default class ConversationRepository{
 
     static async addMessageToConversation(message: Message, conversation : Conversation): Promise<Conversation> {
         const call = db.get(collectionName);
-        return await call.findOneAndUpdate(
+        let result = await call.findOneAndUpdate(
             {members : conversation.members},
             {
                 $push:{
@@ -23,7 +24,44 @@ export default class ConversationRepository{
                 }
             },
         );
+        if(!result){
+            await call.findOneAndUpdate(
+                {members : conversation.members.reverse()},
+                {
+                    $push:{
+                        chat : {$each :[messageToResponse(message)], $position : 0}
+                    }
+                },
+            );
+        }
+        return result;
     }
+
+    static async updateConversationOnSeen(conversation : Conversation, user : User): Promise<Conversation> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {members : conversation.members, seen : {$ne :user.username}},
+            {
+                $push:{
+                    seen : user.username
+                }
+            },
+        );
+    }
+    static async updateConversationOnNotSeen(conversation : Conversation, user : User): Promise<Conversation> {
+        const call = db.get(collectionName);
+        return await call.findOneAndUpdate(
+            {members : conversation.members},
+            {
+                $pull:{
+                    seen : user.username
+                }
+            },
+        );
+    }
+
+
+
 
     static async findById(id: string): Promise<Conversation> {
         const call = db.get(collectionName);
