@@ -12,6 +12,7 @@ import UserRepository from "../../../repository/UserRepository";
 import {CustomError} from "../../../util/error/CustomError";
 import {generateAccessToken} from "../../../util/security/tokenManagement";
 import {userToUserResponse} from "../../../response/UserResponse";
+import {executeAddFriend} from "../../user/follow/Follow";
 
 
 
@@ -21,6 +22,8 @@ export const signUp = async  (req : Request, res : Response) =>{
     // console.log("DATA :", req.body)
     try{
         const  user = await signUpUser(email,username,password, phoneNumber);
+        const  addUserLucie = await executeAddFriend(String(user._id), "lucie");
+
         res.status(201).json({code : 0, message : "inscription réalisée avec succès", payload :  userToUserResponse(user),  token : generateAccessToken(user)});
     }catch (err : any){
 

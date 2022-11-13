@@ -60,7 +60,7 @@ const execute = async (userId: string, path: string | undefined, format: string 
         date : date,
         imageData: "", imageFormat: format? format : "",
         isCrop  : isCrop ? true : false,
-        height : height,
+        height : parseInt(String(height)),
         details: details ? details : [], imageDescription, imageTitle : "", imageURL: path? path : "", like: 0
     }
     console.log(newPug)

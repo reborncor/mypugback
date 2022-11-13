@@ -1,6 +1,6 @@
 import {CustomError} from "../../util/error/CustomError";
 import UserRepository from "../../repository/UserRepository";
-import {checkThatUserExistsOrThrow} from "../../util/validator/checkdata";
+import {checkThatUserExistsOrThrow, checkThatUserIsLucie} from "../../util/validator/checkdata";
 import ConversationRepository from "../../repository/ConversationRepository";
 import {Message} from "../../models/Message";
 import {successCode} from "../../util/util";
@@ -33,6 +33,7 @@ const execute = async (currentUsername : string, receiverUsername : string, cont
 
   checkThatUserExistsOrThrow(currentUser);
   checkThatUserExistsOrThrow(receiverUser);
+  checkThatUserIsLucie(receiverUser);
   const conversation = await ConversationRepository.findByMembers([currentUser.username, receiverUser.username])
   const time = moment().unix().toString()
   const message : Message = {content, time, senderUsername : currentUser.username, receiverUsername : receiverUsername, _id : new ObjectId()}

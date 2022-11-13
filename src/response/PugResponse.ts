@@ -9,12 +9,12 @@ export interface PugResponse{
     imageTitle : string;
     imageDescription : string;
     imageFormat : string;
-    imageData? : string;
     details : PugDetail[];
     like : number;
     date : number;
     isLiked : boolean;
     comments : Comment[];
+    numberOfComments : number;
     author : string;
     isCrop : boolean;
     height : number;
@@ -27,7 +27,6 @@ export function pugToResponse(pug : Pug,username : string, author : string) : Pu
         id : pug.id,
         date : pug.date,
         details : pug.details? pug.details : [],
-        imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle? pug.imageTitle : "",
@@ -38,6 +37,7 @@ export function pugToResponse(pug : Pug,username : string, author : string) : Pu
         height : pug.height? pug.height : 1,
         comments: pug.comments,
         author : author,
+        numberOfComments :  pug.comments.length,
 
     }
 }
@@ -58,7 +58,8 @@ export function pugToResponsePageable(pug : Pug,username : string, author : stri
         isCrop : pug.isCrop ? pug.isCrop : false,
         height : pug.height? pug.height : 1,
         comments: pug.comments.slice(-1),
-        author : author
+        author : author,
+        numberOfComments : pug.comments.length
 
     }
 }

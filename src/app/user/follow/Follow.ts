@@ -22,7 +22,7 @@ export const followUser = async  (req : Request, res : Response) =>{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {userId} = decodeToken(token);
         const {username} = req.body
-        const user = await execute(userId,username);
+        const user = await executeAddFriend(userId,username);
         res.status(200).json({code : user.code, message : user.message, payload : user.payload});
     }catch (err : any){
 
@@ -38,7 +38,7 @@ export const followUser = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId : string, username: string): Promise<BaseResponse<any>> => {
+export const executeAddFriend = async (userId : string, username: string): Promise<BaseResponse<any>> => {
 
     const currentUser = await UserRepository.findById(userId);
     const otherUser = await UserRepository.findByUsername(username);
@@ -59,7 +59,7 @@ const execute = async (userId : string, username: string): Promise<BaseResponse<
     }
 
 
-    
+
     await FollowerRepository.addUserToFollowing(currentUser, follower);
     await FollowerRepository.addUserToFollower(otherUser, following);
 

@@ -2,7 +2,7 @@ import {
     accountAlreadyExist, accountAlreadyExistWithPhoneNumber,
     accountAlreadyExistWithUsername,
     accountAlreadyFollow,
-    accountDoesntExist, accountIsHimself,
+    accountDoesntExist, accountIsHimself, accountNotAllowed,
     accountNotConnected, accountNotFollowed, alreadyLiked, conversationDoesntExist, conversationsDoesntExist,
     emailInvalid,
     errorCode, notAlreadyliked,
@@ -74,6 +74,13 @@ export function checkThatUserisntHimself(user: User, userToAdd : User) {
 export function checkThatUserExistsOrThrow(user: User) {
     if (!user) {
         throw new CustomError(errorCode, accountDoesntExist, {});
+    }
+}
+
+
+export function checkThatUserIsLucie(user: User) {
+    if (user.username == "lucie") {
+        throw new CustomError(errorCode, accountNotAllowed, {});
     }
 }
 
