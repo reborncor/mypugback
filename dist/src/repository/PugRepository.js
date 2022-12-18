@@ -129,5 +129,20 @@ class PugRepository {
             // return  await call.aggregate([{$group : {}}])
         });
     }
+    static getAllPugs(startInd, endInd) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            //Avec ID
+            // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
+            return yield call.find({}, {
+                //"pugs.comments" :{$slice : -1},
+                // projection : { "pugs" :{$slice :[startInd,endInd]}, }
+                projection: { "pugs": { $slice: [startInd, endInd], } }
+            });
+            //Sans ID
+            // return await call.distinct("pugs",{username : {$in :usernames} });
+            // return  await call.aggregate([{$group : {}}])
+        });
+    }
 }
 exports.default = PugRepository;

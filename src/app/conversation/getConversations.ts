@@ -37,7 +37,7 @@ const execute = async (userId : string) => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
   const conversations = await ConversationRepository.findAllConversationsFromUser(currentUser.username);
-  checkThatConversationsExist(conversations);
+  // checkThatConversationsExist(conversations);
   return conversationsToResponse(conversations);
 }
 

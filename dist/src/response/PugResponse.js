@@ -10,7 +10,6 @@ function pugToResponse(pug, username, author) {
         id: pug.id,
         date: pug.date,
         details: pug.details ? pug.details : [],
-        imageData: pug.imageData,
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
         imageFormat: pug.imageFormat,
         imageTitle: pug.imageTitle ? pug.imageTitle : "",
@@ -21,6 +20,7 @@ function pugToResponse(pug, username, author) {
         height: pug.height ? pug.height : 1,
         comments: pug.comments,
         author: author,
+        numberOfComments: pug.comments.length,
     };
 }
 exports.pugToResponse = pugToResponse;
@@ -34,15 +34,16 @@ function pugToResponsePageable(pug, username, author) {
         date: pug.date,
         details: pug.details ? pug.details : [],
         imageDescription: pug.imageDescription ? pug.imageDescription : "",
-        imageFormat: pug.imageFormat,
+        imageFormat: pug.imageFormat ? pug.imageFormat : "",
         imageTitle: pug.imageTitle ? pug.imageTitle : "",
         imageURL: pug.imageURL ? pug.imageURL : "",
-        like: pug.like,
-        isLiked: isLiked,
+        like: pug.like ? pug.like : 0,
+        isLiked: isLiked ? isLiked : false,
         isCrop: pug.isCrop ? pug.isCrop : false,
         height: pug.height ? pug.height : 1,
         comments: pug.comments.slice(-1),
-        author: author
+        author: author ? author : "",
+        numberOfComments: pug.comments.length
     };
 }
 exports.pugToResponsePageable = pugToResponsePageable;

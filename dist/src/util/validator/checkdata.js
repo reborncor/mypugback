@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserIsLucie = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
 const util_1 = require("../util");
 var awPhoneNumber = require('awesome-phonenumber');
 const EmailValidator = __importStar(require("email-validator"));
@@ -89,6 +89,12 @@ function checkThatUserExistsOrThrow(user) {
     }
 }
 exports.checkThatUserExistsOrThrow = checkThatUserExistsOrThrow;
+function checkThatUserIsLucie(user) {
+    if (user.username == "lucie") {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotAllowed, {});
+    }
+}
+exports.checkThatUserIsLucie = checkThatUserIsLucie;
 function checkThatUsersExistsOrThrow(user) {
     if (!user) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});

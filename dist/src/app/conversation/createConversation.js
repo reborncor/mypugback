@@ -28,7 +28,7 @@ const createConversation = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const { username } = req.body;
         const { conversation, exist } = yield execute(userId, username);
         const message = exist ? "Already Exist, sending data.." : "created";
-        res.status(200).json({ code: util_1.successCode, message: "Conversation : " + message, payload: { conversation: conversation } });
+        res.status(200).json({ code: util_1.successCode, message: "Conversation : " + message, payload: conversation });
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {

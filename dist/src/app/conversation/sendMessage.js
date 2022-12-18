@@ -41,6 +41,7 @@ const execute = (currentUsername, receiverUsername, content) => __awaiter(void 0
     const receiverUser = yield UserRepository_1.default.findByUsername(receiverUsername);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     (0, checkdata_1.checkThatUserExistsOrThrow)(receiverUser);
+    (0, checkdata_1.checkThatUserIsLucie)(receiverUser);
     const conversation = yield ConversationRepository_1.default.findByMembers([currentUser.username, receiverUser.username]);
     const time = (0, moment_1.default)().unix().toString();
     const message = { content, time, senderUsername: currentUser.username, receiverUsername: receiverUsername, _id: new bson_1.ObjectId() };

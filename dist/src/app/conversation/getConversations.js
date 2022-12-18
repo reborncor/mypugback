@@ -19,13 +19,14 @@ const ConversationRepository_1 = __importDefault(require("../../repository/Conve
 const tokenManagement_1 = require("../../util/security/tokenManagement");
 const util_1 = require("../../util/util");
 const CustomError_1 = require("../../util/error/CustomError");
+const ConversationResponse_1 = require("../../response/ConversationResponse");
 const getAllConversationFromUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
     try {
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
         const conversations = yield execute(userId);
-        res.status(200).json({ code: util_1.successCode, message: "Liste des conversations : ", payload: { conversations: conversations } });
+        res.status(200).json({ code: util_1.successCode, message: "Liste des conversations : ", payload: conversations });
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -42,6 +43,6 @@ const execute = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const conversations = yield ConversationRepository_1.default.findAllConversationsFromUser(currentUser.username);
-    (0, checkdata_1.checkThatConversationsExist)(conversations);
-    return conversations;
+    // checkThatConversationsExist(conversations);
+    return (0, ConversationResponse_1.conversationsToResponse)(conversations);
 });

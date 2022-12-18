@@ -58,14 +58,14 @@ const init = () => {
             util_1.allUsersConnected.set(msg, socket.id);
         });
         socket.on("seenConversation", (msg) => __awaiter(void 0, void 0, void 0, function* () {
-            const result = yield (0, seenConversation_1.seenConversation)(msg.senderUsername, msg.receiverUsername);
+            const result = yield (0, seenConversation_1.seenConversation)(msg.senderUsername, msg.conversationId);
             if (result.code == 0) {
                 console.log("Message vu");
-                socket.emit("messagesuccess", result.code.toString());
+                socket.emit("seenCallback", result.code.toString());
             }
             else {
                 // console.log("Miss : ", result.code)
-                socket.emit("messagesuccess", result.code.toString());
+                socket.emit("seenCallback", result.code.toString());
             }
         }));
         socket.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {

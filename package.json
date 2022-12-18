@@ -7,10 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "postinstall": "tsc",
-    "build": "tsc -p",
+    "build": "tsc --build",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
-    "start:dev": "nodemon index.ts"
+    "start:dev": "nodemon index.ts",
+    "build:node": "tsc --build"
   },
   "repository": {
     "type": "git",

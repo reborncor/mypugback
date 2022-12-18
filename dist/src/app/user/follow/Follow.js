@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.followUser = void 0;
+exports.executeAddFriend = exports.followUser = void 0;
 const checkdata_1 = require("../../../util/validator/checkdata");
 const UserRepository_1 = __importDefault(require("../../../repository/UserRepository"));
 const CustomError_1 = require("../../../util/error/CustomError");
@@ -25,7 +25,7 @@ const followUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
         const { username } = req.body;
-        const user = yield execute(userId, username);
+        const user = yield (0, exports.executeAddFriend)(userId, username);
         res.status(200).json({ code: user.code, message: user.message, payload: user.payload });
     }
     catch (err) {
@@ -39,7 +39,7 @@ const followUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.followUser = followUser;
-const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function* () {
+const executeAddFriend = (userId, username) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     const otherUser = yield UserRepository_1.default.findByUsername(username);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
@@ -62,3 +62,4 @@ const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function
         code: 0, message: "Nouvel utilisateur suivit"
     };
 });
+exports.executeAddFriend = executeAddFriend;

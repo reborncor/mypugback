@@ -142,21 +142,56 @@ export default class PugRepository{
         // return  await call.aggregate([{$group : {}}])
 
     }
-    static async getAllPugsFromFollowingPageable(usernames : string[], startInd : number,endInd :number) : Promise<any>{
+    static async getAllPugsFromFollowingPageable(usernames : string[], startInd : number) : Promise<any>{
 
         const call = db.get(collectionName);
-        //Avec ID
-        // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
-        return await call.find({username : {$in :usernames} },
-            {
-                //"pugs.comments" :{$slice : -1},
-                // projection : { "pugs" :{$slice :[startInd,endInd]}, }
-                projection : {"pugs" :{$slice :[startInd,endInd],  }  }
-            });
+        return  await call.aggregate([
 
-        //Sans ID
-        // return await call.distinct("pugs",{username : {$in :usernames} });
-        // return  await call.aggregate([{$group : {}}])
+
+             { $unwind: {path: "$pugs"} },
+            { $unwind: '$pugs.date' },
+            {$match: {"$expr": {"$in": ["$username", usernames]}}},
+            {
+                $group:
+                    {
+                        _id: "$username" ,
+                        pug   : { $push: "$pugs" }
+                    }
+            },
+            { $unwind:  "$pug" },
+            { $unwind: '$pug.date' },
+            { $sort:{ "pug.date" : -1}},
+            { $skip: startInd },
+            { $limit: 5 }
+
+        ])
+
+
+    }
+
+    static async getAllPugs(startInd : number,endInd :number) : Promise<any>{
+
+        const call = db.get(collectionName);
+        return  await call.aggregate([
+
+
+            { $unwind: {path: "$pugs"} },
+            { $unwind: '$pugs.date' },
+            {
+                $group:
+                    {
+                        _id: "$username" ,
+                        pug   : { $push: "$pugs" }
+                    }
+            },
+            { $unwind:  "$pug" },
+            { $unwind: '$pug.date' },
+            { $sort:{ "pug.date" : -1}},
+            { $skip: startInd },
+            { $limit: 5 }
+
+        ]);
+
 
     }
 

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allUsersConnected = exports.accountAlreadyExistWithPhoneNumber = exports.accountAlreadyExistWithUsername = exports.accountAlreadyExist = exports.conversationAlreadyExist = exports.conversationsDoesntExist = exports.conversationDoesntExist = exports.notAlreadyliked = exports.alreadyLiked = exports.accountIsHimself = exports.accountNotFollowed = exports.accountAlreadyFollow = exports.accountNotFound = exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.successCode = exports.errorCode = void 0;
+exports.allUsersConnected = exports.accountAlreadyExistWithPhoneNumber = exports.accountAlreadyExistWithUsername = exports.accountAlreadyExist = exports.conversationAlreadyExist = exports.conversationsDoesntExist = exports.conversationDoesntExist = exports.notAlreadyliked = exports.alreadyLiked = exports.accountIsHimself = exports.accountNotFollowed = exports.accountAlreadyFollow = exports.accountNotAllowed = exports.accountNotFound = exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.successCode = exports.errorCode = void 0;
 exports.errorCode = 1;
 exports.successCode = 0;
 exports.usernameInvalid = "nom d'utilisateur invalide";
@@ -11,6 +11,7 @@ exports.wrongPassword = "mot de passe incorrect";
 exports.accountNotConnected = "Utilisateur non connecté";
 exports.accountDoesntExist = "L'utilisateur n'existe pas";
 exports.accountNotFound = "Aucun resultat";
+exports.accountNotAllowed = "Vous ne pouvez pas interargir avec cet utilisarteur";
 exports.accountAlreadyFollow = "Vous suivez déjà cet utilisateur";
 exports.accountNotFollowed = "Vous ne suivez pas cet utilisateur";
 exports.accountIsHimself = "Utilisateur invalide";

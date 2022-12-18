@@ -16,7 +16,7 @@ import {PugResponse, pugToResponse, pugToResponsePageable} from "../../../respon
 
 
 
-export const getAllPugsFromFollowingPagealble = async  (req : Request, res : Response) =>{
+export const getAllPugsUsersPageable = async  (req : Request, res : Response) =>{
 
     try{
         const {startInd, endInd} = req.query;
@@ -24,7 +24,7 @@ export const getAllPugsFromFollowingPagealble = async  (req : Request, res : Res
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {userId} = decodeToken(token);
         const  result = await execute(userId, parseInt(<string>startInd),parseInt(<string>endInd));
-        res.status(200).json({code : successCode, message :"Pugs Utilisateur", payload : result});
+        res.status(200).json({code : successCode, message :"Pugs de tous les utilisateurs", payload : {pugs : result}});
     }catch (err : any){
 
         if(err instanceof CustomError){
@@ -43,23 +43,18 @@ const execute = async (userId: string, startInd : number,endInd :number): Promis
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
-    const data : Follower[] = await FollowerRepository.findAllFollowingFromUser(currentUser.username);
-    const usernames : string[] = [];
-    data.forEach(value => usernames.push(value.username))
-    const result = await PugRepository.getAllPugsFromFollowingPageable(usernames, startInd);
+    const result = await PugRepository.getAllPugs(startInd, endInd);
+    const pugsResponse : PugResponse[] = [];
+    result.forEach((value : any)  =>
+        {
+            if(value.pugs){
+                value.pugs.forEach((elem : Pug) =>{pugsResponse.push(pugToResponsePageable(elem, currentUser.username, value.username))
+                })
+            }
+        }
+    )
 
-    return  result;
-    // const pugsResponse : PugResponse[] = [];
-    // result.forEach((value : any)  =>
-    //     {
-    //         if(value.pugs){
-    //             value.pugs.forEach((elem : Pug) =>{pugsResponse.push(pugToResponsePageable(elem, currentUser.username, value.username))
-    //             })
-    //         }
-    //     }
-    // )
-    //
-    // return pugsResponse;
+    return pugsResponse;
 
 }
 

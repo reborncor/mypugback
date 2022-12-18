@@ -40,7 +40,7 @@ class ConversationRepository {
     static updateConversationOnSeen(conversation, user) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            return yield call.findOneAndUpdate({ members: conversation.members }, {
+            return yield call.findOneAndUpdate({ members: conversation.members, seen: { $ne: user.username } }, {
                 $push: {
                     seen: user.username
                 }
