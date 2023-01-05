@@ -44,5 +44,6 @@ const execute = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const result = yield PugRepository_1.default.getAllPugsFromUser(currentUser.username);
+    (0, checkdata_1.checkThatPugsExistOrThrow)(result);
     return (0, UserPugResponse_1.userPugToResponse)(result);
 });

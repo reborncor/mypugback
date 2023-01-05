@@ -45,12 +45,6 @@ const execute = (userId, startInd, endInd) => __awaiter(void 0, void 0, void 0, 
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const result = yield PugRepository_1.default.getAllPugs(startInd, endInd);
     const pugsResponse = [];
-    result.forEach((value) => {
-        if (value.pugs) {
-            value.pugs.forEach((elem) => {
-                pugsResponse.push((0, PugResponse_1.pugToResponsePageable)(elem, currentUser.username, value.username));
-            });
-        }
-    });
+    result.forEach((elem) => { pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, currentUser.username, elem._id)); });
     return pugsResponse;
 });

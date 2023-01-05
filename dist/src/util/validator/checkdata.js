@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserIsLucie = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserIsLucie = exports.checkThatUserIsNotLucieOrThrowWithName = exports.checkThatPugsExistOrThrow = exports.checkThatPugExistOrThrow = exports.checkThatUserIsNotLucieOrThrow = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
 const util_1 = require("../util");
 var awPhoneNumber = require('awesome-phonenumber');
 const EmailValidator = __importStar(require("email-validator"));
@@ -89,8 +89,32 @@ function checkThatUserExistsOrThrow(user) {
     }
 }
 exports.checkThatUserExistsOrThrow = checkThatUserExistsOrThrow;
+function checkThatUserIsNotLucieOrThrow(user) {
+    if (user.username == util_1.lucie) {
+        throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
+    }
+}
+exports.checkThatUserIsNotLucieOrThrow = checkThatUserIsNotLucieOrThrow;
+function checkThatPugExistOrThrow(pug) {
+    if (!pug) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugDoesntExist, {});
+    }
+}
+exports.checkThatPugExistOrThrow = checkThatPugExistOrThrow;
+function checkThatPugsExistOrThrow(userPug) {
+    if (!userPug) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugDoesntExist, {});
+    }
+}
+exports.checkThatPugsExistOrThrow = checkThatPugsExistOrThrow;
+function checkThatUserIsNotLucieOrThrowWithName(username) {
+    if (username == util_1.lucie) {
+        throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
+    }
+}
+exports.checkThatUserIsNotLucieOrThrowWithName = checkThatUserIsNotLucieOrThrowWithName;
 function checkThatUserIsLucie(user) {
-    if (user.username == "lucie") {
+    if (user.username == util_1.lucie) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotAllowed, {});
     }
 }

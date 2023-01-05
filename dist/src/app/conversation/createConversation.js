@@ -46,6 +46,7 @@ const execute = (userId, receiverUsername) => __awaiter(void 0, void 0, void 0, 
     const receiverUser = yield UserRepository_1.default.findByUsername(receiverUsername);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     (0, checkdata_1.checkThatUserExistsOrThrow)(receiverUser);
+    (0, checkdata_1.checkThatUserIsNotLucieOrThrow)(receiverUser);
     const result = yield ConversationRepository_1.default.findByMembers([currentUser.username, receiverUser.username]);
     if (result) {
         let conversation = (0, ConversationResponse_1.conversationToResponse)(result);

@@ -23,12 +23,13 @@ const bson_1 = require("bson");
 const fs = require('fs').promises;
 const { promisify } = require('util');
 const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a;
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
-        const { imageDescription, details, isCrop, height } = req.body;
+        const { imageDescription, details, isCrop, height, imageUrl } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        const result = yield execute(userId, (_b = req.file) === null || _b === void 0 ? void 0 : _b.filename, (_c = req.file) === null || _c === void 0 ? void 0 : _c.mimetype, imageDescription, details, isCrop, height);
+        console.log("DATA :", req.body);
+        const result = yield execute(userId, imageDescription, details, isCrop, height, imageUrl);
         res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
     }
     catch (err) {
@@ -42,12 +43,9 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.addPug = addPug;
-const unlinkAsync = promisify(fs.unlink);
-const execute = (userId, path, format, imageDescription, details, isCrop, height) => __awaiter(void 0, void 0, void 0, function* () {
+const execute = (userId, imageDescription, details, isCrop, height, imageUrl) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    console.log("PATH", path);
-    // const contents = await fs.readFile(path, {encoding: 'base64'});
     if (details) {
         details.forEach(value => { value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString())); });
     }
@@ -57,10 +55,10 @@ const execute = (userId, path, format, imageDescription, details, isCrop, height
         id: new bson_1.ObjectId(),
         usersLike: [],
         date: date,
-        imageData: "", imageFormat: format ? format : "",
+        imageData: "", imageFormat: "",
         isCrop: isCrop ? true : false,
         height: parseInt(String(height)),
-        details: details ? details : [], imageDescription, imageTitle: "", imageURL: path ? path : "", like: 0
+        details: details ? details : [], imageDescription, imageTitle: "", imageURL: imageUrl, like: 0
     };
     console.log(newPug);
     yield PugRepository_1.default.addNewPug(currentUser, newPug);

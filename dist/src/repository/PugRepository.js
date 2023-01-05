@@ -62,7 +62,7 @@ class PugRepository {
             const call = db_1.db.get(collectionName);
             return yield call.findOne({
                 username,
-            }, { projection: { "pugs.comments": { $slice: -1 }, } });
+            });
         });
     }
     static likeUserPug(user, pug, username) {
@@ -114,34 +114,45 @@ class PugRepository {
             // return  await call.aggregate([{$group : {}}])
         });
     }
-    static getAllPugsFromFollowingPageable(usernames, startInd, endInd) {
+    static getAllPugsFromFollowingPageable(usernames, startInd) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            //Avec ID
-            // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
-            return yield call.find({ username: { $in: usernames } }, {
-                //"pugs.comments" :{$slice : -1},
-                // projection : { "pugs" :{$slice :[startInd,endInd]}, }
-                projection: { "pugs": { $slice: [startInd, endInd], } }
-            });
-            //Sans ID
-            // return await call.distinct("pugs",{username : {$in :usernames} });
-            // return  await call.aggregate([{$group : {}}])
+            return yield call.aggregate([
+                { $unwind: { path: "$pugs" } },
+                { $unwind: '$pugs.date' },
+                { $match: { "$expr": { "$in": ["$username", usernames] } } },
+                {
+                    $group: {
+                        _id: "$username",
+                        pug: { $push: "$pugs" }
+                    }
+                },
+                { $unwind: "$pug" },
+                { $unwind: '$pug.date' },
+                { $sort: { "pug.date": -1 } },
+                { $skip: startInd },
+                { $limit: 5 }
+            ]);
         });
     }
     static getAllPugs(startInd, endInd) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            //Avec ID
-            // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
-            return yield call.find({}, {
-                //"pugs.comments" :{$slice : -1},
-                // projection : { "pugs" :{$slice :[startInd,endInd]}, }
-                projection: { "pugs": { $slice: [startInd, endInd], } }
-            });
-            //Sans ID
-            // return await call.distinct("pugs",{username : {$in :usernames} });
-            // return  await call.aggregate([{$group : {}}])
+            return yield call.aggregate([
+                { $unwind: { path: "$pugs" } },
+                { $unwind: '$pugs.date' },
+                {
+                    $group: {
+                        _id: "$username",
+                        pug: { $push: "$pugs" }
+                    }
+                },
+                { $unwind: "$pug" },
+                { $unwind: '$pug.date' },
+                { $sort: { "pug.date": -1 } },
+                { $skip: startInd },
+                { $limit: 5 }
+            ]);
         });
     }
 }

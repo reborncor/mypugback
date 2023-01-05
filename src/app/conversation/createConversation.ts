@@ -1,6 +1,6 @@
 import UserRepository from "../../repository/UserRepository";
 import {
-  checkThatUserExistsOrThrow
+  checkThatUserExistsOrThrow, checkThatUserIsNotLucieOrThrow
 } from "../../util/validator/checkdata";
 import ConversationRepository from "../../repository/ConversationRepository";
 import {Request, Response} from "express";
@@ -40,7 +40,7 @@ const execute = async (userId : string, receiverUsername : string) => {
 
   checkThatUserExistsOrThrow(currentUser);
   checkThatUserExistsOrThrow(receiverUser);
-
+  checkThatUserIsNotLucieOrThrow(receiverUser);
   const result = await ConversationRepository.findByMembers([currentUser.username,receiverUser.username]);
 
   if(result){

@@ -12,6 +12,7 @@ const GetAllFromUser_1 = require("../app/pug/getallfromuser/GetAllFromUser");
 const GetAllFromFollowingPageable_1 = require("../app/pug/getallfromfollowing/GetAllFromFollowingPageable");
 const DeletePug_1 = require("../app/pug/delete/DeletePug");
 const ActualityAll_1 = require("../app/pug/actualityall/ActualityAll");
+const GetPug_1 = require("../app/pug/get/GetPug");
 const pugRouter = (0, express_1.Router)();
 const add = "/add";
 const get = "/get";
@@ -49,8 +50,8 @@ const upload = multer({
         fileSize: 1024 * 1024 * 5
     },
 });
-pugRouter.post(add, upload.single('newimage'), AddPug_1.addPug);
-pugRouter.get(get, GetAllPug_1.getAllPugs);
+pugRouter.post(add, AddPug_1.addPug);
+pugRouter.get(get, GetPug_1.getPug);
 pugRouter.get(getAll, GetAllPug_1.getAllPugs);
 pugRouter.get(getAllFromUser, GetAllFromUser_1.getAllPugsFromUser);
 pugRouter.get(actuality, GetAllFromFollowing_1.getAllPugsFromFollowing);

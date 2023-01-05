@@ -5,10 +5,10 @@ import {
     accountDoesntExist, accountIsHimself, accountNotAllowed,
     accountNotConnected, accountNotFollowed, alreadyLiked, conversationDoesntExist, conversationsDoesntExist,
     emailInvalid,
-    errorCode, notAlreadyliked,
+    errorCode, errorCodeLucie, lucie, notAlreadyliked,
     passwordInvalid,
-    phoneNumberInvalid,
-    usernameInvalid,
+    phoneNumberInvalid, pugDoesntExist,
+    usernameInvalid, usernameIsLucie,
     wrongPassword
 } from "../util";
 var awPhoneNumber = require( 'awesome-phonenumber' );
@@ -17,6 +17,8 @@ import {CustomError} from "../error/CustomError";
 import {isSame} from "../security/passwordManagement";
 import {User} from "../../models/User";
 import Conversation from "../../models/Conversation";
+import {Pug} from "../../models/Pug";
+import {UserPug} from "../../models/UserPug";
 
 export function checkThatUserSignUpCredentialsOrThrow(email : string, password : string, phoneNumber : string, username : string) {
 
@@ -76,10 +78,30 @@ export function checkThatUserExistsOrThrow(user: User) {
         throw new CustomError(errorCode, accountDoesntExist, {});
     }
 }
+export function checkThatUserIsNotLucieOrThrow(user: User) {
+    if (user.username == lucie ) {
+        throw new CustomError(errorCodeLucie, usernameIsLucie, {});
+    }
+}
+export function checkThatPugExistOrThrow(pug: Pug) {
+    if (!pug) {
+        throw new CustomError(errorCode, pugDoesntExist, {});
+    }
+}
 
+export function checkThatPugsExistOrThrow(userPug: UserPug) {
+    if (!userPug) {
+        throw new CustomError(errorCode, pugDoesntExist, {});
+    }
+}
 
+export function checkThatUserIsNotLucieOrThrowWithName(username: String) {
+    if (username == lucie ) {
+        throw new CustomError(errorCodeLucie, usernameIsLucie, {});
+    }
+}
 export function checkThatUserIsLucie(user: User) {
-    if (user.username == "lucie") {
+    if (user.username == lucie) {
         throw new CustomError(errorCode, accountNotAllowed, {});
     }
 }

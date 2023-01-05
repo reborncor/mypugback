@@ -1,6 +1,10 @@
 import {Request, Response} from "express";
 import BaseResponse from "../../../response/BaseResponse";
-import {checkThatUserExistsOrThrow, checkThatUserNotAlreadyLike,} from "../../../util/validator/checkdata";
+import {
+    checkThatUserExistsOrThrow,
+    checkThatUserIsLucie, checkThatUserIsNotLucieOrThrow, checkThatUserIsNotLucieOrThrowWithName,
+    checkThatUserNotAlreadyLike,
+} from "../../../util/validator/checkdata";
 import moment from "moment";
 
 import UserRepository from "../../../repository/UserRepository";
@@ -42,7 +46,7 @@ const execute = async (userId: string, pugId :string, pugName: string, content :
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
-
+    checkThatUserIsNotLucieOrThrowWithName(pugName);
     const data = await PugRepository.findById(pugId,pugName);
     console.log("Data :",data.pugs[0]);
 

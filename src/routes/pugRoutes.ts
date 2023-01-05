@@ -12,6 +12,7 @@ import {getAllPugsFromUser} from "../app/pug/getallfromuser/GetAllFromUser";
 import {getAllPugsFromFollowingPagealble} from "../app/pug/getallfromfollowing/GetAllFromFollowingPageable";
 import {deletePug} from "../app/pug/delete/DeletePug";
 import {getAllPugsUsersPageable} from "../app/pug/actualityall/ActualityAll";
+import {getPug} from "../app/pug/get/GetPug";
 
 const pugRouter = Router();
 
@@ -61,8 +62,8 @@ const upload = multer( {
 
 
 
-pugRouter.post(add, upload.single('newimage'),addPug)
-pugRouter.get(get,getAllPugs);
+pugRouter.post(add,addPug)
+pugRouter.get(get,getPug);
 pugRouter.get(getAll,getAllPugs)
 pugRouter.get(getAllFromUser,getAllPugsFromUser)
 

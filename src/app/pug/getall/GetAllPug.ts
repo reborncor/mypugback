@@ -1,6 +1,10 @@
 import {Request, Response} from "express";
 import BaseResponse from "../../../response/BaseResponse";
-import {checkThatUserExistsOrThrow,} from "../../../util/validator/checkdata";
+import {
+    checkThatPugExistOrThrow,
+    checkThatPugsExistOrThrow,
+    checkThatUserExistsOrThrow,
+} from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import {CustomError} from "../../../util/error/CustomError";
@@ -41,8 +45,8 @@ const execute = async (userId: string): Promise<UserPugResponse> => {
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
-
     const result = await PugRepository.getAllPugsFromUser( currentUser.username);
+    checkThatPugsExistOrThrow(result)
     return userPugToResponse(result);
 }
 

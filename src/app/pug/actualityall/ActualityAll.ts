@@ -10,7 +10,12 @@ import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
 import FollowerRepository from "../../../repository/FollowerRepository";
 import {Follower} from "../../../models/Follower";
-import {PugResponse, pugToResponse, pugToResponsePageable} from "../../../response/PugResponse";
+import {
+    PugResponse,
+    pugToResponse,
+    pugToResponsePageable,
+    pugToResponsePageableSorted
+} from "../../../response/PugResponse";
 
 
 
@@ -45,15 +50,7 @@ const execute = async (userId: string, startInd : number,endInd :number): Promis
     checkThatUserExistsOrThrow(currentUser);
     const result = await PugRepository.getAllPugs(startInd, endInd);
     const pugsResponse : PugResponse[] = [];
-    result.forEach((value : any)  =>
-        {
-            if(value.pugs){
-                value.pugs.forEach((elem : Pug) =>{pugsResponse.push(pugToResponsePageable(elem, currentUser.username, value.username))
-                })
-            }
-        }
-    )
-
+    result.forEach((elem : any)  =>{pugsResponse.push(pugToResponsePageableSorted(elem.pug, currentUser.username, elem._id))});
     return pugsResponse;
 
 }

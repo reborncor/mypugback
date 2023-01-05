@@ -43,6 +43,7 @@ exports.commentPug = commentPug;
 const execute = (userId, pugId, pugName, content) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
+    (0, checkdata_1.checkThatUserIsNotLucieOrThrowWithName)(pugName);
     const data = yield PugRepository_1.default.findById(pugId, pugName);
     console.log("Data :", data.pugs[0]);
     const pug = data.pugs[0];

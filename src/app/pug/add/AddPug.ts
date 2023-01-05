@@ -21,10 +21,10 @@ export const addPug = async  (req : Request, res : Response) =>{
 
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
-        const {imageDescription, details, isCrop, height} = req.body
+        const {imageDescription, details, isCrop, height, imageUrl} = req.body
         const {userId} = decodeToken(token);
-
-        const  result = await execute(userId,req.file?.filename, req.file?.mimetype, imageDescription, details, isCrop, height);
+        console.log("DATA :", req.body)
+        const  result = await execute(userId, imageDescription, details, isCrop, height, imageUrl);
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
 
@@ -39,16 +39,13 @@ export const addPug = async  (req : Request, res : Response) =>{
     }
 
 }
-const unlinkAsync = promisify(fs.unlink)
 
-const execute = async (userId: string, path: string | undefined, format: string | undefined, imageDescription : string, details : PugDetail[], isCrop : boolean, height : number): Promise<BaseResponse<null>> => {
+const execute = async (userId: string, imageDescription : string, details : PugDetail[], isCrop : boolean, height : number, imageUrl:string): Promise<BaseResponse<null>> => {
 
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
 
-    console.log("PATH",path);
 
-    // const contents = await fs.readFile(path, {encoding: 'base64'});
     if(details) {
         details.forEach(value => {value.positionX = parseFloat(value.positionX.toString()); value.positionY = parseFloat((value.positionY.toString()))})
     }
@@ -58,10 +55,10 @@ const execute = async (userId: string, path: string | undefined, format: string 
         id : new ObjectId(),
         usersLike: [],
         date : date,
-        imageData: "", imageFormat: format? format : "",
+        imageData: "", imageFormat: "",
         isCrop  : isCrop ? true : false,
         height : parseInt(String(height)),
-        details: details ? details : [], imageDescription, imageTitle : "", imageURL: path? path : "", like: 0
+        details: details ? details : [], imageDescription, imageTitle : "", imageURL: imageUrl, like: 0
     }
     console.log(newPug)
     await PugRepository.addNewPug( currentUser, newPug);

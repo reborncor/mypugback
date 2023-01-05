@@ -47,14 +47,8 @@ const execute = (userId, startInd, endInd) => __awaiter(void 0, void 0, void 0, 
     const data = yield FollowerRepository_1.default.findAllFollowingFromUser(currentUser.username);
     const usernames = [];
     data.forEach(value => usernames.push(value.username));
-    const result = yield PugRepository_1.default.getAllPugsFromFollowingPageable(usernames, startInd, endInd);
+    const result = yield PugRepository_1.default.getAllPugsFromFollowingPageable(usernames, startInd);
     const pugsResponse = [];
-    result.forEach((value) => {
-        if (value.pugs) {
-            value.pugs.forEach((elem) => {
-                pugsResponse.push((0, PugResponse_1.pugToResponsePageable)(elem, currentUser.username, value.username));
-            });
-        }
-    });
+    result.forEach((elem) => { pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, currentUser.username, elem._id)); });
     return pugsResponse;
 });
