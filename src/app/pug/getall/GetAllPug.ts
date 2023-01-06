@@ -46,7 +46,6 @@ const execute = async (userId: string): Promise<UserPugResponse> => {
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
     const result = await PugRepository.getAllPugsFromUser( currentUser.username);
-    checkThatPugsExistOrThrow(result)
-    return userPugToResponse(result);
+    return userPugToResponse(result, currentUser.username);
 }
 

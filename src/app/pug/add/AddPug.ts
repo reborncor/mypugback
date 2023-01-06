@@ -23,7 +23,6 @@ export const addPug = async  (req : Request, res : Response) =>{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {imageDescription, details, isCrop, height, imageUrl} = req.body
         const {userId} = decodeToken(token);
-        console.log("DATA :", req.body)
         const  result = await execute(userId, imageDescription, details, isCrop, height, imageUrl);
         res.status(201).json({code : result.code, message : result.message, payload : result.payload});
     }catch (err : any){
@@ -60,7 +59,6 @@ const execute = async (userId: string, imageDescription : string, details : PugD
         height : parseInt(String(height)),
         details: details ? details : [], imageDescription, imageTitle : "", imageURL: imageUrl, like: 0
     }
-    console.log(newPug)
     await PugRepository.addNewPug( currentUser, newPug);
     await UserRepository.updateUserPug(currentUser, 1);
 

@@ -45,9 +45,7 @@ const execute = async (userId: string, pugId :string, pugName : string): Promise
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
-    console.log("ID :",pugId);
     const result = await PugRepository.findByIdWithCommentsOnly(pugId,pugName);
-    console.log("Data",result);
     return result.pugs[0].comments;
 
 }

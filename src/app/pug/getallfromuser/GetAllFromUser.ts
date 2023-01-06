@@ -6,7 +6,7 @@ import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
-import {UserPugResponse, userPugToResponse} from "../../../response/UserPugResponse";
+import {UserPugResponse, userPugToResponse, userPugToResponseNoComment} from "../../../response/UserPugResponse";
 const fs = require('fs').promises;
 
 
@@ -35,13 +35,13 @@ export const getAllPugsFromUser = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string, username : string): Promise<UserPugResponse> => {
+const execute = async (userId: string, username : string): Promise<any> => {
 
     const currentUser = await UserRepository.findById(userId);
     const otherUser = await UserRepository.findByUsername(username);
     checkThatUserExistsOrThrow(currentUser);
 
-    const result = await PugRepository.getAllPugsFromUser(otherUser.username);
-    return userPugToResponse(result);
+    const result = await PugRepository.getAllPugsFromUserNoComment(otherUser.username);
+    return userPugToResponseNoComment(result,currentUser.username,otherUser.username);
 }
 

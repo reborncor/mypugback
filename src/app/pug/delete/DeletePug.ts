@@ -22,7 +22,6 @@ export const deletePug = async  (req : Request, res : Response) =>{
         const {userId} = decodeToken(token);
         const  result = await execute(userId,pugId, username);
         res.status(200).json({code : result.code, message : result.message, payload : result.payload});
-        await unlinkAsync("uploads/"+result.pugFilePath);
 
     }catch (err : any){
 
@@ -43,9 +42,7 @@ const execute = async (userId: string, pugId :string, username : string): Promis
     const currentUser = await UserRepository.findById(userId);
 
     checkThatUserExistsOrThrow(currentUser);
-    console.log("Info :",pugId, username);
     const data = await PugRepository.findById(pugId,username);
-    console.log("Data :"+data);
     const pug : Pug = data.pugs[0];
     const result = await PugRepository.deletePug(pug,username);
     await UserRepository.updateUserPug(currentUser, -1);
@@ -56,6 +53,5 @@ const execute = async (userId: string, pugId :string, username : string): Promis
 
 }
 
-const unlinkAsync = promisify(fs.unlink)
 
 

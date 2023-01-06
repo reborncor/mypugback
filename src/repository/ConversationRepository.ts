@@ -5,7 +5,7 @@ import {messageToResponse} from "../response/MessageResponse";
 import {User} from "../models/User";
 
 
-const collectionName = "conversation";
+const collectionName = "conversations";
 export default class ConversationRepository{
 
 

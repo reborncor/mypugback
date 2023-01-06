@@ -4,6 +4,7 @@ import {Pug} from "../models/Pug";
 import {UserPug} from "../models/UserPug";
 import {ObjectId} from "bson";
 import {Comment} from "../models/Comment";
+import {UserPugNoComment} from "../models/UserPugNoComment";
 
 const collectionName = "pugs";
 
@@ -16,7 +17,6 @@ export default class PugRepository{
 
     static async findById(id: string, username : string): Promise<any> {
         const call = db.get(collectionName);
-        // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
 
         return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
     }
@@ -24,9 +24,7 @@ export default class PugRepository{
 
     static async findByIdWithCommentsOnly(id: string, username : string): Promise<any> {
         const call = db.get(collectionName);
-        // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
-        // return await call.findOne({"pugs.id" : new ObjectId(id) , username : username}, {projection : {"pugs.comments":1}});
-        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)}}}});
+        return await call.findOne({"pugs.id" : new ObjectId(id) , username : username},{projection :{"pugs": {$elemMatch :{id : new ObjectId(id)},},}});
 
     }
 
@@ -64,8 +62,31 @@ export default class PugRepository{
             username,
 
         },
-            // {projection : {"pugs.comments" :{$slice : -1}, }}
         );
+    }
+
+    static async getAllPugsFromUserNoComment(username :string): Promise<UserPugNoComment[]> {
+        const call = db.get(collectionName);
+        return await call.aggregate( [
+            { $unwind: {path: "$pugs"} },
+            {$match: {"$expr": {"$eq": ["$username", username]}}},
+            {
+                $group:
+                    {
+                        _id: "$username" ,
+                        pug  : { $push: "$pugs",},
+                    }
+            },
+            { $unwind:  "$pug" },
+            {
+                $project: {
+                    _id : 1,
+                    pug : 1,
+                    numberOfComments: { $cond: { if: { $isArray: "$pug.comments" }, then: { $size: "$pug.comments" }, else: "0"} }
+                },
+            },
+            { $unset: "pug.comments" },
+        ]);
     }
 
     static async likeUserPug(user :User,pug : Pug, username : string): Promise<UserPug> {
@@ -150,6 +171,7 @@ export default class PugRepository{
 
              { $unwind: {path: "$pugs"} },
             { $unwind: '$pugs.date' },
+
             {$match: {"$expr": {"$in": ["$username", usernames]}}},
             {
                 $group:
