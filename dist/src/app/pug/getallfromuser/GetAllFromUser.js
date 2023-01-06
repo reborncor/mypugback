@@ -45,6 +45,6 @@ const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function
     const currentUser = yield UserRepository_1.default.findById(userId);
     const otherUser = yield UserRepository_1.default.findByUsername(username);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    const result = yield PugRepository_1.default.getAllPugsFromUser(otherUser.username);
-    return (0, UserPugResponse_1.userPugToResponse)(result);
+    const result = yield PugRepository_1.default.getAllPugsFromUserNoComment(otherUser.username);
+    return (0, UserPugResponse_1.userPugToResponseNoComment)(result, currentUser.username, otherUser.username);
 });

@@ -28,7 +28,6 @@ const addPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
         const { imageDescription, details, isCrop, height, imageUrl } = req.body;
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        console.log("DATA :", req.body);
         const result = yield execute(userId, imageDescription, details, isCrop, height, imageUrl);
         res.status(201).json({ code: result.code, message: result.message, payload: result.payload });
     }
@@ -60,7 +59,6 @@ const execute = (userId, imageDescription, details, isCrop, height, imageUrl) =>
         height: parseInt(String(height)),
         details: details ? details : [], imageDescription, imageTitle: "", imageURL: imageUrl, like: 0
     };
-    console.log(newPug);
     yield PugRepository_1.default.addNewPug(currentUser, newPug);
     yield UserRepository_1.default.updateUserPug(currentUser, 1);
     return {

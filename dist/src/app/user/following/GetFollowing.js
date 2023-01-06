@@ -25,7 +25,8 @@ const getUserFollowing = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
-        const result = yield execute(userId);
+        const { username } = req.query;
+        const result = yield execute(userId, username);
         res.status(200).json({ code: util_1.successCode, message: "Utilisateur que vous suivez", payload: result });
     }
     catch (err) {
@@ -39,9 +40,11 @@ const getUserFollowing = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getUserFollowing = getUserFollowing;
-const execute = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
+    const otherUser = yield UserRepository_1.default.findByUsername(username);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    const result = yield FollowerRepository_1.default.findAllFollowingFromUser(currentUser.username);
+    (0, checkdata_1.checkThatUserExistsOrThrow)(otherUser);
+    const result = yield FollowerRepository_1.default.findAllFollowingFromUser(otherUser.username);
     return (0, FollowerResponse_1.followersToResponse)(result);
 });

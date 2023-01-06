@@ -103,7 +103,7 @@ function checkThatPugExistOrThrow(pug) {
 exports.checkThatPugExistOrThrow = checkThatPugExistOrThrow;
 function checkThatPugsExistOrThrow(userPug) {
     if (!userPug) {
-        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugDoesntExist, {});
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugsDoesntExist, {});
     }
 }
 exports.checkThatPugsExistOrThrow = checkThatPugsExistOrThrow;

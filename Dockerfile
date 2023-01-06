@@ -8,6 +8,6 @@ COPY package*.json ./
 RUN npm install -f
 
 COPY . .
-RUN npm build
+RUN npm run build
 EXPOSE 3000
 CMD ["node", "dist/index.js"]

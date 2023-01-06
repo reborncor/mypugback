@@ -6,7 +6,7 @@ import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
-import {UserPugResponse, userPugToResponse, userPugToResponseNoComment} from "../../../response/UserPugResponse";
+import { userPugToResponseNoComment} from "../../../response/UserPugResponse";
 const fs = require('fs').promises;
 
 

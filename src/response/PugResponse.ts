@@ -13,7 +13,7 @@ export interface PugResponse{
     like : number;
     date : number;
     isLiked : boolean;
-    comments? : Comment[];
+    comments : Comment[];
     numberOfComments : number;
     author : string;
     isCrop : boolean;
@@ -59,6 +59,7 @@ export function pugToResponseNoComment(pug : Pug,username : string, author : str
         height : pug.height? pug.height : 1,
         author : author,
         numberOfComments :  numberOfComments,
+        comments : []
 
     }
 }

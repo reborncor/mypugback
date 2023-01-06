@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pugToResponsePageableSorted = exports.pugToResponsePageable = exports.pugToResponse = void 0;
+exports.pugToResponsePageableSorted = exports.pugToResponsePageable = exports.pugToResponseNoComment = exports.pugToResponse = void 0;
 function pugToResponse(pug, username, author) {
     let isLiked = false;
     pug.usersLike.forEach(value => { if (value == username) {
@@ -24,6 +24,28 @@ function pugToResponse(pug, username, author) {
     };
 }
 exports.pugToResponse = pugToResponse;
+function pugToResponseNoComment(pug, username, author, numberOfComments) {
+    let isLiked = false;
+    pug.usersLike.forEach(value => { if (value == username) {
+        isLiked = true;
+    } });
+    return {
+        id: pug.id,
+        date: pug.date,
+        details: pug.details ? pug.details : [],
+        imageDescription: pug.imageDescription ? pug.imageDescription : "",
+        imageFormat: pug.imageFormat,
+        imageTitle: pug.imageTitle ? pug.imageTitle : "",
+        imageURL: pug.imageURL ? pug.imageURL : "",
+        like: pug.like,
+        isLiked: isLiked,
+        isCrop: pug.isCrop ? pug.isCrop : false,
+        height: pug.height ? pug.height : 1,
+        author: author,
+        numberOfComments: numberOfComments,
+    };
+}
+exports.pugToResponseNoComment = pugToResponseNoComment;
 function pugToResponsePageable(pug, username, author) {
     let isLiked = false;
     pug.usersLike.forEach(value => { if (value == username) {

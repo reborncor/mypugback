@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allUsersConnected = exports.pugDoesntExist = exports.accountAlreadyExistWithPhoneNumber = exports.accountAlreadyExistWithUsername = exports.accountAlreadyExist = exports.conversationAlreadyExist = exports.conversationsDoesntExist = exports.conversationDoesntExist = exports.notAlreadyliked = exports.alreadyLiked = exports.accountIsHimself = exports.accountNotFollowed = exports.accountAlreadyFollow = exports.lucie = exports.usernameIsLucie = exports.accountNotAllowed = exports.accountNotFound = exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.errorCodeLucie = exports.successCode = exports.errorCode = void 0;
+exports.allUsersConnected = exports.pugsDoesntExist = exports.pugDoesntExist = exports.accountAlreadyExistWithPhoneNumber = exports.accountAlreadyExistWithUsername = exports.accountAlreadyExist = exports.conversationAlreadyExist = exports.conversationsDoesntExist = exports.conversationDoesntExist = exports.notAlreadyliked = exports.alreadyLiked = exports.accountIsHimself = exports.accountNotFollowed = exports.accountAlreadyFollow = exports.lucie = exports.usernameIsLucie = exports.accountNotAllowed = exports.accountNotFound = exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.errorCodeLucie = exports.successCode = exports.errorCode = void 0;
 exports.errorCode = 1;
 exports.successCode = 0;
 exports.errorCodeLucie = 403;
@@ -27,4 +27,5 @@ exports.accountAlreadyExist = "Un utilisateur avec cette adresse email existe d�
 exports.accountAlreadyExistWithUsername = "Un utilisateur avec ce nom existe déjà";
 exports.accountAlreadyExistWithPhoneNumber = "Un utilisateur avec ce numéro existe déjà";
 exports.pugDoesntExist = "pug introuvable";
+exports.pugsDoesntExist = "L'utilisateur sans publlication";
 exports.allUsersConnected = new Map();

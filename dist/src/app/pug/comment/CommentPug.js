@@ -45,7 +45,6 @@ const execute = (userId, pugId, pugName, content) => __awaiter(void 0, void 0, v
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     (0, checkdata_1.checkThatUserIsNotLucieOrThrowWithName)(pugName);
     const data = yield PugRepository_1.default.findById(pugId, pugName);
-    console.log("Data :", data.pugs[0]);
     const pug = data.pugs[0];
     const date = (0, moment_1.default)().unix().toString();
     const comment = { content, author: currentUser.username, date: date, id: new bson_1.ObjectId(),

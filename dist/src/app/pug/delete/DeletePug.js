@@ -18,8 +18,6 @@ const UserRepository_1 = __importDefault(require("../../../repository/UserReposi
 const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
-const util_1 = require("util");
-const fs_1 = require("fs");
 const deletePug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -28,7 +26,6 @@ const deletePug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { userId } = (0, tokenManagement_1.decodeToken)(token);
         const result = yield execute(userId, pugId, username);
         res.status(200).json({ code: result.code, message: result.message, payload: result.payload });
-        yield unlinkAsync("uploads/" + result.pugFilePath);
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
@@ -44,12 +41,9 @@ exports.deletePug = deletePug;
 const execute = (userId, pugId, username) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    console.log("Info :", pugId, username);
     const data = yield PugRepository_1.default.findById(pugId, username);
-    console.log("Data :" + data);
     const pug = data.pugs[0];
     const result = yield PugRepository_1.default.deletePug(pug, username);
     yield UserRepository_1.default.updateUserPug(currentUser, -1);
     return { code: 0, message: "Pug Supprimé", payload: "", pugFilePath: pug.imageURL };
 });
-const unlinkAsync = (0, util_1.promisify)(fs_1.promises.unlink);

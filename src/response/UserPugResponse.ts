@@ -1,6 +1,5 @@
 import {ObjectId} from "bson";
 import {UserPug} from "../models/UserPug";
-import {Pug} from "../models/Pug";
 import {PugResponse, pugToResponse, pugToResponseNoComment} from "./PugResponse";
 import {UserPugNoComment} from "../models/UserPugNoComment";
 
@@ -25,7 +24,6 @@ export function userPugToResponse(userPug : UserPug, username : string) : UserPu
         username : userPug.username
     }
 }
-
 export function userPugToResponseNoComment(userPug : UserPugNoComment[], username : string, otherUser : string) : UserPugNoCommentResponse {
     const pugsResponse : PugResponse[] = [];
     userPug.forEach(value => pugsResponse.push(pugToResponseNoComment(value.pug, username, value._id, value.numberOfComments)))

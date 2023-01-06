@@ -23,16 +23,13 @@ class PugRepository {
     static findById(id, username) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
             return yield call.findOne({ "pugs.id": new bson_1.ObjectId(id), username: username }, { projection: { "pugs": { $elemMatch: { id: new bson_1.ObjectId(id) } } } });
         });
     }
     static findByIdWithCommentsOnly(id, username) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            // return await call.distinct("pugs",{"pugs.id" : new ObjectId(id)});
-            // return await call.findOne({"pugs.id" : new ObjectId(id) , username : username}, {projection : {"pugs.comments":1}});
-            return yield call.findOne({ "pugs.id": new bson_1.ObjectId(id), username: username }, { projection: { "pugs": { $elemMatch: { id: new bson_1.ObjectId(id) } } } });
+            return yield call.findOne({ "pugs.id": new bson_1.ObjectId(id), username: username }, { projection: { "pugs": { $elemMatch: { id: new bson_1.ObjectId(id) }, }, } });
         });
     }
     static addNewPug(user, pug) {
@@ -63,6 +60,30 @@ class PugRepository {
             return yield call.findOne({
                 username,
             });
+        });
+    }
+    static getAllPugsFromUserNoComment(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.aggregate([
+                { $unwind: { path: "$pugs" } },
+                { $match: { "$expr": { "$eq": ["$username", username] } } },
+                {
+                    $group: {
+                        _id: "$username",
+                        pug: { $push: "$pugs", },
+                    }
+                },
+                { $unwind: "$pug" },
+                {
+                    $project: {
+                        _id: 1,
+                        pug: 1,
+                        numberOfComments: { $cond: { if: { $isArray: "$pug.comments" }, then: { $size: "$pug.comments" }, else: "0" } }
+                    },
+                },
+                { $unset: "pug.comments" },
+            ]);
         });
     }
     static likeUserPug(user, pug, username) {

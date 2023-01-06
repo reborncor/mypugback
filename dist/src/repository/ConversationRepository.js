@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = require("./db");
 const MessageResponse_1 = require("../response/MessageResponse");
-const collectionName = "conversation";
+const collectionName = "conversations";
 class ConversationRepository {
     static insert(conversation) {
         return __awaiter(this, void 0, void 0, function* () {
