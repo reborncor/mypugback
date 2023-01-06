@@ -4,9 +4,7 @@ import {checkThatUserExistsOrThrow,} from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import {CustomError} from "../../../util/error/CustomError";
 import {decodeToken} from "../../../util/security/tokenManagement";
-import PugRepository from "../../../repository/PugRepository";
 import {successCode} from "../../../util/util";
-import {UserPugResponse, userPugToResponse} from "../../../response/UserPugResponse";
 import UserResponse, {userToUserResponse} from "../../../response/UserResponse";
 const fs = require('fs').promises;
 

@@ -17,7 +17,8 @@ export const getUserFollowers = async  (req : Request, res : Response) =>{
     try{
         const token = req.headers.authorization?.split(" ")[1] || "";
         const {userId} = decodeToken(token);
-        const  result = await execute(userId);
+        const {username} = req.query;
+        const  result = await execute(userId,<string>username);
         res.status(200).json({code : successCode, message :"Utilisateur qui vous suivent", payload : result});
     }catch (err : any){
 
@@ -33,11 +34,15 @@ export const getUserFollowers = async  (req : Request, res : Response) =>{
 
 }
 
-const execute = async (userId: string): Promise<FollowerResponse[]> => {
+const execute = async (userId: string, username : string): Promise<FollowerResponse[]> => {
 
     const currentUser = await UserRepository.findById(userId);
+    const otherUser = await UserRepository.findByUsername(username);
+
     checkThatUserExistsOrThrow(currentUser);
-    const result = await FollowerRepository.findAllFollowersFromUser(currentUser.username);
+    checkThatUserExistsOrThrow(otherUser);
+
+    const result = await FollowerRepository.findAllFollowersFromUser(otherUser.username);
 
     return followersToResponse(result);
 }

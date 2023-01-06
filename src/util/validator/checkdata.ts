@@ -7,7 +7,7 @@ import {
     emailInvalid,
     errorCode, errorCodeLucie, lucie, notAlreadyliked,
     passwordInvalid,
-    phoneNumberInvalid, pugDoesntExist,
+    phoneNumberInvalid, pugDoesntExist, pugsDoesntExist,
     usernameInvalid, usernameIsLucie,
     wrongPassword
 } from "../util";
@@ -91,7 +91,8 @@ export function checkThatPugExistOrThrow(pug: Pug) {
 
 export function checkThatPugsExistOrThrow(userPug: UserPug) {
     if (!userPug) {
-        throw new CustomError(errorCode, pugDoesntExist, {});
+
+        throw new CustomError(errorCode, pugsDoesntExist,{} );
     }
 }
 

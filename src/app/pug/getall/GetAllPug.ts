@@ -30,7 +30,6 @@ export const getAllPugs = async  (req : Request, res : Response) =>{
     }catch (err : any){
 
         if(err instanceof CustomError){
-            console.log(err);
             res.status(400).json({message : err.message, code : err.code});
         }
         else{
@@ -46,6 +45,7 @@ const execute = async (userId: string): Promise<UserPugResponse> => {
     const currentUser = await UserRepository.findById(userId);
     checkThatUserExistsOrThrow(currentUser);
     const result = await PugRepository.getAllPugsFromUser( currentUser.username);
+    if(!result) return {username : currentUser.username, pugs : []}
     return userPugToResponse(result, currentUser.username);
 }
 

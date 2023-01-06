@@ -29,6 +29,7 @@ export const accountAlreadyExistWithUsername = "Un utilisateur avec ce nom exist
 export const accountAlreadyExistWithPhoneNumber = "Un utilisateur avec ce numéro existe déjà"
 
 export const pugDoesntExist = "pug introuvable"
+export const pugsDoesntExist = "L'utilisateur sans publlication"
 
 
 export const allUsersConnected = new Map();
