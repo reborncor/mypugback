@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import {
   checkThatUserDoesntExistOrThrow,
   checkThatUserSignUpCredentialsOrThrow,
@@ -19,7 +18,7 @@ export const signUp = async (req: Request, res: Response) => {
 
   try {
     const user = await signUpUser(email, username, password, phoneNumber);
-    const addUserLucie = await executeAddFriend(String(user._id), "lucie");
+    await executeAddFriend(String(user._id), "lucie");
 
     res.status(201).json({
       code: 0,

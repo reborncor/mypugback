@@ -4,7 +4,6 @@ import BaseResponse from "../../../response/BaseResponse";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import { PugDetail } from "../../../models/PugDetail";
-const fs = require("fs").promises;
 
 export const editPug = async (req: Request, res: Response) => {
   try {

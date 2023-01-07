@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";

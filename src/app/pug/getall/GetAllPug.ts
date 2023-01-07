@@ -1,17 +1,10 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
-import {
-  checkThatPugExistOrThrow,
-  checkThatPugsExistOrThrow,
-  checkThatUserExistsOrThrow,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
-import { Pug } from "../../../models/Pug";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
-import { UserPug } from "../../../models/UserPug";
 import { successCode } from "../../../util/util";
 import {
   UserPugResponse,

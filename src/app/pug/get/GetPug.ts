@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import {
   checkThatPugExistOrThrow,
   checkThatUserExistsOrThrow,
-  checkThatUserNotAlreadyLike,
-  checkThatUsersExistsOrThrow,
 } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";

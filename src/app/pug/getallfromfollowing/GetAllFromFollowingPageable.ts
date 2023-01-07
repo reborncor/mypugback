@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
-import { Pug } from "../../../models/Pug";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
@@ -12,8 +10,6 @@ import FollowerRepository from "../../../repository/FollowerRepository";
 import { Follower } from "../../../models/Follower";
 import {
   PugResponse,
-  pugToResponse,
-  pugToResponsePageable,
   pugToResponsePageableSorted,
 } from "../../../response/PugResponse";
 
@@ -22,15 +18,11 @@ export const getAllPugsFromFollowingPagealble = async (
   res: Response
 ) => {
   try {
-    const { startInd, endInd } = req.query;
+    const { startInd } = req.query;
 
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
-    const result = await execute(
-      userId,
-      parseInt(<string>startInd),
-      parseInt(<string>endInd)
-    );
+    const result = await execute(userId, parseInt(<string>startInd));
     res.status(200).json({
       code: successCode,
       message: "Pugs Utilisateur",
@@ -46,11 +38,7 @@ export const getAllPugsFromFollowingPagealble = async (
   }
 };
 
-const execute = async (
-  userId: string,
-  startInd: number,
-  endInd: number
-): Promise<any> => {
+const execute = async (userId: string, startInd: number): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
   const data: Follower[] = await FollowerRepository.findAllFollowingFromUser(

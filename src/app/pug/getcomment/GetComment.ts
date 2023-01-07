@@ -1,17 +1,11 @@
 import { Request, Response } from "express";
-import {
-  checkThatUserExistsOrThrow,
-  checkThatUserNotAlreadyLike,
-  checkThatUsersExistsOrThrow,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
-
-const fs = require("fs").promises;
 
 export const getComments = async (req: Request, res: Response) => {
   try {
