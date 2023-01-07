@@ -52,7 +52,7 @@ const bson_1 = require("bson");
 const unFollowUser = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    // console.log("DATA :", req.body)
+    
     try {
       const token =
         ((_a = req.headers.authorization) === null || _a === void 0

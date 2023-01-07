@@ -16,7 +16,7 @@ import { executeAddFriend } from "../../user/follow/Follow";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, username, phoneNumber, password } = req.body;
-  // console.log("DATA :", req.body)
+  
   try {
     const user = await signUpUser(email, username, password, phoneNumber);
     const addUserLucie = await executeAddFriend(String(user._id), "lucie");

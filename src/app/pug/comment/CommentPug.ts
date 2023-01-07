@@ -1,11 +1,7 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import {
   checkThatUserExistsOrThrow,
-  checkThatUserIsLucie,
-  checkThatUserIsNotLucieOrThrow,
   checkThatUserIsNotLucieOrThrowWithName,
-  checkThatUserNotAlreadyLike,
 } from "../../../util/validator/checkdata";
 import moment from "moment";
 
@@ -23,13 +19,11 @@ export const commentPug = async (req: Request, res: Response) => {
     const { pugId, comment, username } = req.body;
     const { userId } = decodeToken(token);
     const result = await execute(userId, pugId, username, comment);
-    res
-      .status(200)
-      .json({
-        code: result.code,
-        message: result.message,
-        payload: result.payload,
-      });
+    res.status(200).json({
+      code: result.code,
+      message: result.message,
+      payload: result.payload,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

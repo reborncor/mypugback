@@ -1,8 +1,5 @@
 import UserRepository from "../../repository/UserRepository";
-import {
-  checkThatConversationsExist,
-  checkThatUserExistsOrThrow,
-} from "../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../util/validator/checkdata";
 import ConversationRepository from "../../repository/ConversationRepository";
 import { decodeToken } from "../../util/security/tokenManagement";
 import { successCode } from "../../util/util";
@@ -18,13 +15,11 @@ export const getAllConversationFromUser = async (
   try {
     const { userId } = decodeToken(token);
     const conversations = await execute(userId);
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Liste des conversations : ",
-        payload: conversations,
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Liste des conversations : ",
+      payload: conversations,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
@@ -42,6 +37,6 @@ const execute = async (userId: string) => {
     await ConversationRepository.findAllConversationsFromUser(
       currentUser.username
     );
-  // checkThatConversationsExist(conversations);
+  
   return conversationsToResponse(conversations);
 };

@@ -96,7 +96,7 @@ const execute = (userId, receiverUsername) =>
       let conversation = (0, ConversationResponse_1.conversationToResponse)(
         result
       );
-      // conversation.chat.reverse();
+      
       return { conversation, exist: true };
     } else {
       const newConversation = {

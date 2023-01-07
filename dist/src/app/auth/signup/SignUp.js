@@ -51,7 +51,7 @@ const Follow_1 = require("../../user/follow/Follow");
 const signUp = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, phoneNumber, password } = req.body;
-    // console.log("DATA :", req.body)
+    
     try {
       const user = yield signUpUser(email, username, password, phoneNumber);
       const addUserLucie = yield (0, Follow_1.executeAddFriend)(

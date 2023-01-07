@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reborncor/socialgambling.git"
+    "url": "git+https:
   },
   "engines": {
     "node": "12.14.1"
@@ -23,9 +23,9 @@
   "author": "Reborn CORP",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/reborncor/socialgambling/issues"
+    "url": "https:
   },
-  "homepage": "https://github.com/reborncor/socialgambling#readme",
+  "homepage": "https:
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",

@@ -10,8 +10,6 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { PugDetail } from "../../../models/PugDetail";
 import { ObjectId } from "bson";
-const fs = require("fs").promises;
-const { promisify } = require("util");
 
 export const addPug = async (req: Request, res: Response) => {
   try {
@@ -26,13 +24,11 @@ export const addPug = async (req: Request, res: Response) => {
       height,
       imageUrl
     );
-    res
-      .status(201)
-      .json({
-        code: result.code,
-        message: result.message,
-        payload: result.payload,
-      });
+    res.status(201).json({
+      code: result.code,
+      message: result.message,
+      payload: result.payload,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

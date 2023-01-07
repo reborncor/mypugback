@@ -41,7 +41,7 @@ const execute = async (
   pugId: string,
   pugName: string
 ): Promise<any> => {
-  // console.log("Pugid et PugName",pugId, pugName)
+  
   const currentUser = await UserRepository.findById(userId);
 
   checkThatUserExistsOrThrow(currentUser);

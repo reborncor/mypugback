@@ -200,15 +200,15 @@ class PugRepository {
   static getAllPugsFromFollowing(usernames) {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
-      //Avec ID
-      // return await call.find({username : {$in :usernames} },{projection :{'pugs':1}, });
+      
+      
       return yield call.find(
         { username: { $in: usernames } },
         { projection: { "pugs.comments": { $slice: -1 } } }
       );
-      //Sans ID
-      // return await call.distinct("pugs",{username : {$in :usernames} });
-      // return  await call.aggregate([{$group : {}}])
+      
+      
+      
     });
   }
   static getAllPugsFromFollowingPageable(usernames, startInd) {

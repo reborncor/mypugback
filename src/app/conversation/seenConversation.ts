@@ -5,10 +5,7 @@ import {
   checkThatUserExistsOrThrow,
 } from "../../util/validator/checkdata";
 import ConversationRepository from "../../repository/ConversationRepository";
-import { Message } from "../../models/Message";
 import { successCode } from "../../util/util";
-import { ObjectId } from "bson";
-import moment from "moment";
 
 export const seenConversation = async (
   currentUsername: string,

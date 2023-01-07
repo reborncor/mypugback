@@ -85,6 +85,6 @@ const execute = (userId) =>
       yield ConversationRepository_1.default.findAllConversationsFromUser(
         currentUser.username
       );
-    // checkThatConversationsExist(conversations);
+    
     return (0, ConversationResponse_1.conversationsToResponse)(conversations);
   });

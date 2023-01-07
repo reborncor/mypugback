@@ -1,17 +1,11 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
-import {
-  checkThatUserExistsOrThrow,
-  checkThatUserNotAlreadyLike,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { Pug } from "../../../models/Pug";
-import { promisify } from "util";
-import { promises as fs } from "fs";
 
 export const deletePug = async (req: Request, res: Response) => {
   try {
@@ -19,13 +13,11 @@ export const deletePug = async (req: Request, res: Response) => {
     const { pugId, username } = req.body;
     const { userId } = decodeToken(token);
     const result = await execute(userId, pugId, username);
-    res
-      .status(200)
-      .json({
-        code: result.code,
-        message: result.message,
-        payload: result.payload,
-      });
+    res.status(200).json({
+      code: result.code,
+      message: result.message,
+      payload: result.payload,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

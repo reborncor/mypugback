@@ -80,7 +80,7 @@ const getComments = (req, res) =>
 exports.getComments = getComments;
 const execute = (userId, pugId, pugName) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    // console.log("Pugid et PugName",pugId, pugName)
+    
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const result = yield PugRepository_1.default.findByIdWithCommentsOnly(

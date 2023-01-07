@@ -14,7 +14,6 @@ const init = () => {
   let finalPath = path.basename(__dirname);
   finalPath = path.join("/usr/src/app/", "uploads");
 
-  //Client Side
   app.get("/file", (req: any, res: any) => {
     console.log("DIR : ", __dirname);
 
@@ -22,7 +21,7 @@ const init = () => {
 
     res.sendFile(__dirname + "/index.html");
   });
-  //
+  
 
   app.get("/", (req: any, res: any) => {
     console.log("MyPug server");
@@ -32,7 +31,6 @@ const init = () => {
   app.use(express.json());
 
   app.use(router);
-  // app.use('/pugs', express.static(path.join(__dirname.replace("src",""), 'uploads')))
   app.use("/pugs", express.static(path.join("", "uploads")));
 
   const httpServer = require("http").createServer(app);
@@ -66,7 +64,7 @@ const init = () => {
         console.log("Message vu");
         socket.emit("seenCallback", result.code.toString());
       } else {
-        // console.log("Miss : ", result.code)
+        
         socket.emit("seenCallback", result.code.toString());
       }
     });
@@ -79,19 +77,15 @@ const init = () => {
       );
 
       if (result.code == 0) {
-        // console.log("Receiver :"+ msg.receiverUsername)
-
         if (allUsersConnected.has(msg.receiverUsername)) {
           io.to(allUsersConnected.get(msg.receiverUsername)).emit(
             "instantmessage",
             result.message
           );
         }
-        // console.log("Fine : ", result.code)
 
         socket.emit("messagesuccess", result.code.toString());
       } else {
-        // console.log("Miss : ", result.code)
         socket.emit("messagesuccess", result.code.toString());
       }
     });
