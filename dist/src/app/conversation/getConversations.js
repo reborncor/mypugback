@@ -60,13 +60,11 @@ const getAllConversationFromUser = (req, res) =>
     try {
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const conversations = yield execute(userId);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Liste des conversations : ",
-          payload: conversations,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Liste des conversations : ",
+        payload: conversations,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);
@@ -85,6 +83,6 @@ const execute = (userId) =>
       yield ConversationRepository_1.default.findAllConversationsFromUser(
         currentUser.username
       );
-    
+
     return (0, ConversationResponse_1.conversationsToResponse)(conversations);
   });

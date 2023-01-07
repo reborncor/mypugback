@@ -65,13 +65,11 @@ const getConversationPageable = (req, res) =>
         parseInt(startInd),
         parseInt(endInd)
       );
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Anciens messages : ",
-          payload: { oldmessages: oldmessages },
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Anciens messages : ",
+        payload: { oldmessages: oldmessages },
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

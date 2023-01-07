@@ -37,6 +37,6 @@ const execute = async (userId: string) => {
     await ConversationRepository.findAllConversationsFromUser(
       currentUser.username
     );
-  
+
   return conversationsToResponse(conversations);
 };

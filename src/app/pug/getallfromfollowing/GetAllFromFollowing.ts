@@ -17,13 +17,11 @@ export const getAllPugsFromFollowing = async (req: Request, res: Response) => {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
     const result = await execute(userId);
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Pugs Utilisateur",
-        payload: { pugs: result },
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Pugs Utilisateur",
+      payload: { pugs: result },
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

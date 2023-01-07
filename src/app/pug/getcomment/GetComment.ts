@@ -19,13 +19,11 @@ export const getComments = async (req: Request, res: Response) => {
     const { userId } = decodeToken(token);
     const { pugId, username } = req.query;
     const result = await execute(userId, <string>pugId, <string>username);
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Liste des commentaires",
-        payload: result,
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Liste des commentaires",
+      payload: result,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
@@ -41,7 +39,6 @@ const execute = async (
   pugId: string,
   pugName: string
 ): Promise<any> => {
-  
   const currentUser = await UserRepository.findById(userId);
 
   checkThatUserExistsOrThrow(currentUser);

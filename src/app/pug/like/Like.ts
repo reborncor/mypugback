@@ -17,13 +17,11 @@ export const likePug = async (req: Request, res: Response) => {
     const { pugId, username } = req.body;
     const { userId } = decodeToken(token);
     const result = await execute(userId, pugId, username);
-    res
-      .status(200)
-      .json({
-        code: result.code,
-        message: result.message,
-        payload: result.payload,
-      });
+    res.status(200).json({
+      code: result.code,
+      message: result.message,
+      payload: result.payload,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

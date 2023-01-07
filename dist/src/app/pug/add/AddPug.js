@@ -70,13 +70,11 @@ const addPug = (req, res) =>
         height,
         imageUrl
       );
-      res
-        .status(201)
-        .json({
-          code: result.code,
-          message: result.message,
-          payload: result.payload,
-        });
+      res.status(201).json({
+        code: result.code,
+        message: result.message,
+        payload: result.payload,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

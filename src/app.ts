@@ -21,7 +21,6 @@ const init = () => {
 
     res.sendFile(__dirname + "/index.html");
   });
-  
 
   app.get("/", (req: any, res: any) => {
     console.log("MyPug server");
@@ -64,7 +63,6 @@ const init = () => {
         console.log("Message vu");
         socket.emit("seenCallback", result.code.toString());
       } else {
-        
         socket.emit("seenCallback", result.code.toString());
       }
     });

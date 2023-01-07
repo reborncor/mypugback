@@ -61,13 +61,11 @@ const getAllPugs = (req, res) =>
           : _a.split(" ")[1]) || "";
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const result = yield execute(userId);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Pugs Utilisateur",
-          payload: result,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Pugs Utilisateur",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         res.status(400).json({ message: err.message, code: err.code });

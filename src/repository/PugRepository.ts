@@ -173,16 +173,11 @@ export default class PugRepository {
 
   static async getAllPugsFromFollowing(usernames: string[]): Promise<any> {
     const call = db.get(collectionName);
-    
-    
+
     return await call.find(
       { username: { $in: usernames } },
       { projection: { "pugs.comments": { $slice: -1 } } }
     );
-
-    
-    
-    
   }
   static async getAllPugsFromFollowingPageable(
     usernames: string[],

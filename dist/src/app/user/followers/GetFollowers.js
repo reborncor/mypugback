@@ -61,13 +61,11 @@ const getUserFollowers = (req, res) =>
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const { username } = req.query;
       const result = yield execute(userId, username);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Utilisateur qui vous suivent",
-          payload: result,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Utilisateur qui vous suivent",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

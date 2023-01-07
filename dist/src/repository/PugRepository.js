@@ -200,15 +200,11 @@ class PugRepository {
   static getAllPugsFromFollowing(usernames) {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
-      
-      
+
       return yield call.find(
         { username: { $in: usernames } },
         { projection: { "pugs.comments": { $slice: -1 } } }
       );
-      
-      
-      
     });
   }
   static getAllPugsFromFollowingPageable(usernames, startInd) {

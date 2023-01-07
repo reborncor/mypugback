@@ -31,13 +31,11 @@ export const getAllPugsFromFollowingPagealble = async (
       parseInt(<string>startInd),
       parseInt(<string>endInd)
     );
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Pugs Utilisateur",
-        payload: { pugs: result },
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Pugs Utilisateur",
+      payload: { pugs: result },
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

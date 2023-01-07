@@ -53,14 +53,12 @@ const signIn = (req, res) =>
     try {
       const user = yield signInUser(username, password);
       console.log("Connexion utilisateur : " + username);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Connexion avec succès",
-          payload: (0, UserResponse_1.userToUserResponse)(user),
-          token: (0, tokenManagement_1.generateAccessToken)(user),
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Connexion avec succès",
+        payload: (0, UserResponse_1.userToUserResponse)(user),
+        token: (0, tokenManagement_1.generateAccessToken)(user),
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

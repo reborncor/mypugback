@@ -21,13 +21,11 @@ export const createConversation = async (
     const { username } = req.body;
     const { conversation, exist } = await execute(userId, username);
     const message = exist ? "Already Exist, sending data.." : "created";
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Conversation : " + message,
-        payload: conversation,
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Conversation : " + message,
+      payload: conversation,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
@@ -52,7 +50,7 @@ const execute = async (userId: string, receiverUsername: string) => {
 
   if (result) {
     let conversation = conversationToResponse(result);
-    
+
     return { conversation, exist: true };
   } else {
     const newConversation: Conversation = {

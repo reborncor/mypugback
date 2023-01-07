@@ -59,13 +59,11 @@ const deletePug = (req, res) =>
       const { pugId, username } = req.body;
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const result = yield execute(userId, pugId, username);
-      res
-        .status(200)
-        .json({
-          code: result.code,
-          message: result.message,
-          payload: result.payload,
-        });
+      res.status(200).json({
+        code: result.code,
+        message: result.message,
+        payload: result.payload,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

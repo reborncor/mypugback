@@ -65,13 +65,11 @@ const getAllPugsUsersPageable = (req, res) =>
         parseInt(startInd),
         parseInt(endInd)
       );
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Pugs de tous les utilisateurs",
-          payload: { pugs: result },
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Pugs de tous les utilisateurs",
+        payload: { pugs: result },
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

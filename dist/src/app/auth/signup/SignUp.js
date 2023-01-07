@@ -51,21 +51,19 @@ const Follow_1 = require("../../user/follow/Follow");
 const signUp = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, phoneNumber, password } = req.body;
-    
+
     try {
       const user = yield signUpUser(email, username, password, phoneNumber);
       const addUserLucie = yield (0, Follow_1.executeAddFriend)(
         String(user._id),
         "lucie"
       );
-      res
-        .status(201)
-        .json({
-          code: 0,
-          message: "inscription réalisée avec succès",
-          payload: (0, UserResponse_1.userToUserResponse)(user),
-          token: (0, tokenManagement_1.generateAccessToken)(user),
-        });
+      res.status(201).json({
+        code: 0,
+        message: "inscription réalisée avec succès",
+        payload: (0, UserResponse_1.userToUserResponse)(user),
+        token: (0, tokenManagement_1.generateAccessToken)(user),
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

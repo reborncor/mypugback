@@ -55,13 +55,11 @@ const editPug = (req, res) =>
         imageDescription,
         details
       );
-      res
-        .status(201)
-        .json({
-          code: result.code,
-          message: result.message,
-          payload: result.payload,
-        });
+      res.status(201).json({
+        code: result.code,
+        message: result.message,
+        payload: result.payload,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);
@@ -74,27 +72,6 @@ const editPug = (req, res) =>
 exports.editPug = editPug;
 const execute = (userId, path, format, imageDescription, imageTitle, details) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     return {
       code: 0,
       message: "Nouveau pug ajouté avec succès",

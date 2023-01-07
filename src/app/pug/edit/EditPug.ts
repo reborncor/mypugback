@@ -43,27 +43,6 @@ const execute = async (
   imageTitle: string,
   details: PugDetail[]
 ): Promise<BaseResponse<null>> => {
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   return {
     code: 0,
     message: "Nouveau pug ajouté avec succès",

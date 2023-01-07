@@ -61,13 +61,11 @@ const getPug = (req, res) =>
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const { username, pugId } = req.query;
       const result = yield execute(userId, username, pugId);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Pug utilisateur",
-          payload: result,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Pug utilisateur",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

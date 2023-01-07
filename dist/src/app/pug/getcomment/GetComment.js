@@ -61,13 +61,11 @@ const getComments = (req, res) =>
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const { pugId, username } = req.query;
       const result = yield execute(userId, pugId, username);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Liste des commentaires",
-          payload: result,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Liste des commentaires",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);
@@ -80,7 +78,6 @@ const getComments = (req, res) =>
 exports.getComments = getComments;
 const execute = (userId, pugId, pugName) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const result = yield PugRepository_1.default.findByIdWithCommentsOnly(

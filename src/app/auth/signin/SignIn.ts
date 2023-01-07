@@ -16,14 +16,12 @@ export const signIn = async (req: Request, res: Response) => {
   try {
     const user = await signInUser(username, password);
     console.log("Connexion utilisateur : " + username);
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Connexion avec succès",
-        payload: userToUserResponse(user),
-        token: generateAccessToken(user),
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Connexion avec succès",
+      payload: userToUserResponse(user),
+      token: generateAccessToken(user),
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

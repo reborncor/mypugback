@@ -52,7 +52,7 @@ const bson_1 = require("bson");
 const unFollowUser = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    
+
     try {
       const token =
         ((_a = req.headers.authorization) === null || _a === void 0
@@ -61,13 +61,11 @@ const unFollowUser = (req, res) =>
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const { username } = req.body;
       const user = yield execute(userId, username);
-      res
-        .status(200)
-        .json({
-          code: user.code,
-          message: user.message,
-          payload: user.payload,
-        });
+      res.status(200).json({
+        code: user.code,
+        message: user.message,
+        payload: user.payload,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

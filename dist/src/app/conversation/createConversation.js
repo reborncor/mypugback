@@ -62,13 +62,11 @@ const createConversation = (req, res) =>
       const { username } = req.body;
       const { conversation, exist } = yield execute(userId, username);
       const message = exist ? "Already Exist, sending data.." : "created";
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Conversation : " + message,
-          payload: conversation,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Conversation : " + message,
+        payload: conversation,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);
@@ -96,7 +94,7 @@ const execute = (userId, receiverUsername) =>
       let conversation = (0, ConversationResponse_1.conversationToResponse)(
         result
       );
-      
+
       return { conversation, exist: true };
     } else {
       const newConversation = {

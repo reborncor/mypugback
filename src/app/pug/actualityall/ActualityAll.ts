@@ -28,13 +28,11 @@ export const getAllPugsUsersPageable = async (req: Request, res: Response) => {
       parseInt(<string>startInd),
       parseInt(<string>endInd)
     );
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        message: "Pugs de tous les utilisateurs",
-        payload: { pugs: result },
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Pugs de tous les utilisateurs",
+      payload: { pugs: result },
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);

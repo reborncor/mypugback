@@ -62,13 +62,11 @@ const getUserWithName = (req, res) =>
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
       const { username } = req.query;
       const result = yield execute(userId, username);
-      res
-        .status(200)
-        .json({
-          code: util_1.successCode,
-          message: "Information utilisateur",
-          payload: result,
-        });
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Information utilisateur",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
         console.log(err);

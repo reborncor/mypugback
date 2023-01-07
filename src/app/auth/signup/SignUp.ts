@@ -16,19 +16,17 @@ import { executeAddFriend } from "../../user/follow/Follow";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, username, phoneNumber, password } = req.body;
-  
+
   try {
     const user = await signUpUser(email, username, password, phoneNumber);
     const addUserLucie = await executeAddFriend(String(user._id), "lucie");
 
-    res
-      .status(201)
-      .json({
-        code: 0,
-        message: "inscription réalisée avec succès",
-        payload: userToUserResponse(user),
-        token: generateAccessToken(user),
-      });
+    res.status(201).json({
+      code: 0,
+      message: "inscription réalisée avec succès",
+      payload: userToUserResponse(user),
+      token: generateAccessToken(user),
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
