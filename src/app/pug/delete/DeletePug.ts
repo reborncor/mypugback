@@ -38,7 +38,7 @@ const execute = async (
   checkThatUserExistsOrThrow(currentUser);
   const data = await PugRepository.findById(pugId, username);
   const pug: Pug = data.pugs[0];
-  const result = await PugRepository.deletePug(pug, username);
+  await PugRepository.deletePug(pug, username);
   await UserRepository.updateUserPug(currentUser, -1);
 
   return {
