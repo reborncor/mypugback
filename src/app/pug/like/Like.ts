@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import {
   checkThatUserExistsOrThrow,
   checkThatUserNotAlreadyLike,
@@ -54,7 +53,7 @@ const execute = async (
 
   checkThatUserNotAlreadyLike(test);
 
-  const result = await PugRepository.likeUserPug(currentUser, pug, username);
+  await PugRepository.likeUserPug(currentUser, pug, username);
 
   return { code: 0, message: "Nouveau pug like", payload: "" };
 };

@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import {
   checkThatUserExistsOrThrow,
   checkThatUserHasLiked,
-  checkThatUserNotAlreadyLike,
 } from "../../../util/validator/checkdata";
-import moment from "moment";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
@@ -53,6 +50,6 @@ const execute = async (
   );
   checkThatUserHasLiked(test);
 
-  const result = await PugRepository.unLikePug(currentUser, pug, username);
+  await PugRepository.unLikePug(currentUser, pug, username);
   return { code: 0, message: "Like retiré", payload: "" };
 };

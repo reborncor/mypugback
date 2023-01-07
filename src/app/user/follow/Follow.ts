@@ -4,10 +4,7 @@ import {
   checkThatUserExistsOrThrow,
   checkThatUserIsNotAlreadyFollow,
   checkThatUserisntHimself,
-  checkThatUserSignUpCredentialsOrThrow,
 } from "../../../util/validator/checkdata";
-import { User } from "../../../models/User";
-import { encodePassword } from "../../../util/security/passwordManagement";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";

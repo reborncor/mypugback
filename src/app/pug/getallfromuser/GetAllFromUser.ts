@@ -7,7 +7,6 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
 import { userPugToResponseNoComment } from "../../../response/UserPugResponse";
-const fs = require("fs").promises;
 
 export const getAllPugsFromUser = async (req: Request, res: Response) => {
   try {
