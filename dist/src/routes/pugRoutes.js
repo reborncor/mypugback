@@ -25,37 +25,48 @@ const actuality = "/actuality";
 const like = "/like";
 const unlike = "/unlike";
 const comment = "/comment";
-const multer = require('multer');
+const multer = require("multer");
 const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, './uploads');
-    },
-    filename: (req, file, callback) => {
-        const date = new Date().toISOString().replace(':', '-').replace(':', '-').replace('.', '-');
-        const name = date + file.originalname + ".png";
-        callback(null, name);
-    }
+  destination: (req, file, callback) => {
+    callback(null, "./uploads");
+  },
+  filename: (req, file, callback) => {
+    const date = new Date()
+      .toISOString()
+      .replace(":", "-")
+      .replace(":", "-")
+      .replace(".", "-");
+    const name = date + file.originalname + ".png";
+    callback(null, name);
+  },
 });
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png ' || file.mimetype === 'image/jpg') {
-        cb(null, true);
-    }
-    else {
-        cb(null, false);
-    }
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png " ||
+    file.mimetype === "image/jpg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
 };
 const upload = multer({
-    dest: 'uploads/', storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
+  dest: "uploads/",
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
 });
 pugRouter.post(add, AddPug_1.addPug);
 pugRouter.get(get, GetPug_1.getPug);
 pugRouter.get(getAll, GetAllPug_1.getAllPugs);
 pugRouter.get(getAllFromUser, GetAllFromUser_1.getAllPugsFromUser);
 pugRouter.get(actuality, GetAllFromFollowing_1.getAllPugsFromFollowing);
-pugRouter.get(actualitypageable, GetAllFromFollowingPageable_1.getAllPugsFromFollowingPagealble);
+pugRouter.get(
+  actualitypageable,
+  GetAllFromFollowingPageable_1.getAllPugsFromFollowingPagealble
+);
 pugRouter.get(actualityall, ActualityAll_1.getAllPugsUsersPageable);
 pugRouter.put(deletePath, DeletePug_1.deletePug);
 pugRouter.put(like, Like_1.likePug);

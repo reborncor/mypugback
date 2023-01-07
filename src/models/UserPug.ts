@@ -1,8 +1,8 @@
-import {ObjectId} from "bson";
-import {Pug} from "./Pug";
+import { ObjectId } from "bson";
+import { Pug } from "./Pug";
 
-export  interface UserPug{
-    _id? : ObjectId;
-    username : string;
-    pugs : Pug[];
+export interface UserPug {
+  _id?: ObjectId;
+  username: string;
+  pugs: Pug[];
 }

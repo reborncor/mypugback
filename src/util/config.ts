@@ -1,7 +1,7 @@
-import { load } from 'ts-dotenv';
+import { load } from "ts-dotenv";
 
 export const env = load({
-    PORT : Number,
-    JWTSECRET : String,
-    DBURL : String,
-})
+  PORT: Number,
+  JWTSECRET: String,
+  DBURL: String,
+});

@@ -1,10 +1,9 @@
 import { ObjectId } from "bson";
-import {Message} from "./Message";
+import { Message } from "./Message";
 
 export default interface Conversation {
   _id?: ObjectId;
-  members : string[];
-  chat : Message[];
-  seen : string[];
+  members: string[];
+  chat: Message[];
+  seen: string[];
 }
-

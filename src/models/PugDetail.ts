@@ -1,8 +1,8 @@
-import {ObjectId} from "bson";
+import { ObjectId } from "bson";
 
 export interface PugDetail {
-     id? : ObjectId;
-     positionX : number;
-     positionY : number;
-     text : string;
+  id?: ObjectId;
+  positionX: number;
+  positionY: number;
+  text: string;
 }
