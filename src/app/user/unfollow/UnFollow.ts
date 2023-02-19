@@ -11,6 +11,7 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import FollowerRepository from "../../../repository/FollowerRepository";
 import { ObjectId } from "bson";
 import { UserFactory } from "../../../models/UserFactory";
+import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const unFollowUser = async (req: Request, res: Response) => {
   try {
@@ -44,8 +45,14 @@ const execute = async (userId: string, username: string): Promise<any> => {
   );
   checkThatUserNotFollowed(userNotFollow);
 
-  await FollowerRepository.deleteUserFromFollowing(currentUser, otherUser);
-  await FollowerRepository.deleteUserFromFollower(otherUser, currentUser);
+  await FollowerRepository.deleteUserFromFollowing(
+    currentUser,
+    userToUserFactoryResponse(otherUser)
+  );
+  await FollowerRepository.deleteUserFromFollower(
+    otherUser,
+    userToUserFactoryResponse(currentUser)
+  );
 
   await UserRepository.updateUserFollowing(currentUser, -1);
   await UserRepository.updateUserFollower(otherUser, -1);

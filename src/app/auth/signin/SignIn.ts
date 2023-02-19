@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   checkThatPasswordsAreEqualsOrThrow,
   checkThatUserExistsOrThrow,
+  checkThatUserIsNotBanned,
   checkThatUserSignInCredentialsOrThrow,
 } from "../../../util/validator/checkdata";
 import { CustomError } from "../../../util/error/CustomError";
@@ -40,6 +41,7 @@ const signInUser = async (
   const existingUser = await UserRepository.findByUsername(username);
   await checkThatUserExistsOrThrow(existingUser);
   await checkThatPasswordsAreEqualsOrThrow(password, existingUser.password);
+  await checkThatUserIsNotBanned(existingUser);
 
   return existingUser;
 };

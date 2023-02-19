@@ -108,6 +108,16 @@ export default class FollowerRepository {
       }
     );
   }
+  static async deblockUser(user: User, follower: UserFactory): Promise<any> {
+    const call = db.get(collectionName);
+
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $pull: { blocked: follower },
+      }
+    );
+  }
   static async deleteUserFromFollower(
     user: User,
     follower: UserFactory
@@ -133,6 +143,12 @@ export default class FollowerRepository {
     const call = db.get(collectionName);
     return await call.distinct("following", { username: username });
   }
+  static async findAllBlockedFromUser(
+    username: string
+  ): Promise<UserFactory[]> {
+    const call = db.get(collectionName);
+    return await call.distinct("blocked", { username: username });
+  }
 
   static async findUserInFollwingList(
     username: string,
@@ -146,6 +162,21 @@ export default class FollowerRepository {
       },
       {
         projection: { following: { $elemMatch: { username: userToFollow } } },
+      }
+    );
+  }
+  static async findUserInBlockingList(
+    username: string,
+    user: string
+  ): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.findOne(
+      {
+        username,
+        "blocked.username": user,
+      },
+      {
+        projection: { following: { $elemMatch: { username: user } } },
       }
     );
   }

@@ -1,6 +1,7 @@
 export const errorCode = 1;
 export const successCode = 0;
 export const errorCodeLucie = 403;
+export const bannedCode = 6;
 
 export const usernameInvalid = "nom d'utilisateur invalide";
 export const passwordInvalid = "mot de passe invalide";
@@ -9,6 +10,8 @@ export const emailInvalid = "Email invalide";
 export const wrongPassword = "mot de passe incorrect";
 export const accountNotConnected = "Utilisateur non connecté";
 export const accountDoesntExist = "L'utilisateur n'existe pas";
+export const errorSurrounded = "Une erreur est survenue";
+export const accountBanned = "Votre compte a été banni";
 export const commentNotFound = "Le commentaire a été supprimé";
 export const accountNotFound = "Aucun resultat";
 export const accountNotAllowed =
@@ -16,6 +19,7 @@ export const accountNotAllowed =
 export const usernameIsLucie = "Utilisateur invalide";
 export const lucie = "lucie";
 export const accountAlreadyFollow = "Vous suivez déjà cet utilisateur";
+export const accountAlreadyBlocked = "Vous déjà bloqué cet utilisateur";
 export const accountNotFollowed = "Vous ne suivez pas cet utilisateur";
 export const accountIsHimself = "Utilisateur invalide";
 export const alreadyLiked = "Vous avez déjà liké cette photo";

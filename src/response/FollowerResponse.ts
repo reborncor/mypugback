@@ -4,7 +4,7 @@ export interface FollowerResponse extends UserFactory {}
 
 export function followerToResponse(follower: UserFactory): FollowerResponse {
   return {
-    profilePicture: follower.profilePicture,
+    profilePicture: follower.profilePicture ?? "",
     username: follower.username,
   };
 }

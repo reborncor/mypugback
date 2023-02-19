@@ -11,14 +11,12 @@ import { UserFactory } from "../models/UserFactory";
 export interface UserPugResponse {
   _id?: ObjectId;
   username: string;
-  userId: string;
-  profilePicture: string;
   pugs: PugResponse[];
 }
 
 export interface UserPugNoCommentResponse {
   _id?: string;
-  username: UserFactory;
+  username: string;
   pugs: PugResponse[];
 }
 
@@ -32,8 +30,6 @@ export function userPugToResponse(
   );
   return {
     pugs: pugsResponse,
-    userId: userPug.userId,
-    profilePicture: userPug.profilePicture,
     username: userPug.username,
   };
 }
@@ -60,6 +56,6 @@ export function userPugToResponseNoComment(
   );
   return {
     pugs: pugsResponse,
-    username: otherUser,
+    username: otherUser.username,
   };
 }

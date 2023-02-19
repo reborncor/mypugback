@@ -10,6 +10,9 @@ import { getUserFollowing } from "../app/user/following/GetFollowing";
 import { getUserFollowers } from "../app/user/followers/GetFollowers";
 import { deleteAccount } from "../app/user/delete/DeleteAccount";
 import { blockUser } from "../app/user/block/BlockUser";
+import { signalUser } from "../app/user/signal/SignalUser";
+import { deblockUser } from "../app/user/deblock/DeblockUser";
+import { getUsersBlocked } from "../app/user/findBlocked/GetBlocked";
 
 const userRouter = Router();
 
@@ -18,6 +21,8 @@ const signInPath = "/signin";
 const infoPath = "/info";
 const deletePath = "/delete";
 const blockPath = "/block";
+const blockedPath = "/blocked";
+const deblockPath = "/deblock";
 const getPath = "/get";
 const findPath = "/find";
 const getfollowers = "/followers";
@@ -25,6 +30,7 @@ const getfollowing = "/following";
 
 const followPath = "/follow";
 const unfollowPath = "/unfollow";
+const signalPath = "/signal";
 
 userRouter.post(signUpPath, signUp);
 userRouter.post(signInPath, signIn);
@@ -37,6 +43,9 @@ userRouter.get(getfollowers, getUserFollowers);
 userRouter.put(followPath, followUser);
 userRouter.delete(deletePath, deleteAccount);
 userRouter.put(blockPath, blockUser);
+userRouter.put(deblockPath, deblockUser);
+userRouter.get(blockedPath, getUsersBlocked);
 userRouter.put(unfollowPath, unFollowUser);
+userRouter.post(signalPath, signalUser);
 
 export default userRouter;

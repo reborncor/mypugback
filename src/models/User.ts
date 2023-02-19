@@ -8,4 +8,5 @@ export interface User extends UserFactory {
   following: number;
   followers: number;
   pugs: number;
+  banned: boolean;
 }

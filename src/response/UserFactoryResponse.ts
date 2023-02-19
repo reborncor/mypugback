@@ -10,3 +10,21 @@ export function userToUserFactoryResponse(user: User): UserFactoryResponse {
     _id: user._id,
   };
 }
+export function userToUserFactoryResponseNoId(
+  user: UserFactory
+): UserFactoryResponse {
+  return {
+    username: user.username,
+    profilePicture: user.profilePicture ?? "",
+  };
+}
+
+export function usersToUsersFactoryResponse(
+  userFactories: UserFactory[]
+): UserFactory[] {
+  const result: UserFactory[] = [];
+  userFactories.forEach((value) =>
+    result.push(userToUserFactoryResponseNoId(value))
+  );
+  return result;
+}

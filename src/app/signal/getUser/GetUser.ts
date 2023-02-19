@@ -1,27 +1,31 @@
 import { Request, Response } from "express";
-import {
-  checkThatUserExistsOrThrow,
-  checkThatUserisNotBlocked,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import { successCode } from "../../../util/util";
-import UserResponse, {
-  userToResponseProfile,
-} from "../../../response/UserResponse";
 import FollowerRepository from "../../../repository/FollowerRepository";
+import {
+  FollowerResponse,
+  followersToResponse,
+} from "../../../response/FollowerResponse";
+import SignalUserRepository from "../../../repository/SignalRepository";
+import {
+  SignalResponse,
+  signalsToResponse,
+} from "../../../response/SignalResponse";
 
-export const getUserWithName = async (req: Request, res: Response) => {
+export const getUserSignal = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
     const { username } = req.query;
+
     const result = await execute(userId, <string>username);
     res.status(200).json({
       code: successCode,
-      message: "Information utilisateur",
+      message: "Liste de signalement de l'utilisateur " + username,
       payload: result,
     });
   } catch (err: any) {
@@ -37,22 +41,12 @@ export const getUserWithName = async (req: Request, res: Response) => {
 const execute = async (
   userId: string,
   username: string
-): Promise<UserResponse> => {
+): Promise<SignalResponse[]> => {
   const currentUser = await UserRepository.findById(userId);
-  const otherUser = await UserRepository.findByUsername(username);
 
   checkThatUserExistsOrThrow(currentUser);
-  checkThatUserExistsOrThrow(otherUser);
 
-  const userAlreadyFollow = await FollowerRepository.findUserInFollwingList(
-    currentUser.username,
-    otherUser.username
-  );
-  console.log(userAlreadyFollow);
-  const userBlocked = await FollowerRepository.findUserInBlockingList(
-    currentUser.username,
-    otherUser.username
-  );
-  checkThatUserisNotBlocked(userBlocked);
-  return userToResponseProfile(otherUser, userAlreadyFollow);
+  const result = await SignalUserRepository.findByUsername(username);
+
+  return signalsToResponse(result);
 };

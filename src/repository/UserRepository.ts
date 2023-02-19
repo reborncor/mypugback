@@ -73,6 +73,15 @@ export default class UserRepository {
       }
     );
   }
+  static async banUser(user: User, isBanned: boolean): Promise<User> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $set: { banned: isBanned },
+      }
+    );
+  }
 
   static async deleteUser(user: User): Promise<any> {
     const call = db.get(collectionName);

@@ -2,7 +2,7 @@ import {
   accountAlreadyExist,
   accountAlreadyExistWithPhoneNumber,
   accountAlreadyExistWithUsername,
-  accountAlreadyFollow,
+  accountAlreadyBlocked,
   accountDoesntExist,
   accountIsHimself,
   accountNotAllowed,
@@ -15,6 +15,7 @@ import {
   emailInvalid,
   errorCode,
   errorCodeLucie,
+  errorSurrounded,
   lucie,
   notAlreadyliked,
   passwordInvalid,
@@ -24,6 +25,8 @@ import {
   usernameInvalid,
   usernameIsLucie,
   wrongPassword,
+  accountAlreadyFollow,
+  bannedCode,
 } from "../util";
 var awPhoneNumber = require("awesome-phonenumber");
 import * as EmailValidator from "email-validator";
@@ -33,6 +36,8 @@ import { User } from "../../models/User";
 import Conversation from "../../models/Conversation";
 import { Pug } from "../../models/Pug";
 import { UserPug } from "../../models/UserPug";
+import { SignalFactory } from "../../models/SignalFactory";
+import { UserFactory } from "../../models/UserFactory";
 
 export function checkThatUserSignUpCredentialsOrThrow(
   email: string,
@@ -94,6 +99,27 @@ export function checkThatUserExistsOrThrow(user: User) {
     throw new CustomError(errorCode, accountDoesntExist, {});
   }
 }
+export function checkThatUserFactoryExistsOrThrow(user: UserFactory) {
+  if (!user) {
+    throw new CustomError(errorCode, accountDoesntExist, {});
+  }
+}
+
+export function checkThatSignalExistOrThrow(signalFactory: SignalFactory) {
+  if (!signalFactory) {
+    throw new CustomError(errorCode, errorSurrounded, {});
+  }
+}
+export function checkThatFeatureIsSucess(user: User) {
+  if (!user) {
+    throw new CustomError(errorCode, errorSurrounded, {});
+  }
+}
+export function checkThatUserisNotBlocked(user: User) {
+  if (user) {
+    throw new CustomError(errorCode, accountDoesntExist, {});
+  }
+}
 
 export function checkThatCommentsExistOrThrow(comment: any) {
   if (!comment) {
@@ -148,6 +174,16 @@ export function checkThatUserHasLiked(user: any) {
 export function checkThatUserIsNotAlreadyFollow(user: any) {
   if (user) {
     throw new CustomError(errorCode, accountAlreadyFollow, {});
+  }
+}
+export function checkThatUserIsNotAlreadyBlocked(user: any) {
+  if (user) {
+    throw new CustomError(errorCode, accountAlreadyBlocked, {});
+  }
+}
+export function checkThatUserIsNotBanned(user: User) {
+  if (user.banned) {
+    throw new CustomError(bannedCode, errorSurrounded, {});
   }
 }
 

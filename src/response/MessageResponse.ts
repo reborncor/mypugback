@@ -1,12 +1,8 @@
-import { ObjectId } from "bson";
 import { Message } from "../models/Message";
+import { ObjectId } from "bson";
 
-export default interface MessageResponse {
+export default interface MessageResponse extends Message {
   id?: ObjectId;
-  senderUsername: string;
-  receiverUsername: string;
-  content: string;
-  time: string;
 }
 
 export function messageToResponse(message: Message): MessageResponse {

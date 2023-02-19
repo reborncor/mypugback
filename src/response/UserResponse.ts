@@ -15,6 +15,7 @@ export function userToUserResponse(user: User): UserResponse {
     password: "",
     profilePicture: user.profilePicture ?? "",
     pugs: user.pugs,
+    banned: user.banned ?? false,
   };
 }
 
@@ -30,5 +31,6 @@ export function userToResponseProfile(user: User, data: any): UserResponse {
     pugs: user.pugs,
     profilePicture: user.profilePicture ?? "",
     isFollowing: !!data,
+    banned: user.banned ?? false,
   };
 }

@@ -1,6 +1,4 @@
 import { Router } from "express";
-import { signUp } from "../app/auth/signup/SignUp";
-import { signIn } from "../app/auth/signin/SignIn";
 import { addPug } from "../app/pug/add/AddPug";
 import { getAllPugs } from "../app/pug/getall/GetAllPug";
 import { getAllPugsFromFollowing } from "../app/pug/getallfromfollowing/GetAllFromFollowing";
@@ -13,6 +11,7 @@ import { getAllPugsFromFollowingPagealble } from "../app/pug/getallfromfollowing
 import { deletePug } from "../app/pug/delete/DeletePug";
 import { getAllPugsUsersPageable } from "../app/pug/actualityall/ActualityAll";
 import { getPug } from "../app/pug/get/GetPug";
+import { signalPug } from "../app/pug/signal/SignalPug";
 
 const pugRouter = Router();
 
@@ -28,6 +27,7 @@ const actuality = "/actuality";
 const like = "/like";
 const unlike = "/unlike";
 const comment = "/comment";
+const signalPath = "/signal";
 
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -81,5 +81,6 @@ pugRouter.put(like, likePug);
 pugRouter.put(unlike, unLikePug);
 pugRouter.put(comment, commentPug);
 pugRouter.get(comment, getComments);
+pugRouter.post(signalPath, signalPug);
 
 export default pugRouter;

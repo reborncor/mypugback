@@ -1,9 +1,15 @@
 import { Request, Response } from "express";
-import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
+import {
+  checkThatUserExistsOrThrow,
+  checkThatUserIsNotAlreadyBlocked,
+  checkThatUserIsNotAlreadyFollow,
+  checkThatUserisntHimself,
+} from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import FollowerRepository from "../../../repository/FollowerRepository";
+import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const blockUser = async (req: Request, res: Response) => {
   try {
@@ -30,16 +36,26 @@ const execute = async (userId: string, username: string): Promise<any> => {
 
   checkThatUserExistsOrThrow(currentUser);
   checkThatUserExistsOrThrow(otherUser);
+  checkThatUserisntHimself(currentUser, otherUser);
 
-  await FollowerRepository.addUserToBlocking(currentUser, otherUser);
+  const userAlreadyBlocked = await FollowerRepository.findUserInBlockingList(
+    currentUser.username,
+    otherUser.username
+  );
+  checkThatUserIsNotAlreadyBlocked(userAlreadyBlocked);
+
+  await FollowerRepository.addUserToBlocking(
+    currentUser,
+    userToUserFactoryResponse(otherUser)
+  );
 
   const follower = await FollowerRepository.deleteUserFromFollower(
-    otherUser,
-    currentUser
+    currentUser,
+    userToUserFactoryResponse(otherUser)
   );
   const following = await FollowerRepository.deleteUserFromFollowing(
-    otherUser,
-    currentUser
+    currentUser,
+    userToUserFactoryResponse(otherUser)
   );
 
   if (follower) {

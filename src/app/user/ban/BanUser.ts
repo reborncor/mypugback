@@ -1,21 +1,18 @@
 import { Request, Response } from "express";
-import BaseResponse from "../../../response/BaseResponse";
 import {
+  checkThatFeatureIsSucess,
   checkThatUserExistsOrThrow,
-  checkThatUserIsNotAlreadyFollow,
-  checkThatUserisntHimself,
 } from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
-import FollowerRepository from "../../../repository/FollowerRepository";
 
-export const followUser = async (req: Request, res: Response) => {
+export const banUser = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
-    const { username } = req.body;
-    const user = await executeAddFriend(userId, username);
+    const { username, isBanned } = req.body;
+    const user = await execute(userId, username, isBanned);
     res
       .status(200)
       .json({ code: user.code, message: user.message, payload: user.payload });
@@ -29,32 +26,20 @@ export const followUser = async (req: Request, res: Response) => {
   }
 };
 
-export const executeAddFriend = async (
+const execute = async (
   userId: string,
-  username: string
-): Promise<BaseResponse<any>> => {
+  username: string,
+  isBanned: boolean
+): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
   const otherUser = await UserRepository.findByUsername(username);
 
   checkThatUserExistsOrThrow(currentUser);
   checkThatUserExistsOrThrow(otherUser);
-  checkThatUserisntHimself(currentUser, otherUser);
-
-  const userAlreadyFollow = await FollowerRepository.findUserInFollwingList(
-    currentUser.username,
-    otherUser.username
-  );
-
-  checkThatUserIsNotAlreadyFollow(userAlreadyFollow);
-
-  await FollowerRepository.addUserToFollowing(currentUser, otherUser);
-  await FollowerRepository.addUserToFollower(otherUser, currentUser);
-
-  await UserRepository.updateUserFollower(otherUser, 1);
-  await UserRepository.updateUserFollowing(currentUser, 1);
-
+  const result = await UserRepository.banUser(otherUser, isBanned);
+  checkThatFeatureIsSucess(result);
   return {
     code: 0,
-    message: "Nouvel utilisateur suivit",
+    message: "Status utilisateur mis à jour",
   };
 };
