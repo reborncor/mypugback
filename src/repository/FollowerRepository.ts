@@ -1,7 +1,7 @@
 import { db } from "./db";
 import { User } from "../models/User";
-import { Follower } from "../models/Follower";
 import { FollowingFollowerModel } from "../models/FollowingFollowerModel";
+import { UserFactory } from "../models/UserFactory";
 
 const collectionName = "userfriends";
 
@@ -30,13 +30,14 @@ export default class FollowerRepository {
 
   static async addUserToFollowing(
     user: User,
-    follower: Follower
+    follower: UserFactory
   ): Promise<any> {
     const exist = await this.findByUsername(user.username);
     if (!exist) {
       const dataset: FollowingFollowerModel = {
         following: [],
         followers: [],
+        blocked: [],
         username: user.username,
       };
       await this.insert(dataset);
@@ -49,12 +50,38 @@ export default class FollowerRepository {
       }
     );
   }
-  static async addUserToFollower(user: User, follower: Follower): Promise<any> {
+  static async addUserToBlocking(
+    user: User,
+    userToBlock: UserFactory
+  ): Promise<any> {
     const exist = await this.findByUsername(user.username);
     if (!exist) {
       const dataset: FollowingFollowerModel = {
         following: [],
         followers: [],
+        blocked: [],
+        username: user.username,
+      };
+      await this.insert(dataset);
+    }
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $push: { blocked: userToBlock },
+      }
+    );
+  }
+  static async addUserToFollower(
+    user: User,
+    follower: UserFactory
+  ): Promise<any> {
+    const exist = await this.findByUsername(user.username);
+    if (!exist) {
+      const dataset: FollowingFollowerModel = {
+        following: [],
+        followers: [],
+        blocked: [],
         username: user.username,
       };
       await this.insert(dataset);
@@ -70,7 +97,7 @@ export default class FollowerRepository {
 
   static async deleteUserFromFollowing(
     user: User,
-    follower: Follower
+    follower: UserFactory
   ): Promise<any> {
     const call = db.get(collectionName);
 
@@ -83,7 +110,7 @@ export default class FollowerRepository {
   }
   static async deleteUserFromFollower(
     user: User,
-    follower: Follower
+    follower: UserFactory
   ): Promise<any> {
     const call = db.get(collectionName);
     return await call.findOneAndUpdate(
@@ -94,11 +121,15 @@ export default class FollowerRepository {
     );
   }
 
-  static async findAllFollowersFromUser(username: string): Promise<Follower[]> {
+  static async findAllFollowersFromUser(
+    username: string
+  ): Promise<UserFactory[]> {
     const call = db.get(collectionName);
     return await call.distinct("followers", { username: username });
   }
-  static async findAllFollowingFromUser(username: string): Promise<Follower[]> {
+  static async findAllFollowingFromUser(
+    username: string
+  ): Promise<UserFactory[]> {
     const call = db.get(collectionName);
     return await call.distinct("following", { username: username });
   }

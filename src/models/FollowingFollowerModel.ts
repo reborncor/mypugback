@@ -1,9 +1,10 @@
 import { ObjectId } from "bson";
-import { Follower } from "./Follower";
+import { UserFactory } from "./UserFactory";
 
 export interface FollowingFollowerModel {
   _id?: ObjectId;
   username: string;
-  followers: Follower[];
-  following: Follower[];
+  followers: UserFactory[];
+  following: UserFactory[];
+  blocked: UserFactory[];
 }

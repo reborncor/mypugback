@@ -12,6 +12,7 @@ import PugRepository from "../../../repository/PugRepository";
 import { Pug } from "../../../models/Pug";
 import { Comment } from "../../../models/Comment";
 import { ObjectId } from "bson";
+import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const commentPug = async (req: Request, res: Response) => {
   try {
@@ -50,7 +51,7 @@ const execute = async (
   const date = moment().unix().toString();
   const comment: Comment = {
     content,
-    author: currentUser.username,
+    author: userToUserFactoryResponse(currentUser),
     date: date,
     id: new ObjectId(),
   };

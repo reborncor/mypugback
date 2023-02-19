@@ -1,18 +1,11 @@
 import { Request, Response } from "express";
-import {
-  checkThatUserExistsOrThrow,
-  checkThatUserIsNotAlreadyFollow,
-  checkThatUserNotFollowed,
-  checkThatUserSignUpCredentialsOrThrow,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import FollowerRepository from "../../../repository/FollowerRepository";
-import { ObjectId } from "bson";
-import { UserFactory } from "../../../models/UserFactory";
 
-export const unFollowUser = async (req: Request, res: Response) => {
+export const blockUser = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
@@ -38,20 +31,26 @@ const execute = async (userId: string, username: string): Promise<any> => {
   checkThatUserExistsOrThrow(currentUser);
   checkThatUserExistsOrThrow(otherUser);
 
-  const userNotFollow = await FollowerRepository.findUserInFollwingList(
-    currentUser.username,
-    otherUser.username
+  await FollowerRepository.addUserToBlocking(currentUser, otherUser);
+
+  const follower = await FollowerRepository.deleteUserFromFollower(
+    otherUser,
+    currentUser
   );
-  checkThatUserNotFollowed(userNotFollow);
+  const following = await FollowerRepository.deleteUserFromFollowing(
+    otherUser,
+    currentUser
+  );
 
-  await FollowerRepository.deleteUserFromFollowing(currentUser, otherUser);
-  await FollowerRepository.deleteUserFromFollower(otherUser, currentUser);
-
-  await UserRepository.updateUserFollowing(currentUser, -1);
-  await UserRepository.updateUserFollower(otherUser, -1);
+  if (follower) {
+    await UserRepository.updateUserFollower(otherUser, -1);
+  }
+  if (following) {
+    await UserRepository.updateUserFollowing(currentUser, -1);
+  }
 
   return {
     code: 0,
-    message: "Nouvel utilisateur unfollow",
+    message: "Utilisateur blocké",
   };
 };

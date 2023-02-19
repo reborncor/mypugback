@@ -10,6 +10,7 @@ import {
   UserPugResponse,
   userPugToResponse,
 } from "../../../response/UserPugResponse";
+import { ObjectId } from "bson";
 
 export const getAllPugs = async (req: Request, res: Response) => {
   try {
@@ -34,6 +35,13 @@ const execute = async (userId: string): Promise<UserPugResponse> => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
   const result = await PugRepository.getAllPugsFromUser(currentUser.username);
-  if (!result) return { username: currentUser.username, pugs: [] };
+  if (!result)
+    return {
+      _id: undefined,
+      profilePicture: currentUser.profilePicture,
+      userId: new ObjectId(currentUser._id).toString(),
+      username: currentUser.username,
+      pugs: [],
+    };
   return userPugToResponse(result, currentUser.username);
 };

@@ -1,8 +1,6 @@
-import { ObjectId } from "bson";
+import { UserFactory } from "./UserFactory";
 
-export interface User {
-  _id?: ObjectId;
-  username: string;
+export interface User extends UserFactory {
   password: string;
   email: string;
   admin: boolean;

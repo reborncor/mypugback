@@ -10,6 +10,7 @@ import { successCode } from "../../util/util";
 import { CustomError } from "../../util/error/CustomError";
 import { conversationToResponse } from "../../response/ConversationResponse";
 import Conversation from "../../models/Conversation";
+import { userToUserFactoryResponse } from "../../response/UserFactoryResponse";
 
 export const createConversation = async (
   req: Request,
@@ -57,6 +58,10 @@ const execute = async (userId: string, receiverUsername: string) => {
       members: [currentUser.username, receiverUser.username],
       chat: [],
       seen: [currentUser.username],
+      membersInfos: [
+        userToUserFactoryResponse(currentUser),
+        userToUserFactoryResponse(receiverUser),
+      ],
     };
     await ConversationRepository.insert(newConversation);
     return { conversation: newConversation, exist: false };

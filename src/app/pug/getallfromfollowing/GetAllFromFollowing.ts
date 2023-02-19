@@ -8,8 +8,8 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
 import FollowerRepository from "../../../repository/FollowerRepository";
-import { Follower } from "../../../models/Follower";
 import { PugResponse, pugToResponse } from "../../../response/PugResponse";
+import { UserFactory } from "../../../models/UserFactory";
 
 export const getAllPugsFromFollowing = async (req: Request, res: Response) => {
   try {
@@ -34,7 +34,7 @@ export const getAllPugsFromFollowing = async (req: Request, res: Response) => {
 const execute = async (userId: string): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
-  const data: Follower[] = await FollowerRepository.findAllFollowingFromUser(
+  const data: UserFactory[] = await FollowerRepository.findAllFollowingFromUser(
     currentUser.username
   );
   const usernames: string[] = [];

@@ -1,4 +1,4 @@
 echo Debut du build...
-docker build . -t joumichy/mypugrelease
-docker push joumichy/mypugrelease
+docker-compose build
+docker-compose push
 echo Fin du build

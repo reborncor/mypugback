@@ -6,6 +6,8 @@ import { Socket } from "socket.io";
 import { allUsersConnected } from "./util/util";
 import { sendMessage } from "./app/conversation/sendMessage";
 import { seenConversation } from "./app/conversation/seenConversation";
+import { executeConversationsFromUser } from "./app/conversation/getConversations";
+
 const path = require("path");
 
 const init = () => {
@@ -52,6 +54,11 @@ const init = () => {
 
     socket.on("credentials", (msg: any) => {
       allUsersConnected.set(msg, socket.id);
+    });
+
+    socket.on("notification", async (msg: any) => {
+      const result = await executeConversationsFromUser(msg.userId);
+      socket.emit("notificationCallBack", result);
     });
 
     socket.on("seenConversation", async (msg: any) => {

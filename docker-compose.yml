@@ -1,11 +1,11 @@
 version: "2"
 services:
   web:
-    image: joumichy/mypug
+    image: joumichy/mypugrelease:latest
     build: .
     command: npm run start:dev
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
     ports:
-      - "80:3000"
+      - "3000:80"

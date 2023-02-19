@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
+import {
+  checkThatCommentsExistOrThrow,
+  checkThatUserExistsOrThrow,
+} from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
@@ -37,5 +40,6 @@ const execute = async (
 
   checkThatUserExistsOrThrow(currentUser);
   const result = await PugRepository.findByIdWithCommentsOnly(pugId, pugName);
+  checkThatCommentsExistOrThrow(result.pugs[0].comments);
   return result.pugs[0].comments;
 };

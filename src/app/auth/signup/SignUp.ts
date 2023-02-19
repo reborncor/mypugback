@@ -58,6 +58,7 @@ const signUpUser = async (
 
   const hashedPassword = await encodePassword(password);
   const newUser: User = {
+    profilePicture: "",
     admin: false,
     email,
     password: hashedPassword,

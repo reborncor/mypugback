@@ -11,7 +11,12 @@ const collectionName = "pugs";
 export default class PugRepository {
   static async insert(user: User, pug: Pug): Promise<UserPug> {
     const call = db.get(collectionName);
-    const newPug: UserPug = { username: user.username, pugs: [pug] };
+    const newPug: UserPug = {
+      profilePicture: user.profilePicture,
+      userId: new ObjectId(user._id).toString(),
+      username: user.username,
+      pugs: [pug],
+    };
     return await call.insert(newPug);
   }
 
@@ -80,6 +85,8 @@ export default class PugRepository {
         $group: {
           _id: "$username",
           pug: { $push: "$pugs" },
+          profilePicture: { $first: "$profilePicture" },
+          userId: { $first: "userId" },
         },
       },
       { $unwind: "$pug" },
@@ -179,6 +186,7 @@ export default class PugRepository {
       { projection: { "pugs.comments": { $slice: -1 } } }
     );
   }
+
   static async getAllPugsFromFollowingPageable(
     usernames: string[],
     startInd: number
@@ -208,10 +216,13 @@ export default class PugRepository {
     return await call.aggregate([
       { $unwind: { path: "$pugs" } },
       { $unwind: "$pugs.date" },
+
       {
         $group: {
           _id: "$username",
           pug: { $push: "$pugs" },
+          profilePicture: { $first: "$profilePicture" },
+          userId: { $first: "$userId" },
         },
       },
       { $unwind: "$pug" },
@@ -219,6 +230,20 @@ export default class PugRepository {
       { $sort: { "pug.date": -1 } },
       { $skip: startInd },
       { $limit: 5 },
+
+      {
+        $project: {
+          _id: 1,
+          pug: 1,
+          profilePicture: 1,
+          userId: 1,
+        },
+      },
     ]);
+  }
+
+  static async detePugsFromUser(user: User): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.remove({ username: user.username });
   }
 }

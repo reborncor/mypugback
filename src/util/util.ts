@@ -9,6 +9,7 @@ export const emailInvalid = "Email invalide";
 export const wrongPassword = "mot de passe incorrect";
 export const accountNotConnected = "Utilisateur non connecté";
 export const accountDoesntExist = "L'utilisateur n'existe pas";
+export const commentNotFound = "Le commentaire a été supprimé";
 export const accountNotFound = "Aucun resultat";
 export const accountNotAllowed =
   "Vous ne pouvez pas interargir avec cet utilisarteur";

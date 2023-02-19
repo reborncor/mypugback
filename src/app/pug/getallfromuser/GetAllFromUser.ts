@@ -7,6 +7,7 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
 import { userPugToResponseNoComment } from "../../../response/UserPugResponse";
+import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const getAllPugsFromUser = async (req: Request, res: Response) => {
   try {
@@ -39,7 +40,7 @@ const execute = async (userId: string, username: string): Promise<any> => {
   );
   return userPugToResponseNoComment(
     result,
-    currentUser.username,
-    otherUser.username
+    currentUser,
+    userToUserFactoryResponse(otherUser)
   );
 };

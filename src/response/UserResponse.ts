@@ -1,4 +1,3 @@
-import { ObjectId } from "bson";
 import { User } from "../models/User";
 
 export default interface UserResponse extends User {
@@ -14,6 +13,7 @@ export function userToUserResponse(user: User): UserResponse {
     followers: user.followers,
     following: user.following,
     password: "",
+    profilePicture: user.profilePicture ?? "",
     pugs: user.pugs,
   };
 }
@@ -28,6 +28,7 @@ export function userToResponseProfile(user: User, data: any): UserResponse {
     following: user.following,
     password: "",
     pugs: user.pugs,
+    profilePicture: user.profilePicture ?? "",
     isFollowing: !!data,
   };
 }

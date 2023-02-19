@@ -8,16 +8,7 @@ const conversationRouter = (0, express_1.Router)();
 const getAllConversationPath = "/getconversations";
 const createOrGetConversationPath = "/getconversation";
 const getConversationPageablePath = "/getconversationpage";
-conversationRouter.get(
-  getConversationPageablePath,
-  getConversationPageable_1.getConversationPageable
-);
-conversationRouter.get(
-  getAllConversationPath,
-  getConversations_1.getAllConversationFromUser
-);
-conversationRouter.post(
-  createOrGetConversationPath,
-  createConversation_1.createConversation
-);
+conversationRouter.get(getConversationPageablePath, getConversationPageable_1.getConversationPageable);
+conversationRouter.get(getAllConversationPath, getConversations_1.getAllConversationFromUser);
+conversationRouter.post(createOrGetConversationPath, createConversation_1.createConversation);
 exports.default = conversationRouter;

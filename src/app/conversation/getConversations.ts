@@ -14,7 +14,7 @@ export const getAllConversationFromUser = async (
   const token = req.headers.authorization?.split(" ")[1] || "";
   try {
     const { userId } = decodeToken(token);
-    const conversations = await execute(userId);
+    const conversations = await executeConversationsFromUser(userId);
     res.status(200).json({
       code: successCode,
       message: "Liste des conversations : ",
@@ -30,7 +30,7 @@ export const getAllConversationFromUser = async (
   }
 };
 
-const execute = async (userId: string) => {
+export const executeConversationsFromUser = async (userId: string) => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
   const conversations =

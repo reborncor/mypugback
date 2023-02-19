@@ -37,11 +37,12 @@ const execute = async (
   pugId: string
 ): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
+  const otherUser = await UserRepository.findByUsername(username);
   checkThatUserExistsOrThrow(currentUser);
 
-  const data = await PugRepository.findById(pugId, username);
+  const data = await PugRepository.findById(pugId, otherUser.username);
 
   const pug: Pug = data.pugs[0];
   checkThatPugExistOrThrow(pug);
-  return pugToResponse(pug, username, username);
+  return pugToResponse(pug, username, otherUser);
 };

@@ -8,12 +8,16 @@ import { unFollowUser } from "../app/user/unfollow/UnFollow";
 import { findUsers } from "../app/user/find/FindUsers";
 import { getUserFollowing } from "../app/user/following/GetFollowing";
 import { getUserFollowers } from "../app/user/followers/GetFollowers";
+import { deleteAccount } from "../app/user/delete/DeleteAccount";
+import { blockUser } from "../app/user/block/BlockUser";
 
 const userRouter = Router();
 
 const signUpPath = "/signup";
 const signInPath = "/signin";
 const infoPath = "/info";
+const deletePath = "/delete";
+const blockPath = "/block";
 const getPath = "/get";
 const findPath = "/find";
 const getfollowers = "/followers";
@@ -31,6 +35,8 @@ userRouter.get(getfollowing, getUserFollowing);
 userRouter.get(getfollowers, getUserFollowers);
 
 userRouter.put(followPath, followUser);
+userRouter.delete(deletePath, deleteAccount);
+userRouter.put(blockPath, blockUser);
 userRouter.put(unfollowPath, unFollowUser);
 
 export default userRouter;

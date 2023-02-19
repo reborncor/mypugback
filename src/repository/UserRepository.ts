@@ -29,12 +29,14 @@ export default class UserRepository {
       phoneNumber,
     });
   }
+
   static async findUsersByUsername(username: string): Promise<User[]> {
     const call = db.get(collectionName);
     return await call.find({
       username: { $regex: new RegExp("^" + username), $options: "i" },
     });
   }
+
   static async findById(id: string): Promise<User> {
     const call = db.get(collectionName);
     return await call.findOne({
@@ -51,6 +53,7 @@ export default class UserRepository {
       }
     );
   }
+
   static async updateUserFollower(user: User, number: number): Promise<User> {
     const call = db.get(collectionName);
     return await call.findOneAndUpdate(
@@ -60,6 +63,7 @@ export default class UserRepository {
       }
     );
   }
+
   static async updateUserFollowing(user: User, number: number): Promise<User> {
     const call = db.get(collectionName);
     return await call.findOneAndUpdate(
@@ -68,5 +72,10 @@ export default class UserRepository {
         $set: { following: user.following + number },
       }
     );
+  }
+
+  static async deleteUser(user: User): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.remove({ username: user.username });
   }
 }

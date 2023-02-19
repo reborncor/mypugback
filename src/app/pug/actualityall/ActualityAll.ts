@@ -10,6 +10,7 @@ import {
   PugResponse,
   pugToResponsePageableSorted,
 } from "../../../response/PugResponse";
+import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const getAllPugsUsersPageable = async (req: Request, res: Response) => {
   try {
@@ -48,7 +49,15 @@ const execute = async (
   const pugsResponse: PugResponse[] = [];
   result.forEach((elem: any) => {
     pugsResponse.push(
-      pugToResponsePageableSorted(elem.pug, currentUser.username, elem._id)
+      pugToResponsePageableSorted(
+        elem.pug,
+        userToUserFactoryResponse(currentUser),
+        {
+          _id: elem.userId,
+          username: elem._id,
+          profilePicture: elem.profilePicture,
+        }
+      )
     );
   });
   return pugsResponse;

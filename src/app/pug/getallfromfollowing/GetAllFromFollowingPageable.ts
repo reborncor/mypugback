@@ -7,14 +7,15 @@ import { decodeToken } from "../../../util/security/tokenManagement";
 import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
 import FollowerRepository from "../../../repository/FollowerRepository";
-import { Follower } from "../../../models/Follower";
 import {
   PugResponse,
   pugToResponsePageableSorted,
 } from "../../../response/PugResponse";
+import { UserFactory } from "../../../models/UserFactory";
 
 export const getAllPugsFromFollowingPagealble = async (
   req: Request,
+
   res: Response
 ) => {
   try {
@@ -41,7 +42,7 @@ export const getAllPugsFromFollowingPagealble = async (
 const execute = async (userId: string, startInd: number): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
   checkThatUserExistsOrThrow(currentUser);
-  const data: Follower[] = await FollowerRepository.findAllFollowingFromUser(
+  const data: UserFactory[] = await FollowerRepository.findAllFollowingFromUser(
     currentUser.username
   );
   const usernames: string[] = [];
@@ -53,7 +54,7 @@ const execute = async (userId: string, startInd: number): Promise<any> => {
   const pugsResponse: PugResponse[] = [];
   result.forEach((elem: any) => {
     pugsResponse.push(
-      pugToResponsePageableSorted(elem.pug, currentUser.username, elem._id)
+      pugToResponsePageableSorted(elem.pug, currentUser, elem._id)
     );
   });
 

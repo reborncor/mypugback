@@ -9,8 +9,6 @@ import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import FollowerRepository from "../../../repository/FollowerRepository";
-import { Follower } from "../../../models/Follower";
-import { ObjectId } from "bson";
 
 export const followUser = async (req: Request, res: Response) => {
   try {
@@ -48,18 +46,8 @@ export const executeAddFriend = async (
   );
   checkThatUserIsNotAlreadyFollow(userAlreadyFollow);
 
-  const id = new ObjectId(otherUser._id);
-  const follower: Follower = {
-    _id: id,
-    username: otherUser.username,
-  };
-  const following: Follower = {
-    _id: id,
-    username: currentUser.username,
-  };
-
-  await FollowerRepository.addUserToFollowing(currentUser, follower);
-  await FollowerRepository.addUserToFollower(otherUser, following);
+  await FollowerRepository.addUserToFollowing(currentUser, otherUser);
+  await FollowerRepository.addUserToFollower(otherUser, currentUser);
 
   await UserRepository.updateUserFollower(otherUser, 1);
   await UserRepository.updateUserFollowing(currentUser, 1);

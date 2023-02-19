@@ -9,6 +9,7 @@ import {
   accountNotConnected,
   accountNotFollowed,
   alreadyLiked,
+  commentNotFound,
   conversationDoesntExist,
   conversationsDoesntExist,
   emailInvalid,
@@ -91,6 +92,12 @@ export function checkThatUserisntHimself(user: User, userToAdd: User) {
 export function checkThatUserExistsOrThrow(user: User) {
   if (!user) {
     throw new CustomError(errorCode, accountDoesntExist, {});
+  }
+}
+
+export function checkThatCommentsExistOrThrow(comment: any) {
+  if (!comment) {
+    throw new CustomError(errorCode, commentNotFound, {});
   }
 }
 export function checkThatUserIsNotLucieOrThrow(user: User) {
