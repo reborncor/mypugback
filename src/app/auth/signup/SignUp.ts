@@ -66,6 +66,7 @@ const signUpUser = async (
     followers: 0,
     following: 0,
     pugs: 0,
+    description: "",
     banned: false,
   };
 

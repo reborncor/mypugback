@@ -82,6 +82,19 @@ export default class UserRepository {
       }
     );
   }
+  static async updateUserInfo(
+    user: User,
+    description: string,
+    profilePicture: string
+  ): Promise<User> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $set: { description, profilePicture },
+      }
+    );
+  }
 
   static async deleteUser(user: User): Promise<any> {
     const call = db.get(collectionName);

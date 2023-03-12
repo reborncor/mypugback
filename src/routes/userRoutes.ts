@@ -13,12 +13,14 @@ import { blockUser } from "../app/user/block/BlockUser";
 import { signalUser } from "../app/user/signal/SignalUser";
 import { deblockUser } from "../app/user/deblock/DeblockUser";
 import { getUsersBlocked } from "../app/user/findBlocked/GetBlocked";
+import { updateInfoUser } from "../app/user/updateInfo/UpdateInfo";
 
 const userRouter = Router();
 
 const signUpPath = "/signup";
 const signInPath = "/signin";
 const infoPath = "/info";
+const updateInfoPath = "/info";
 const deletePath = "/delete";
 const blockPath = "/block";
 const blockedPath = "/blocked";
@@ -47,5 +49,6 @@ userRouter.put(deblockPath, deblockUser);
 userRouter.get(blockedPath, getUsersBlocked);
 userRouter.put(unfollowPath, unFollowUser);
 userRouter.post(signalPath, signalUser);
+userRouter.put(updateInfoPath, updateInfoUser);
 
 export default userRouter;
