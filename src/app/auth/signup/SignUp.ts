@@ -28,7 +28,6 @@ export const signUp = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     if (err instanceof CustomError) {
-      console.log(err);
       res.status(400).json({ message: err.message, code: err.code });
     } else {
       console.log(err);
@@ -67,6 +66,7 @@ const signUpUser = async (
     followers: 0,
     following: 0,
     pugs: 0,
+    banned: false,
   };
 
   return await UserRepository.insert(newUser);

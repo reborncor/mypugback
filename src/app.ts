@@ -78,8 +78,10 @@ const init = () => {
       const result = await sendMessage(
         msg.senderUsername,
         msg.receiverUsername,
-        msg.content
+        msg.content,
+        msg.type
       );
+      console.log(result);
 
       if (result.code == 0) {
         if (allUsersConnected.has(msg.receiverUsername)) {
@@ -89,7 +91,10 @@ const init = () => {
           );
         }
 
-        socket.emit("messagesuccess", result.code.toString());
+        socket.emit(
+          "messagesuccess",
+          `${result.code.toString()}_${msg.receiverUsername}`
+        );
       } else {
         socket.emit("messagesuccess", result.code.toString());
       }

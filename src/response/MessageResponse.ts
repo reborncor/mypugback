@@ -12,5 +12,6 @@ export function messageToResponse(message: Message): MessageResponse {
     senderUsername: message.senderUsername,
     receiverUsername: message.receiverUsername,
     time: message.time,
+    type: message.type,
   };
 }

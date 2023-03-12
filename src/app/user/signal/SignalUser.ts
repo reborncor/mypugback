@@ -7,9 +7,10 @@ import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import SignalUserRepository from "../../../repository/SignalRepository";
-import { SignalFactory, SignalReason } from "../../../models/SignalFactory";
+import { SignalFactory } from "../../../models/SignalFactory";
 import { ObjectId } from "bson";
 import moment from "moment";
+import { SignalReason } from "../../../models/SignalReason";
 
 export const signalUser = async (req: Request, res: Response) => {
   try {

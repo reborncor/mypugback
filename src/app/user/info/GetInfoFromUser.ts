@@ -48,11 +48,15 @@ const execute = async (
     currentUser.username,
     otherUser.username
   );
-  console.log(userAlreadyFollow);
   const userBlocked = await FollowerRepository.findUserInBlockingList(
     currentUser.username,
     otherUser.username
   );
   checkThatUserisNotBlocked(userBlocked);
+  const otherBlocked = await FollowerRepository.findUserInBlockingList(
+    otherUser.username,
+    currentUser.username
+  );
+  checkThatUserisNotBlocked(otherBlocked);
   return userToResponseProfile(otherUser, userAlreadyFollow);
 };

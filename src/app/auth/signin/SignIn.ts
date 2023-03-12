@@ -25,7 +25,6 @@ export const signIn = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     if (err instanceof CustomError) {
-      console.log(err);
       res.status(400).json({ message: err.message, code: err.code });
     } else {
       console.log(err);

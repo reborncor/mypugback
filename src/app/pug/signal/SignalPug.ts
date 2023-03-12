@@ -6,13 +6,11 @@ import {
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
-import SignalUserRepository from "../../../repository/SignalRepository";
-import { SignalFactory, SignalReason } from "../../../models/SignalFactory";
 import { ObjectId } from "bson";
 import { SignalPug } from "../../../models/SignalPug";
 import SignalPugRepository from "../../../repository/SignalPugRepository";
 import moment from "moment";
-
+import { SignalReason } from "../../../models/SignalReason";
 export const signalPug = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";

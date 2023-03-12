@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
+import {
+  checkThatUserExistsOrThrow,
+  checkThatUserisNotBlocked,
+} from "../../../util/validator/checkdata";
 
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
@@ -10,8 +13,7 @@ import {
   UserPugNoCommentResponse,
   userPugToResponseNoComment,
 } from "../../../response/UserPugResponse";
-import { ObjectId } from "bson";
-import { UserPugNoComment } from "../../../models/UserPugNoComment";
+import FollowerRepository from "../../../repository/FollowerRepository";
 
 export const getAllPugsFromUser = async (req: Request, res: Response) => {
   try {
@@ -26,7 +28,6 @@ export const getAllPugsFromUser = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     if (err instanceof CustomError) {
-      console.log(err);
       res.status(400).json({ message: err.message, code: err.code });
     } else {
       console.log(err);
@@ -41,6 +42,17 @@ const execute = async (
   const currentUser = await UserRepository.findById(userId);
   const otherUser = await UserRepository.findByUsername(username);
   checkThatUserExistsOrThrow(currentUser);
+
+  const userBlocked = await FollowerRepository.findUserInBlockingList(
+    currentUser.username,
+    otherUser.username
+  );
+  checkThatUserisNotBlocked(userBlocked);
+  const otherUserBlocked = await FollowerRepository.findUserInBlockingList(
+    otherUser.username,
+    currentUser.username
+  );
+  checkThatUserisNotBlocked(otherUserBlocked);
 
   const result = await PugRepository.getAllPugsFromUserNoComment(
     otherUser.username

@@ -1,4 +1,5 @@
 export const errorCode = 1;
+export const blockedCode = 3;
 export const successCode = 0;
 export const errorCodeLucie = 403;
 export const bannedCode = 6;
@@ -10,6 +11,7 @@ export const emailInvalid = "Email invalide";
 export const wrongPassword = "mot de passe incorrect";
 export const accountNotConnected = "Utilisateur non connecté";
 export const accountDoesntExist = "L'utilisateur n'existe pas";
+export const accountBlocked = "Utilisateur introuvable";
 export const errorSurrounded = "Une erreur est survenue";
 export const accountBanned = "Votre compte a été banni";
 export const commentNotFound = "Le commentaire a été supprimé";

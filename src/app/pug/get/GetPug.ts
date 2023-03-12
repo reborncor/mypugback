@@ -23,7 +23,6 @@ export const getPug = async (req: Request, res: Response) => {
       .json({ code: successCode, message: "Pug utilisateur", payload: result });
   } catch (err: any) {
     if (err instanceof CustomError) {
-      console.log(err);
       res.status(400).json({ message: err.message, code: err.code });
     } else {
       console.log(err);

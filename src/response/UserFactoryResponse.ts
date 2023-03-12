@@ -7,7 +7,6 @@ export function userToUserFactoryResponse(user: User): UserFactoryResponse {
   return {
     username: user.username,
     profilePicture: user.profilePicture ?? "",
-    _id: user._id,
   };
 }
 export function userToUserFactoryResponseNoId(

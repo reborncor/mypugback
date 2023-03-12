@@ -21,6 +21,6 @@ signalRouter.get(pugPath, getPugSignal);
 signalRouter.get(pugsByUsernamePath, getPugsSignalByUsername);
 signalRouter.get(userPath, getUserSignal);
 signalRouter.get(usersPath, getAllUsersSignal);
-signalRouter.get(userBanPath, banUser);
+signalRouter.put(userBanPath, banUser);
 
 export default signalRouter;

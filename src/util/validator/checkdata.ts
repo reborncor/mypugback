@@ -27,6 +27,9 @@ import {
   wrongPassword,
   accountAlreadyFollow,
   bannedCode,
+  accountBanned,
+  accountBlocked,
+  blockedCode,
 } from "../util";
 var awPhoneNumber = require("awesome-phonenumber");
 import * as EmailValidator from "email-validator";
@@ -117,7 +120,7 @@ export function checkThatFeatureIsSucess(user: User) {
 }
 export function checkThatUserisNotBlocked(user: User) {
   if (user) {
-    throw new CustomError(errorCode, accountDoesntExist, {});
+    throw new CustomError(blockedCode, accountBlocked, {});
   }
 }
 
@@ -183,7 +186,7 @@ export function checkThatUserIsNotAlreadyBlocked(user: any) {
 }
 export function checkThatUserIsNotBanned(user: User) {
   if (user.banned) {
-    throw new CustomError(bannedCode, errorSurrounded, {});
+    throw new CustomError(bannedCode, accountBanned, {});
   }
 }
 
