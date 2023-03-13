@@ -41,6 +41,7 @@ const signUpUser = async (
   password: string,
   phoneNumber: string
 ): Promise<User> => {
+  console.log(phoneNumber);
   checkThatUserSignUpCredentialsOrThrow(email, password, phoneNumber, username);
 
   const existingUser = await UserRepository.findByEmail(email);

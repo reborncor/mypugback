@@ -22,13 +22,11 @@ export const updateInfoUser = async (req: Request, res: Response) => {
     const { userId } = decodeToken(token);
     const { description, profilePicture } = req.body;
     const user = await execute(userId, description, profilePicture);
-    res
-      .status(200)
-      .json({
-        code: successCode,
-        mssage: "Information utilisateur mise à jour",
-        payload: user,
-      });
+    res.status(200).json({
+      code: successCode,
+      message: "Information utilisateur mise à jour",
+      payload: user,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
