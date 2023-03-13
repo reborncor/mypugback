@@ -3,7 +3,7 @@ services:
   web:
     image: joumichy/mypugrelease:latest
     build: .
-    command: npm run start:dev
+    command: npm run start
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules

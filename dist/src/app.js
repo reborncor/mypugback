@@ -69,12 +69,13 @@ const init = () => {
             }
         }));
         socket.on("message", (msg) => __awaiter(void 0, void 0, void 0, function* () {
-            const result = yield (0, sendMessage_1.sendMessage)(msg.senderUsername, msg.receiverUsername, msg.content);
+            const result = yield (0, sendMessage_1.sendMessage)(msg.senderUsername, msg.receiverUsername, msg.content, msg.type);
+            console.log(result);
             if (result.code == 0) {
                 if (util_1.allUsersConnected.has(msg.receiverUsername)) {
                     io.to(util_1.allUsersConnected.get(msg.receiverUsername)).emit("instantmessage", result.message);
                 }
-                socket.emit("messagesuccess", result.code.toString());
+                socket.emit("messagesuccess", `${result.code.toString()}_${msg.receiverUsername}`);
             }
             else {
                 socket.emit("messagesuccess", result.code.toString());

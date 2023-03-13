@@ -18,7 +18,7 @@ const UserRepository_1 = __importDefault(require("../../../repository/UserReposi
 const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const FollowerRepository_1 = __importDefault(require("../../../repository/FollowerRepository"));
-const bson_1 = require("bson");
+const UserFactoryResponse_1 = require("../../../response/UserFactoryResponse");
 const unFollowUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -48,16 +48,8 @@ const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function
     (0, checkdata_1.checkThatUserExistsOrThrow)(otherUser);
     const userNotFollow = yield FollowerRepository_1.default.findUserInFollwingList(currentUser.username, otherUser.username);
     (0, checkdata_1.checkThatUserNotFollowed)(userNotFollow);
-    const follower = {
-        _id: new bson_1.ObjectId(otherUser._id),
-        username: otherUser.username,
-    };
-    const following = {
-        _id: new bson_1.ObjectId(otherUser._id),
-        username: currentUser.username,
-    };
-    yield FollowerRepository_1.default.deleteUserFromFollowing(currentUser, follower);
-    yield FollowerRepository_1.default.deleteUserFromFollower(otherUser, following);
+    yield FollowerRepository_1.default.deleteUserFromFollowing(currentUser, (0, UserFactoryResponse_1.userToUserFactoryResponse)(otherUser));
+    yield FollowerRepository_1.default.deleteUserFromFollower(otherUser, (0, UserFactoryResponse_1.userToUserFactoryResponse)(currentUser));
     yield UserRepository_1.default.updateUserFollowing(currentUser, -1);
     yield UserRepository_1.default.updateUserFollower(otherUser, -1);
     return {

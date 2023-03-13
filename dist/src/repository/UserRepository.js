@@ -82,5 +82,27 @@ class UserRepository {
             });
         });
     }
+    static banUser(user, isBanned) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $set: { banned: isBanned },
+            });
+        });
+    }
+    static updateUserInfo(user, description, profilePicture) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $set: { description, profilePicture },
+            });
+        });
+    }
+    static deleteUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.remove({ username: user.username });
+        });
+    }
 }
 exports.default = UserRepository;

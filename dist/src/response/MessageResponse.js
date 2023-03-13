@@ -8,6 +8,7 @@ function messageToResponse(message) {
         senderUsername: message.senderUsername,
         receiverUsername: message.receiverUsername,
         time: message.time,
+        type: message.type,
     };
 }
 exports.messageToResponse = messageToResponse;

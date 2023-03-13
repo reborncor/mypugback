@@ -47,5 +47,6 @@ const execute = (userId, pugId, pugName) => __awaiter(void 0, void 0, void 0, fu
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     const result = yield PugRepository_1.default.findByIdWithCommentsOnly(pugId, pugName);
+    (0, checkdata_1.checkThatCommentsExistOrThrow)(result.pugs[0].comments);
     return result.pugs[0].comments;
 });

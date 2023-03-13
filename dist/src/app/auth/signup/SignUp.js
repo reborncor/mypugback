@@ -34,7 +34,6 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
-            console.log(err);
             res.status(400).json({ message: err.message, code: err.code });
         }
         else {
@@ -44,6 +43,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.signUp = signUp;
 const signUpUser = (email, username, password, phoneNumber) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(phoneNumber);
     (0, checkdata_1.checkThatUserSignUpCredentialsOrThrow)(email, password, phoneNumber, username);
     const existingUser = yield UserRepository_1.default.findByEmail(email);
     const existingUserWithUserName = yield UserRepository_1.default.findByUsername(username);
@@ -53,6 +53,7 @@ const signUpUser = (email, username, password, phoneNumber) => __awaiter(void 0,
     (0, checkdata_1.checkThatUserWithPhoneNumberDoesntExistOrThrow)(existingUserWithPhoneNumber);
     const hashedPassword = yield (0, passwordManagement_1.encodePassword)(password);
     const newUser = {
+        profilePicture: "",
         admin: false,
         email,
         password: hashedPassword,
@@ -61,6 +62,8 @@ const signUpUser = (email, username, password, phoneNumber) => __awaiter(void 0,
         followers: 0,
         following: 0,
         pugs: 0,
+        description: "",
+        banned: false,
     };
     return yield UserRepository_1.default.insert(newUser);
 });

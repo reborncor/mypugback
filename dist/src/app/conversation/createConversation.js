@@ -20,6 +20,7 @@ const tokenManagement_1 = require("../../util/security/tokenManagement");
 const util_1 = require("../../util/util");
 const CustomError_1 = require("../../util/error/CustomError");
 const ConversationResponse_1 = require("../../response/ConversationResponse");
+const UserFactoryResponse_1 = require("../../response/UserFactoryResponse");
 const createConversation = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const token = ((_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1]) || "";
@@ -64,6 +65,10 @@ const execute = (userId, receiverUsername) => __awaiter(void 0, void 0, void 0, 
             members: [currentUser.username, receiverUser.username],
             chat: [],
             seen: [currentUser.username],
+            membersInfos: [
+                (0, UserFactoryResponse_1.userToUserFactoryResponse)(currentUser),
+                (0, UserFactoryResponse_1.userToUserFactoryResponse)(receiverUser),
+            ],
         };
         yield ConversationRepository_1.default.insert(newConversation);
         return { conversation: newConversation, exist: false };

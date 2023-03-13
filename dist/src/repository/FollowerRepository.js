@@ -41,6 +41,7 @@ class FollowerRepository {
                 const dataset = {
                     following: [],
                     followers: [],
+                    blocked: [],
                     username: user.username,
                 };
                 yield this.insert(dataset);
@@ -51,6 +52,24 @@ class FollowerRepository {
             });
         });
     }
+    static addUserToBlocking(user, userToBlock) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const exist = yield this.findByUsername(user.username);
+            if (!exist) {
+                const dataset = {
+                    following: [],
+                    followers: [],
+                    blocked: [],
+                    username: user.username,
+                };
+                yield this.insert(dataset);
+            }
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $push: { blocked: userToBlock },
+            });
+        });
+    }
     static addUserToFollower(user, follower) {
         return __awaiter(this, void 0, void 0, function* () {
             const exist = yield this.findByUsername(user.username);
@@ -58,6 +77,7 @@ class FollowerRepository {
                 const dataset = {
                     following: [],
                     followers: [],
+                    blocked: [],
                     username: user.username,
                 };
                 yield this.insert(dataset);
@@ -73,6 +93,14 @@ class FollowerRepository {
             const call = db_1.db.get(collectionName);
             return yield call.findOneAndUpdate({ username: user.username }, {
                 $pull: { following: follower },
+            });
+        });
+    }
+    static deblockUser(user, follower) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $pull: { blocked: follower },
             });
         });
     }
@@ -96,6 +124,12 @@ class FollowerRepository {
             return yield call.distinct("following", { username: username });
         });
     }
+    static findAllBlockedFromUser(username) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.distinct("blocked", { username: username });
+        });
+    }
     static findUserInFollwingList(username, userToFollow) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
@@ -104,6 +138,17 @@ class FollowerRepository {
                 "following.username": userToFollow,
             }, {
                 projection: { following: { $elemMatch: { username: userToFollow } } },
+            });
+        });
+    }
+    static findUserInBlockingList(username, user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOne({
+                username,
+                "blocked.username": user,
+            }, {
+                projection: { following: { $elemMatch: { username: user } } },
             });
         });
     }

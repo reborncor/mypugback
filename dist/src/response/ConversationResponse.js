@@ -7,6 +7,7 @@ function conversationToResponse(conversation) {
         chat: conversation.chat,
         _id: conversation._id,
         seen: conversation.seen ? conversation.seen : [],
+        membersInfos: conversation.membersInfos ? conversation.membersInfos : [],
     };
 }
 exports.conversationToResponse = conversationToResponse;

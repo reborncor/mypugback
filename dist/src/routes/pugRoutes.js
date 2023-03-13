@@ -13,6 +13,7 @@ const GetAllFromFollowingPageable_1 = require("../app/pug/getallfromfollowing/Ge
 const DeletePug_1 = require("../app/pug/delete/DeletePug");
 const ActualityAll_1 = require("../app/pug/actualityall/ActualityAll");
 const GetPug_1 = require("../app/pug/get/GetPug");
+const SignalPug_1 = require("../app/pug/signal/SignalPug");
 const pugRouter = (0, express_1.Router)();
 const add = "/add";
 const get = "/get";
@@ -25,6 +26,7 @@ const actuality = "/actuality";
 const like = "/like";
 const unlike = "/unlike";
 const comment = "/comment";
+const signalPath = "/signal";
 const multer = require("multer");
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -69,4 +71,5 @@ pugRouter.put(like, Like_1.likePug);
 pugRouter.put(unlike, UnLike_1.unLikePug);
 pugRouter.put(comment, CommentPug_1.commentPug);
 pugRouter.get(comment, GetComment_1.getComments);
+pugRouter.post(signalPath, SignalPug_1.signalPug);
 exports.default = pugRouter;

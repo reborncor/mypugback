@@ -20,7 +20,6 @@ const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const util_1 = require("../../../util/util");
 const UserResponse_1 = require("../../../response/UserResponse");
 const FollowerRepository_1 = __importDefault(require("../../../repository/FollowerRepository"));
-const fs = require("fs").promises;
 const getUserWithName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -51,5 +50,9 @@ const execute = (userId, username) => __awaiter(void 0, void 0, void 0, function
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     (0, checkdata_1.checkThatUserExistsOrThrow)(otherUser);
     const userAlreadyFollow = yield FollowerRepository_1.default.findUserInFollwingList(currentUser.username, otherUser.username);
+    const userBlocked = yield FollowerRepository_1.default.findUserInBlockingList(currentUser.username, otherUser.username);
+    (0, checkdata_1.checkThatUserisNotBlocked)(userBlocked);
+    const otherBlocked = yield FollowerRepository_1.default.findUserInBlockingList(otherUser.username, currentUser.username);
+    (0, checkdata_1.checkThatUserisNotBlocked)(otherBlocked);
     return (0, UserResponse_1.userToResponseProfile)(otherUser, userAlreadyFollow);
 });

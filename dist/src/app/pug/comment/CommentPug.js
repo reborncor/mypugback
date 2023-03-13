@@ -20,6 +20,7 @@ const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
 const bson_1 = require("bson");
+const UserFactoryResponse_1 = require("../../../response/UserFactoryResponse");
 const commentPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -53,7 +54,7 @@ const execute = (userId, pugId, pugName, content) => __awaiter(void 0, void 0, v
     const date = (0, moment_1.default)().unix().toString();
     const comment = {
         content,
-        author: currentUser.username,
+        author: (0, UserFactoryResponse_1.userToUserFactoryResponse)(currentUser),
         date: date,
         id: new bson_1.ObjectId(),
     };

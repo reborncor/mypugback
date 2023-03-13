@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserIsLucie = exports.checkThatUserIsNotLucieOrThrowWithName = exports.checkThatPugsExistOrThrow = exports.checkThatPugExistOrThrow = exports.checkThatUserIsNotLucieOrThrow = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = exports.checkThatUserDoesntExistOrThrow = exports.checkThatUserWithUsernameDoesntExistOrThrow = exports.checkThatConversationsExist = exports.checkThatConversationExist = exports.checkThatUserNotFollowed = exports.checkThatUserIsNotBanned = exports.checkThatUserIsNotAlreadyBlocked = exports.checkThatUserIsNotAlreadyFollow = exports.checkThatUserHasLiked = exports.checkThatUserNotAlreadyLike = exports.checkThatUsersExistsOrThrow = exports.checkThatUserIsLucie = exports.checkThatUserIsNotLucieOrThrowWithName = exports.checkThatPugsExistOrThrow = exports.checkThatPugExistOrThrow = exports.checkThatUserIsNotLucieOrThrow = exports.checkThatCommentsExistOrThrow = exports.checkThatUserisNotBlocked = exports.checkThatFeatureIsSucess = exports.checkThatSignalExistOrThrow = exports.checkThatUserFactoryExistsOrThrow = exports.checkThatUserExistsOrThrow = exports.checkThatUserisntHimself = exports.checkThatUserIsConnected = exports.checkThatPasswordsAreEqualsOrThrow = exports.checkThatUserSignInCredentialsOrThrow = exports.checkThatUserSignUpCredentialsOrThrow = void 0;
 const util_1 = require("../util");
 var awPhoneNumber = require("awesome-phonenumber");
 const EmailValidator = __importStar(require("email-validator"));
@@ -89,6 +89,36 @@ function checkThatUserExistsOrThrow(user) {
     }
 }
 exports.checkThatUserExistsOrThrow = checkThatUserExistsOrThrow;
+function checkThatUserFactoryExistsOrThrow(user) {
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
+    }
+}
+exports.checkThatUserFactoryExistsOrThrow = checkThatUserFactoryExistsOrThrow;
+function checkThatSignalExistOrThrow(signalFactory) {
+    if (!signalFactory) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.errorSurrounded, {});
+    }
+}
+exports.checkThatSignalExistOrThrow = checkThatSignalExistOrThrow;
+function checkThatFeatureIsSucess(user) {
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.errorSurrounded, {});
+    }
+}
+exports.checkThatFeatureIsSucess = checkThatFeatureIsSucess;
+function checkThatUserisNotBlocked(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.blockedCode, util_1.accountBlocked, {});
+    }
+}
+exports.checkThatUserisNotBlocked = checkThatUserisNotBlocked;
+function checkThatCommentsExistOrThrow(comment) {
+    if (!comment) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.commentNotFound, {});
+    }
+}
+exports.checkThatCommentsExistOrThrow = checkThatCommentsExistOrThrow;
 function checkThatUserIsNotLucieOrThrow(user) {
     if (user.username == util_1.lucie) {
         throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
@@ -143,6 +173,18 @@ function checkThatUserIsNotAlreadyFollow(user) {
     }
 }
 exports.checkThatUserIsNotAlreadyFollow = checkThatUserIsNotAlreadyFollow;
+function checkThatUserIsNotAlreadyBlocked(user) {
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyBlocked, {});
+    }
+}
+exports.checkThatUserIsNotAlreadyBlocked = checkThatUserIsNotAlreadyBlocked;
+function checkThatUserIsNotBanned(user) {
+    if (user.banned) {
+        throw new CustomError_1.CustomError(util_1.bannedCode, util_1.accountBanned, {});
+    }
+}
+exports.checkThatUserIsNotBanned = checkThatUserIsNotBanned;
 function checkThatUserNotFollowed(user) {
     if (!user) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotFollowed, {});

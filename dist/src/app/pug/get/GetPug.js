@@ -33,7 +33,6 @@ const getPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
-            console.log(err);
             res.status(400).json({ message: err.message, code: err.code });
         }
         else {
@@ -44,9 +43,10 @@ const getPug = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getPug = getPug;
 const execute = (userId, username, pugId) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
+    const otherUser = yield UserRepository_1.default.findByUsername(username);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    const data = yield PugRepository_1.default.findById(pugId, username);
+    const data = yield PugRepository_1.default.findById(pugId, otherUser.username);
     const pug = data.pugs[0];
     (0, checkdata_1.checkThatPugExistOrThrow)(pug);
-    return (0, PugResponse_1.pugToResponse)(pug, username, username);
+    return (0, PugResponse_1.pugToResponse)(pug, username, otherUser);
 });

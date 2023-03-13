@@ -16,7 +16,12 @@ class PugRepository {
     static insert(user, pug) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
-            const newPug = { username: user.username, pugs: [pug] };
+            const newPug = {
+                profilePicture: user.profilePicture,
+                userId: new bson_1.ObjectId(user._id).toString(),
+                username: user.username,
+                pugs: [pug],
+            };
             return yield call.insert(newPug);
         });
     }
@@ -73,6 +78,8 @@ class PugRepository {
                     $group: {
                         _id: "$username",
                         pug: { $push: "$pugs" },
+                        profilePicture: { $first: "$profilePicture" },
+                        userId: { $first: "userId" },
                     },
                 },
                 { $unwind: "$pug" },
@@ -171,6 +178,8 @@ class PugRepository {
                     $group: {
                         _id: "$username",
                         pug: { $push: "$pugs" },
+                        profilePicture: { $first: "$profilePicture" },
+                        userId: { $first: "$userId" },
                     },
                 },
                 { $unwind: "$pug" },
@@ -178,7 +187,21 @@ class PugRepository {
                 { $sort: { "pug.date": -1 } },
                 { $skip: startInd },
                 { $limit: 5 },
+                {
+                    $project: {
+                        _id: 1,
+                        pug: 1,
+                        profilePicture: 1,
+                        userId: 1,
+                    },
+                },
             ]);
+        });
+    }
+    static detePugsFromUser(user) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.remove({ username: user.username });
         });
     }
 }

@@ -33,7 +33,6 @@ const getUserInfo = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
-            console.log(err);
             res.status(400).json({ message: err.message, code: err.code });
         }
         else {

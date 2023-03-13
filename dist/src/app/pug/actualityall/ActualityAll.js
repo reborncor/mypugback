@@ -20,6 +20,7 @@ const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
 const util_1 = require("../../../util/util");
 const PugResponse_1 = require("../../../response/PugResponse");
+const UserFactoryResponse_1 = require("../../../response/UserFactoryResponse");
 const getAllPugsUsersPageable = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -47,10 +48,15 @@ exports.getAllPugsUsersPageable = getAllPugsUsersPageable;
 const execute = (userId, startInd, endInd) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
+    yield (0, checkdata_1.checkThatUserIsNotBanned)(currentUser);
     const result = yield PugRepository_1.default.getAllPugs(startInd, endInd);
     const pugsResponse = [];
     result.forEach((elem) => {
-        pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, currentUser.username, elem._id));
+        pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, (0, UserFactoryResponse_1.userToUserFactoryResponse)(currentUser), {
+            _id: elem.userId,
+            username: elem._id,
+            profilePicture: elem.profilePicture,
+        }));
     });
     return pugsResponse;
 });

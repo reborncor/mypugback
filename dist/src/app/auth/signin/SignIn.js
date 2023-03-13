@@ -33,7 +33,6 @@ const signIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (err) {
         if (err instanceof CustomError_1.CustomError) {
-            console.log(err);
             res.status(400).json({ message: err.message, code: err.code });
         }
         else {
@@ -47,5 +46,6 @@ const signInUser = (username, password) => __awaiter(void 0, void 0, void 0, fun
     const existingUser = yield UserRepository_1.default.findByUsername(username);
     yield (0, checkdata_1.checkThatUserExistsOrThrow)(existingUser);
     yield (0, checkdata_1.checkThatPasswordsAreEqualsOrThrow)(password, existingUser.password);
+    yield (0, checkdata_1.checkThatUserIsNotBanned)(existingUser);
     return existingUser;
 });
