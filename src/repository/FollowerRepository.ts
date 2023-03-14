@@ -21,6 +21,7 @@ export default class FollowerRepository {
       username,
     });
   }
+
   static async findById(id: string): Promise<FollowingFollowerModel> {
     const call = db.get(collectionName);
     return await call.findOne({
@@ -50,6 +51,7 @@ export default class FollowerRepository {
       }
     );
   }
+
   static async addUserToBlocking(
     user: User,
     userToBlock: UserFactory
@@ -72,6 +74,7 @@ export default class FollowerRepository {
       }
     );
   }
+
   static async addUserToFollower(
     user: User,
     follower: UserFactory
@@ -108,6 +111,7 @@ export default class FollowerRepository {
       }
     );
   }
+
   static async deblockUser(user: User, follower: UserFactory): Promise<any> {
     const call = db.get(collectionName);
 
@@ -118,6 +122,7 @@ export default class FollowerRepository {
       }
     );
   }
+
   static async deleteUserFromFollower(
     user: User,
     follower: UserFactory
@@ -131,18 +136,60 @@ export default class FollowerRepository {
     );
   }
 
+  static async updateUserInfoFollowing(
+    usernames: string[],
+    currentUsername: string,
+    profilePicture: string
+  ): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.update(
+      {
+        username: { $in: usernames },
+        "followers.username": currentUsername,
+      },
+      {
+        $set: {
+          "followers.$.profilePicture": profilePicture,
+        },
+      },
+      { multi: true }
+    );
+  }
+
+  static async updateUserInfoFollowers(
+    usernames: string[],
+    currentUsername: string,
+    profilePicture: string
+  ): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.update(
+      {
+        username: { $in: usernames },
+        "following.username": currentUsername,
+      },
+      {
+        $set: {
+          "following.$.profilePicture": profilePicture,
+        },
+      },
+      { multi: true }
+    );
+  }
+
   static async findAllFollowersFromUser(
     username: string
   ): Promise<UserFactory[]> {
     const call = db.get(collectionName);
     return await call.distinct("followers", { username: username });
   }
+
   static async findAllFollowingFromUser(
     username: string
   ): Promise<UserFactory[]> {
     const call = db.get(collectionName);
     return await call.distinct("following", { username: username });
   }
+
   static async findAllBlockedFromUser(
     username: string
   ): Promise<UserFactory[]> {
@@ -165,6 +212,7 @@ export default class FollowerRepository {
       }
     );
   }
+
   static async findUserInBlockingList(
     username: string,
     user: string

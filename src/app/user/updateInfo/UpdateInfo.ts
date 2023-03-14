@@ -1,20 +1,15 @@
 import { Request, Response } from "express";
-import {
-  checkThatSignalExistOrThrow,
-  checkThatUserExistsOrThrow,
-} from "../../../util/validator/checkdata";
+import { checkThatUserExistsOrThrow } from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
-import SignalUserRepository from "../../../repository/SignalRepository";
-import { SignalFactory } from "../../../models/SignalFactory";
-import { ObjectId } from "bson";
-import moment from "moment";
-import { SignalReason } from "../../../models/SignalReason";
 import UserResponse, {
   userToUserResponse,
 } from "../../../response/UserResponse";
 import { successCode } from "../../../util/util";
+import FollowerRepository from "../../../repository/FollowerRepository";
+import PugRepository from "../../../repository/PugRepository";
+import ConversationRepository from "../../../repository/ConversationRepository";
 
 export const updateInfoUser = async (req: Request, res: Response) => {
   try {
@@ -46,10 +41,36 @@ const execute = async (
 
   checkThatUserExistsOrThrow(currentUser);
 
+  await PugRepository.updateUserInfo(currentUser, profilePicture);
+  const followings = await FollowerRepository.findAllFollowingFromUser(
+    currentUser.username
+  );
+  const followers = await FollowerRepository.findAllFollowersFromUser(
+    currentUser.username
+  );
+  const usernamesFollowings: string[] = [];
+  const usernamesFollowers: string[] = [];
+  followings.forEach((value) => usernamesFollowings.push(value.username));
+  followers.forEach((value) => usernamesFollowers.push(value.username));
+  await FollowerRepository.updateUserInfoFollowing(
+    usernamesFollowings,
+    currentUser.username,
+    profilePicture
+  );
+  await FollowerRepository.updateUserInfoFollowers(
+    usernamesFollowers,
+    currentUser.username,
+    profilePicture
+  );
+  await ConversationRepository.updateUserInfo(
+    currentUser.username,
+    profilePicture
+  );
   const result = await UserRepository.updateUserInfo(
     currentUser,
     description,
     profilePicture
   );
+
   return userToUserResponse(result);
 };

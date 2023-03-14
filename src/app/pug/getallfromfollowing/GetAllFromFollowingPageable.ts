@@ -15,7 +15,6 @@ import { UserFactory } from "../../../models/UserFactory";
 
 export const getAllPugsFromFollowingPagealble = async (
   req: Request,
-
   res: Response
 ) => {
   try {
@@ -54,9 +53,12 @@ const execute = async (userId: string, startInd: number): Promise<any> => {
   const pugsResponse: PugResponse[] = [];
   result.forEach((elem: any) => {
     pugsResponse.push(
-      pugToResponsePageableSorted(elem.pug, currentUser, elem._id)
+      pugToResponsePageableSorted(elem.pug, currentUser, {
+        _id: elem.userId,
+        username: elem._id,
+        profilePicture: elem.profilePicture,
+      })
     );
   });
-
   return pugsResponse;
 };

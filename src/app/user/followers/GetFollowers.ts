@@ -45,6 +45,5 @@ const execute = async (
   const result = await FollowerRepository.findAllFollowersFromUser(
     otherUser.username
   );
-
   return followersToResponse(result);
 };

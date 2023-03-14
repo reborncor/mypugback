@@ -51,6 +51,26 @@ export default class ConversationRepository {
       }
     );
   }
+
+  static async updateUserInfo(
+    username: string,
+    profilePicture: string
+  ): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.update(
+      {
+        members: username,
+        "membersInfos.username": username,
+      },
+      {
+        $set: {
+          "membersInfos.$.profilePicture": profilePicture,
+        },
+      },
+      { multi: true }
+    );
+  }
+
   static async updateConversationOnNotSeen(
     conversation: Conversation,
     user: User

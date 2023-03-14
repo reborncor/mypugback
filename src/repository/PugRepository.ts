@@ -29,6 +29,19 @@ export default class PugRepository {
     );
   }
 
+  static async updateUserInfo(
+    user: User,
+    profilePicture: string
+  ): Promise<any> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $set: { profilePicture },
+      }
+    );
+  }
+
   static async findByIdWithCommentsOnly(
     id: string,
     username: string
@@ -201,6 +214,8 @@ export default class PugRepository {
         $group: {
           _id: "$username",
           pug: { $push: "$pugs" },
+          profilePicture: { $first: "$profilePicture" },
+          userId: { $first: "$userId" },
         },
       },
       { $unwind: "$pug" },
