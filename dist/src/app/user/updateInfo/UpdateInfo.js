@@ -19,6 +19,9 @@ const CustomError_1 = require("../../../util/error/CustomError");
 const tokenManagement_1 = require("../../../util/security/tokenManagement");
 const UserResponse_1 = require("../../../response/UserResponse");
 const util_1 = require("../../../util/util");
+const FollowerRepository_1 = __importDefault(require("../../../repository/FollowerRepository"));
+const PugRepository_1 = __importDefault(require("../../../repository/PugRepository"));
+const ConversationRepository_1 = __importDefault(require("../../../repository/ConversationRepository"));
 const updateInfoUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -46,6 +49,16 @@ exports.updateInfoUser = updateInfoUser;
 const execute = (userId, description, profilePicture) => __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findById(userId);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
+    yield PugRepository_1.default.updateUserInfo(currentUser, profilePicture);
+    const followings = yield FollowerRepository_1.default.findAllFollowingFromUser(currentUser.username);
+    const followers = yield FollowerRepository_1.default.findAllFollowersFromUser(currentUser.username);
+    const usernamesFollowings = [];
+    const usernamesFollowers = [];
+    followings.forEach((value) => usernamesFollowings.push(value.username));
+    followers.forEach((value) => usernamesFollowers.push(value.username));
+    yield FollowerRepository_1.default.updateUserInfoFollowing(usernamesFollowings, currentUser.username, profilePicture);
+    yield FollowerRepository_1.default.updateUserInfoFollowers(usernamesFollowers, currentUser.username, profilePicture);
+    yield ConversationRepository_1.default.updateUserInfo(currentUser.username, profilePicture);
     const result = yield UserRepository_1.default.updateUserInfo(currentUser, description, profilePicture);
     return (0, UserResponse_1.userToUserResponse)(result);
 });

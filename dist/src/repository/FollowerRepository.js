@@ -112,6 +112,32 @@ class FollowerRepository {
             });
         });
     }
+    static updateUserInfoFollowing(usernames, currentUsername, profilePicture) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.update({
+                username: { $in: usernames },
+                "followers.username": currentUsername,
+            }, {
+                $set: {
+                    "followers.$.profilePicture": profilePicture,
+                },
+            }, { multi: true });
+        });
+    }
+    static updateUserInfoFollowers(usernames, currentUsername, profilePicture) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.update({
+                username: { $in: usernames },
+                "following.username": currentUsername,
+            }, {
+                $set: {
+                    "following.$.profilePicture": profilePicture,
+                },
+            }, { multi: true });
+        });
+    }
     static findAllFollowersFromUser(username) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);

@@ -54,7 +54,11 @@ const execute = (userId, startInd) => __awaiter(void 0, void 0, void 0, function
     const result = yield PugRepository_1.default.getAllPugsFromFollowingPageable(usernames, startInd);
     const pugsResponse = [];
     result.forEach((elem) => {
-        pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, currentUser, elem._id));
+        pugsResponse.push((0, PugResponse_1.pugToResponsePageableSorted)(elem.pug, currentUser, {
+            _id: elem.userId,
+            username: elem._id,
+            profilePicture: elem.profilePicture,
+        }));
     });
     return pugsResponse;
 });

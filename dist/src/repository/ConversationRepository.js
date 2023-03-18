@@ -47,6 +47,19 @@ class ConversationRepository {
             });
         });
     }
+    static updateUserInfo(username, profilePicture) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.update({
+                members: username,
+                "membersInfos.username": username,
+            }, {
+                $set: {
+                    "membersInfos.$.profilePicture": profilePicture,
+                },
+            }, { multi: true });
+        });
+    }
     static updateConversationOnNotSeen(conversation, user) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);

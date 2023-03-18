@@ -11,6 +11,8 @@ import { successCode } from "../../util/util";
 import { ObjectId } from "bson";
 import moment from "moment";
 import FollowerRepository from "../../repository/FollowerRepository";
+import Conversation from "../../models/Conversation";
+import { userToUserFactoryResponse } from "../../response/UserFactoryResponse";
 
 export const sendMessage = async (
   currentUsername: string,
@@ -32,7 +34,7 @@ export const sendMessage = async (
       return { message: err.message, code: err.code };
     } else {
       console.log(err);
-      return { message: err.message, code: err.code };
+      return { message: err.message, code: 1 };
     }
   }
 };
@@ -59,10 +61,22 @@ const execute = async (
   checkThatUserisNotBlocked(otherUserBlocked);
 
   checkThatUserIsLucie(receiverUser);
-  const conversation = await ConversationRepository.findByMembers([
+  let conversation = await ConversationRepository.findByMembers([
     currentUser.username,
     receiverUser.username,
   ]);
+  if (!conversation) {
+    const newConversation: Conversation = {
+      members: [currentUser.username, receiverUser.username],
+      chat: [],
+      seen: [currentUser.username],
+      membersInfos: [
+        userToUserFactoryResponse(currentUser),
+        userToUserFactoryResponse(receiverUser),
+      ],
+    };
+    conversation = await ConversationRepository.insert(newConversation);
+  }
   const time = moment().unix().toString();
 
   const message: Message = {

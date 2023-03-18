@@ -31,6 +31,14 @@ class PugRepository {
             return yield call.findOne({ "pugs.id": new bson_1.ObjectId(id), username: username }, { projection: { pugs: { $elemMatch: { id: new bson_1.ObjectId(id) } } } });
         });
     }
+    static updateUserInfo(user, profilePicture) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const call = db_1.db.get(collectionName);
+            return yield call.findOneAndUpdate({ username: user.username }, {
+                $set: { profilePicture },
+            });
+        });
+    }
     static findByIdWithCommentsOnly(id, username) {
         return __awaiter(this, void 0, void 0, function* () {
             const call = db_1.db.get(collectionName);
@@ -158,6 +166,8 @@ class PugRepository {
                     $group: {
                         _id: "$username",
                         pug: { $push: "$pugs" },
+                        profilePicture: { $first: "$profilePicture" },
+                        userId: { $first: "$userId" },
                     },
                 },
                 { $unwind: "$pug" },
