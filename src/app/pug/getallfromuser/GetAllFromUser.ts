@@ -62,5 +62,7 @@ const execute = async (
       username: otherUser.username,
       pugs: [],
     };
+  console.log(result);
+
   return userPugToResponseNoComment(result, currentUser, otherUser);
 };
