@@ -1,14 +1,19 @@
 import {
+  accountAlreadyBlocked,
   accountAlreadyExist,
   accountAlreadyExistWithPhoneNumber,
   accountAlreadyExistWithUsername,
-  accountAlreadyBlocked,
+  accountAlreadyFollow,
+  accountBanned,
+  accountBlocked,
   accountDoesntExist,
   accountIsHimself,
   accountNotAllowed,
   accountNotConnected,
   accountNotFollowed,
   alreadyLiked,
+  bannedCode,
+  blockedCode,
   commentNotFound,
   conversationDoesntExist,
   conversationsDoesntExist,
@@ -25,13 +30,7 @@ import {
   usernameInvalid,
   usernameIsLucie,
   wrongPassword,
-  accountAlreadyFollow,
-  bannedCode,
-  accountBanned,
-  accountBlocked,
-  blockedCode,
 } from "../util";
-var awPhoneNumber = require("awesome-phonenumber");
 import * as EmailValidator from "email-validator";
 import { CustomError } from "../error/CustomError";
 import { isSame } from "../security/passwordManagement";
@@ -41,14 +40,16 @@ import { Pug } from "../../models/Pug";
 import { UserPug } from "../../models/UserPug";
 import { SignalFactory } from "../../models/SignalFactory";
 import { UserFactory } from "../../models/UserFactory";
+import { parsePhoneNumber } from "awesome-phonenumber";
 
 export function checkThatUserSignUpCredentialsOrThrow(
   email: string,
   password: string,
   phoneNumber: string,
-  username: string
+  username: string,
+  phoneRegion: string
 ) {
-  const pn = new awPhoneNumber(phoneNumber, "SE");
+  const pn = parsePhoneNumber(phoneNumber, { regionCode: phoneRegion });
   if (!email || email == "" || !EmailValidator.validate(email)) {
     throw new CustomError(errorCode, emailInvalid, {});
   }
@@ -60,7 +61,7 @@ export function checkThatUserSignUpCredentialsOrThrow(
     throw new CustomError(errorCode, usernameInvalid, {});
   }
 
-  if (!pn.isValid()) {
+  if (!pn.valid) {
     throw new CustomError(errorCode, phoneNumberInvalid, {});
   }
 }

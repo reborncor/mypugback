@@ -41,7 +41,6 @@ const execute = async (
 
   checkThatUserExistsOrThrow(currentUser);
 
-  await PugRepository.updateUserInfo(currentUser, profilePicture);
   const followings = await FollowerRepository.findAllFollowingFromUser(
     currentUser.username
   );
@@ -66,6 +65,7 @@ const execute = async (
     currentUser.username,
     profilePicture
   );
+  await PugRepository.updateUserInfo(currentUser, profilePicture);
   const result = await UserRepository.updateUserInfo(
     currentUser,
     description,

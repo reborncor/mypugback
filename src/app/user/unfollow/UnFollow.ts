@@ -1,16 +1,12 @@
 import { Request, Response } from "express";
 import {
   checkThatUserExistsOrThrow,
-  checkThatUserIsNotAlreadyFollow,
   checkThatUserNotFollowed,
-  checkThatUserSignUpCredentialsOrThrow,
 } from "../../../util/validator/checkdata";
 import UserRepository from "../../../repository/UserRepository";
 import { CustomError } from "../../../util/error/CustomError";
 import { decodeToken } from "../../../util/security/tokenManagement";
 import FollowerRepository from "../../../repository/FollowerRepository";
-import { ObjectId } from "bson";
-import { UserFactory } from "../../../models/UserFactory";
 import { userToUserFactoryResponse } from "../../../response/UserFactoryResponse";
 
 export const unFollowUser = async (req: Request, res: Response) => {

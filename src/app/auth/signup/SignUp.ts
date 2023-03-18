@@ -14,10 +14,16 @@ import { userToUserResponse } from "../../../response/UserResponse";
 import { executeAddFriend } from "../../user/follow/Follow";
 
 export const signUp = async (req: Request, res: Response) => {
-  const { email, username, phoneNumber, password } = req.body;
+  const { email, username, phoneNumber, password, phoneRegion } = req.body;
 
   try {
-    const user = await signUpUser(email, username, password, phoneNumber);
+    const user = await signUpUser(
+      email,
+      username,
+      password,
+      phoneNumber,
+      phoneRegion
+    );
     await executeAddFriend(String(user._id), "lucie");
 
     res.status(201).json({
@@ -39,10 +45,16 @@ const signUpUser = async (
   email: string,
   username: string,
   password: string,
-  phoneNumber: string
+  phoneNumber: string,
+  phoneRegion: string
 ): Promise<User> => {
-  console.log(phoneNumber);
-  checkThatUserSignUpCredentialsOrThrow(email, password, phoneNumber, username);
+  checkThatUserSignUpCredentialsOrThrow(
+    email,
+    password,
+    phoneNumber,
+    username,
+    phoneRegion
+  );
 
   const existingUser = await UserRepository.findByEmail(email);
   const existingUserWithUserName = await UserRepository.findByUsername(
