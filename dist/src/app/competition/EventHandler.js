@@ -50,11 +50,14 @@ const CompetitionRepository_1 = __importDefault(
 const createCompetition = () =>
   __awaiter(void 0, void 0, void 0, function* () {
     const date = (0, moment_1.default)().weekday(1).hour(12);
-    const competiton = CompetitionRepository_1.default.findByDate(date.unix());
+    const competiton = yield CompetitionRepository_1.default.findByDate(
+      date.unix()
+    );
     if (!competiton) {
       const deadline = (0, moment_1.default)().weekday(5).hour(20);
       const endVotingDate = (0, moment_1.default)().weekday(6).hour(20);
       const newCompetition = {
+        selectedParticipants: [],
         startDate: date.unix(),
         endDate: deadline.unix(),
         endVotingDate: endVotingDate.unix(),

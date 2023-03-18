@@ -51,18 +51,15 @@ const sendMessage_1 = require("./app/conversation/sendMessage");
 const seenConversation_1 = require("./app/conversation/seenConversation");
 const getConversations_1 = require("./app/conversation/getConversations");
 const EventHandler_1 = require("./app/competition/EventHandler");
+const VoteForParticipant_1 = require("./app/competition/VoteForParticipant");
+const swagger_1 = require("./swagger");
+const swaggerUi = require("swagger-ui-express");
 const schedule = require("node-schedule");
 const path = require("path");
 const init = () => {
   const app = (0, express_1.default)();
   let finalPath = path.basename(__dirname);
   finalPath = path.join("/usr/src/app/", "uploads");
-  const rule = new schedule.RecurrenceRule();
-  const job = schedule.scheduleJob("* * 12 * * /1", function () {
-    return __awaiter(this, void 0, void 0, function* () {
-      yield (0, EventHandler_1.createCompetition)();
-    });
-  });
   app.get("/file", (req, res) => {
     console.log("DIR : ", __dirname);
     console.log("DIR  2: ", finalPath);
@@ -75,10 +72,20 @@ const init = () => {
   app.use(express_1.default.json());
   app.use(routes_1.default);
   app.use("/pugs", express_1.default.static(path.join("", "uploads")));
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(swagger_1.specsSwagger)
+  );
   const httpServer = require("http").createServer(app);
   const io = require("socket.io")(httpServer, {});
   httpServer.listen(config_1.env.PORT, () => {
     console.log(`Listening on port ${config_1.env.PORT}`);
+  });
+  const job = schedule.scheduleJob("1 * 12 * * 1", function () {
+    return __awaiter(this, void 0, void 0, function* () {
+      yield (0, EventHandler_1.createCompetition)();
+    });
   });
   io.on("connection", (socket) => {
     console.log("Connection ! :", socket.id);
@@ -114,16 +121,13 @@ const init = () => {
     );
     socket.on("vote", (msg) =>
       __awaiter(void 0, void 0, void 0, function* () {
-        const result = yield (0, seenConversation_1.seenConversation)(
-          msg.senderUsername,
-          msg.conversationId
+        const result = yield (0, VoteForParticipant_1.voteForParticipant)(
+          msg.currentUsername,
+          msg.conversationId,
+          msg.selectedParticipantId
         );
-        if (result.code == 0) {
-          console.log("Message vu");
-          socket.emit("voteCallBack", result.code.toString());
-        } else {
-          socket.emit("voteCallBack", result.code.toString());
-        }
+        console.log("Vote effectué");
+        socket.emit("voteCallBack", result);
       })
     );
     socket.on("message", (msg) =>

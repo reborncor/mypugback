@@ -9,7 +9,6 @@ const getAllCompetitionPath = "/all";
 const getCompetitionPath = "/";
 const getCompetitionWinnerPath = "/winner";
 const particiaptePath = "/participate";
-const votePath = "/vote";
 
 competition.get(getAllCompetitionPath, getConversationPageable);
 competition.get(getCompetitionPath, getAllConversationFromUser);

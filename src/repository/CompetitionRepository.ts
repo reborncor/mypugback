@@ -13,6 +13,11 @@ export default class CompetitionRepository {
     return await call.insert(competition);
   }
 
+  static async insertMany(competitions: Competition[]): Promise<Competition> {
+    const call = db.get(collectionName);
+    return await call.insert(competitions);
+  }
+
   static async findByDate(startDate: number): Promise<Competition> {
     const call = db.get(collectionName);
     return await call.findOne({

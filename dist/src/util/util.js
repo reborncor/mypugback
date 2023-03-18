@@ -1,6 +1,42 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allUsersConnected = exports.pugsDoesntExist = exports.pugDoesntExist = exports.accountAlreadyExistWithPhoneNumber = exports.accountAlreadyExistWithUsername = exports.accountAlreadyExist = exports.conversationAlreadyExist = exports.conversationsDoesntExist = exports.conversationDoesntExist = exports.notAlreadyliked = exports.alreadyLiked = exports.accountIsHimself = exports.accountNotFollowed = exports.accountAlreadyBlocked = exports.accountAlreadyFollow = exports.lucie = exports.usernameIsLucie = exports.accountNotAllowed = exports.accountNotFound = exports.commentNotFound = exports.accountBanned = exports.errorSurrounded = exports.accountBlocked = exports.accountDoesntExist = exports.accountNotConnected = exports.wrongPassword = exports.emailInvalid = exports.phoneNumberInvalid = exports.passwordInvalid = exports.usernameInvalid = exports.bannedCode = exports.errorCodeLucie = exports.successCode = exports.blockedCode = exports.errorCode = void 0;
+exports.allUsersConnected =
+  exports.pugsDoesntExist =
+  exports.pugDoesntExist =
+  exports.accountAlreadyExistWithPhoneNumber =
+  exports.accountAlreadyExistWithUsername =
+  exports.accountAlreadyExist =
+  exports.conversationAlreadyExist =
+  exports.conversationsDoesntExist =
+  exports.competitionDoesntExist =
+  exports.conversationDoesntExist =
+  exports.notAlreadyliked =
+  exports.alreadyLiked =
+  exports.accountIsHimself =
+  exports.accountNotFollowed =
+  exports.accountAlreadyBlocked =
+  exports.accountAlreadyFollow =
+  exports.lucie =
+  exports.usernameIsLucie =
+  exports.accountNotAllowed =
+  exports.accountNotFound =
+  exports.commentNotFound =
+  exports.accountBanned =
+  exports.errorSurrounded =
+  exports.accountBlocked =
+  exports.accountDoesntExist =
+  exports.accountNotConnected =
+  exports.wrongPassword =
+  exports.emailInvalid =
+  exports.phoneNumberInvalid =
+  exports.passwordInvalid =
+  exports.usernameInvalid =
+  exports.bannedCode =
+  exports.errorCodeLucie =
+  exports.successCode =
+  exports.blockedCode =
+  exports.errorCode =
+    void 0;
 exports.errorCode = 1;
 exports.blockedCode = 3;
 exports.successCode = 0;
@@ -28,6 +64,7 @@ exports.accountIsHimself = "Utilisateur invalide";
 exports.alreadyLiked = "Vous avez déjà liké cette photo";
 exports.notAlreadyliked = "Vous n'avez pas liké cette photo";
 exports.conversationDoesntExist = "La conversation n'existe pas";
+exports.competitionDoesntExist = "La competition n'existe pas";
 exports.conversationsDoesntExist = "Vous n'avez aucune conversation";
 exports.conversationAlreadyExist = "La conversation a déjà été crée";
 exports.accountAlreadyExist = "Un utilisateur avec cette adresse email existe déja";

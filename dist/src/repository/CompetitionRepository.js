@@ -48,6 +48,13 @@ class CompetitionRepository {
     });
   }
 
+  static insertMany(competitions) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      return yield call.insert(competitions);
+    });
+  }
+
   static findByDate(startDate) {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
@@ -64,11 +71,11 @@ class CompetitionRepository {
     });
   }
 
-  static findById(id) {
+  static findById(_id) {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
       return yield call.findOne({
-        id,
+        _id,
       });
     });
   }
@@ -84,6 +91,53 @@ class CompetitionRepository {
       );
     });
   }
-}
 
+  static voteForParticipant(user, selectedParticipant, competitionId) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      yield call.findOneAndUpdate(
+        {
+          "selectedParticipants._id": selectedParticipant._id,
+          _id: competitionId,
+        },
+        {
+          $push: { "selectedParticipants.$.vote": user.username },
+        }
+      );
+      return yield call.findOneAndUpdate(
+        {
+          "selectedParticipants._id": selectedParticipant._id,
+          _id: competitionId,
+        },
+        {
+          $set: { "selectedParticipants.$.vote": selectedParticipant.vote + 1 },
+        }
+      );
+    });
+  }
+
+  static unvoteForParticipant(user, selectedParticipant, competitionId) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      yield call.findOneAndUpdate(
+        {
+          "selectedParticipants._id": selectedParticipant._id,
+          _id: competitionId,
+        },
+        {
+          $pull: { "selectedParticipants.$.vote": user.username },
+        }
+      );
+      return yield call.findOneAndUpdate(
+        {
+          "selectedParticipants._id": selectedParticipant._id,
+          _id: competitionId,
+        },
+        {
+          $set: { "selectedParticipants.$.vote": selectedParticipant.vote - 1 },
+        }
+      );
+    });
+  }
+}
 exports.default = CompetitionRepository;
