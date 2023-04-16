@@ -14,7 +14,7 @@ import { userToUserResponse } from "../../../response/UserResponse";
 import { executeAddFriend } from "../../user/follow/Follow";
 
 export const signUp = async (req: Request, res: Response) => {
-  const { email, username, phoneNumber, password, phoneRegion } = req.body;
+  const { email, username, phoneNumber, password, phoneRegion, sex } = req.body;
 
   try {
     const user = await signUpUser(
@@ -22,7 +22,8 @@ export const signUp = async (req: Request, res: Response) => {
       username,
       password,
       phoneNumber,
-      phoneRegion
+      phoneRegion,
+      sex
     );
     await executeAddFriend(String(user._id), "lucie");
 
@@ -46,7 +47,8 @@ const signUpUser = async (
   username: string,
   password: string,
   phoneNumber: string,
-  phoneRegion: string
+  phoneRegion: string,
+  sex: "man" | "woman"
 ): Promise<User> => {
   checkThatUserSignUpCredentialsOrThrow(
     email,
@@ -81,6 +83,8 @@ const signUpUser = async (
     pugs: 0,
     description: "",
     banned: false,
+    trophy: false,
+    sex,
   };
 
   return await UserRepository.insert(newUser);

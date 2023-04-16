@@ -15,6 +15,7 @@ import {
   bannedCode,
   blockedCode,
   commentNotFound,
+  competitionDoesntExist,
   conversationDoesntExist,
   conversationsDoesntExist,
   emailInvalid,
@@ -41,6 +42,7 @@ import { UserPug } from "../../models/UserPug";
 import { SignalFactory } from "../../models/SignalFactory";
 import { UserFactory } from "../../models/UserFactory";
 import { parsePhoneNumber } from "awesome-phonenumber";
+import { Competition } from "../../models/Competition";
 
 export function checkThatUserSignUpCredentialsOrThrow(
   email: string,
@@ -196,11 +198,19 @@ export function checkThatUserNotFollowed(user: User) {
     throw new CustomError(errorCode, accountNotFollowed, {});
   }
 }
+
 export function checkThatConversationExist(conversations: Conversation) {
   if (!conversations) {
     throw new CustomError(errorCode, conversationDoesntExist, {});
   }
 }
+
+export function checkThatCompetitionExist(competition: Competition) {
+  if (!competition) {
+    throw new CustomError(errorCode, competitionDoesntExist, {});
+  }
+}
+
 export function checkThatConversationsExist(conversations: Conversation[]) {
   if (conversations.length == 0) {
     throw new CustomError(errorCode, conversationsDoesntExist, {});

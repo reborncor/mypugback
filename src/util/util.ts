@@ -28,6 +28,7 @@ export const alreadyLiked = "Vous avez déjà liké cette photo";
 export const notAlreadyliked = "Vous n'avez pas liké cette photo";
 
 export const conversationDoesntExist = "La conversation n'existe pas";
+export const competitionDoesntExist = "La competition n'existe pas";
 export const conversationsDoesntExist = "Vous n'avez aucune conversation";
 export const conversationAlreadyExist = "La conversation a déjà été crée";
 

@@ -7,6 +7,10 @@ import { allUsersConnected } from "./util/util";
 import { sendMessage } from "./app/conversation/sendMessage";
 import { seenConversation } from "./app/conversation/seenConversation";
 import { executeConversationsFromUser } from "./app/conversation/getConversations";
+import { createCompetition } from "./app/competition/EventHandler";
+import { voteForParticipant } from "./app/competition/VoteForParticipant";
+
+const schedule = require("node-schedule");
 
 const path = require("path");
 
@@ -41,6 +45,10 @@ const init = () => {
     console.log(`Listening on port ${env.PORT}`);
   });
 
+  const job = schedule.scheduleJob("1 * 12 * * /1", async function () {
+    await createCompetition();
+  });
+
   io.on("connection", (socket: Socket) => {
     console.log("Connection ! :", socket.id);
     socket.on("disconnect", (msg: any) => {
@@ -67,11 +75,20 @@ const init = () => {
         msg.conversationId
       );
       if (result.code == 0) {
-        console.log("Message vu");
         socket.emit("seenCallback", result.code.toString());
       } else {
         socket.emit("seenCallback", result.code.toString());
       }
+    });
+
+    socket.on("vote", async (msg: any) => {
+      const result = await voteForParticipant(
+        msg.currentUsername,
+        msg.conversationId,
+        msg.selectedParticipantId
+      );
+      console.log("Vote effectué");
+      socket.emit("voteCallBack", result);
     });
 
     socket.on("message", async (msg: any) => {

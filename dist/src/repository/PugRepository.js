@@ -59,7 +59,10 @@ class PugRepository {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
       return yield call.findOne(
-        { "pugs.id": new bson_1.ObjectId(id), username: username },
+        {
+          "pugs.id": new bson_1.ObjectId(id),
+          username: username,
+        },
         {
           projection: { pugs: { $elemMatch: { id: new bson_1.ObjectId(id) } } },
         }
@@ -83,7 +86,10 @@ class PugRepository {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);
       return yield call.findOne(
-        { "pugs.id": new bson_1.ObjectId(id), username: username },
+        {
+          "pugs.id": new bson_1.ObjectId(id),
+          username: username,
+        },
         {
           projection: { pugs: { $elemMatch: { id: new bson_1.ObjectId(id) } } },
         }
