@@ -50,6 +50,19 @@ export default class CompetitionRepository {
     );
   }
 
+  static async addSelectedParticipants(
+    selectedParticipants: SelectedParticipant[],
+    id: ObjectId
+  ): Promise<Competition> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: { selectedParticipants: selectedParticipants },
+      }
+    );
+  }
+
   static async voteForParticipant(
     user: UserFactory,
     selectedParticipant: SelectedParticipant,

@@ -7,8 +7,9 @@ import { allUsersConnected } from "./util/util";
 import { sendMessage } from "./app/conversation/sendMessage";
 import { seenConversation } from "./app/conversation/seenConversation";
 import { executeConversationsFromUser } from "./app/conversation/getConversations";
-import { createCompetition } from "./app/competition/EventHandler";
+import { createCompetition } from "./app/competition/JobCreateCompetition";
 import { voteForParticipant } from "./app/competition/VoteForParticipant";
+import { jobSelectParticipants } from "./app/competition/JobSelectParticipants";
 
 const schedule = require("node-schedule");
 
@@ -35,9 +36,20 @@ const init = () => {
     console.log(`Listening on port ${env.PORT}`);
   });
 
-  const job = schedule.scheduleJob("1 * 12 * * 1", async function () {
-    await createCompetition();
-  });
+  // Tous les lundis de à 12:01
+  const jobCompetition = schedule.scheduleJob(
+    "1 * 12 * * /1",
+    async function () {
+      await createCompetition();
+    }
+  );
+  // Tous les lundis de à 20:01
+  const jobParticipants = schedule.scheduleJob(
+    "1 * 20 * * /1",
+    async function () {
+      await jobSelectParticipants();
+    }
+  );
 
   io.on("connection", (socket: Socket) => {
     console.log("Connection ! :", socket.id);
