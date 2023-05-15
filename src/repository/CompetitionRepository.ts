@@ -63,6 +63,25 @@ export default class CompetitionRepository {
     );
   }
 
+  static async addWinnerManAndWoman(
+    manWinner: SelectedParticipant,
+    womanWinner: SelectedParticipant,
+    id: ObjectId
+  ): Promise<Competition> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          winnerMan: manWinner._id,
+          womanWinner: womanWinner._id,
+          pugWinnerMan: manWinner.pugId,
+          pugWinnerWoman: womanWinner.pugId,
+        },
+      }
+    );
+  }
+
   static async voteForParticipant(
     user: UserFactory,
     selectedParticipant: SelectedParticipant,

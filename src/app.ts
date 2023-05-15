@@ -10,6 +10,7 @@ import { executeConversationsFromUser } from "./app/conversation/getConversation
 import { createCompetition } from "./app/competition/JobCreateCompetition";
 import { voteForParticipant } from "./app/competition/VoteForParticipant";
 import { jobSelectParticipants } from "./app/competition/JobSelectParticipants";
+import { jobSetCompetitionsWinners } from "./app/competition/JobSetCompetitionWinners";
 
 const schedule = require("node-schedule");
 
@@ -36,20 +37,25 @@ const init = () => {
     console.log(`Listening on port ${env.PORT}`);
   });
 
-  // Tous les lundis de à 12:01
+  // Tous les lundis à 12:01
   const jobCompetition = schedule.scheduleJob(
     "1 * 12 * * /1",
     async function () {
       await createCompetition();
     }
   );
-  // Tous les lundis de à 20:01
+  // Tous les lundis à 20:01
   const jobParticipants = schedule.scheduleJob(
     "1 * 20 * * /1",
     async function () {
       await jobSelectParticipants();
     }
   );
+
+  // Tous les dimanche à 12:01
+  const jobWinner = schedule.scheduleJob("0 * 12 * * /1", async function () {
+    await jobSetCompetitionsWinners();
+  });
 
   io.on("connection", (socket: Socket) => {
     console.log("Connection ! :", socket.id);
