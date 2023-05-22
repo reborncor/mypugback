@@ -92,6 +92,35 @@ class CompetitionRepository {
     });
   }
 
+  static addSelectedParticipants(selectedParticipants, id) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      return yield call.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: { selectedParticipants: selectedParticipants },
+        }
+      );
+    });
+  }
+
+  static addWinnerManAndWoman(manWinner, womanWinner, id) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      return yield call.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            winnerMan: manWinner._id,
+            womanWinner: womanWinner._id,
+            pugWinnerMan: manWinner.pugId,
+            pugWinnerWoman: womanWinner.pugId,
+          },
+        }
+      );
+    });
+  }
+
   static voteForParticipant(user, selectedParticipant, competitionId) {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);

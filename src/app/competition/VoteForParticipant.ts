@@ -10,14 +10,16 @@ import { ObjectId } from "bson";
 
 export const voteForParticipant = async (
   currentUsername: string,
-  conversationId: string,
-  selectedParticipantId: string
+  competitionId: string,
+  pugId: string,
+  username: string
 ): Promise<any> => {
   try {
     const message = await execute(
       currentUsername,
-      conversationId,
-      selectedParticipantId
+      competitionId,
+      pugId,
+      username
     );
     return { message, code: successCode };
   } catch (err: any) {
@@ -33,7 +35,8 @@ export const voteForParticipant = async (
 const execute = async (
   currentUsername: string,
   conversationId: string,
-  selectedParticipantId: string
+  pugId: string,
+  username: string
 ) => {
   const currentUser = await UserRepository.findByUsername(currentUsername);
   const competition = await Competition.findById(conversationId);
@@ -41,7 +44,7 @@ const execute = async (
   checkThatUserExistsOrThrow(currentUser);
   checkThatCompetitionExist(competition);
   const selectedParticipant = competition.selectedParticipants.find(
-    (value) => new ObjectId(selectedParticipantId) == value._id
+    (value) => new ObjectId(pugId) == value.pugId && username == value.username
   );
 
   if (selectedParticipant) {

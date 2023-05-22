@@ -180,9 +180,7 @@ exports.checkThatUserSignInCredentialsOrThrow =
   checkThatUserSignInCredentialsOrThrow;
 function checkThatPasswordsAreEqualsOrThrow(password, confirmedPassword) {
   return __awaiter(this, void 0, void 0, function* () {
-    if (
-      !(yield (0, passwordManagement_1.isSame)(confirmedPassword, password))
-    ) {
+    if (!yield(0, passwordManagement_1.isSame)(confirmedPassword, password)) {
       throw new CustomError_1.CustomError(
         util_1.errorCode,
         util_1.wrongPassword,
@@ -193,273 +191,161 @@ function checkThatPasswordsAreEqualsOrThrow(password, confirmedPassword) {
 }
 exports.checkThatPasswordsAreEqualsOrThrow = checkThatPasswordsAreEqualsOrThrow;
 function checkThatUserIsConnected(token) {
-  if (token == "" || token == null) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountNotConnected,
-      {}
-    );
-  }
+    if (token == "" || token == null) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotConnected, {});
+    }
 }
 exports.checkThatUserIsConnected = checkThatUserIsConnected;
 function checkThatUserisntHimself(user, userToAdd) {
-  if (user.username == userToAdd.username) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountIsHimself,
-      {}
-    );
-  }
+    if (user.username == userToAdd.username) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountIsHimself, {});
+    }
 }
 exports.checkThatUserisntHimself = checkThatUserisntHimself;
 function checkThatUserExistsOrThrow(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountDoesntExist,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
+    }
 }
 exports.checkThatUserExistsOrThrow = checkThatUserExistsOrThrow;
 function checkThatUserFactoryExistsOrThrow(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountDoesntExist,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
+    }
 }
 exports.checkThatUserFactoryExistsOrThrow = checkThatUserFactoryExistsOrThrow;
 function checkThatSignalExistOrThrow(signalFactory) {
-  if (!signalFactory) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.errorSurrounded,
-      {}
-    );
-  }
+    if (!signalFactory) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.errorSurrounded, {});
+    }
 }
 exports.checkThatSignalExistOrThrow = checkThatSignalExistOrThrow;
 function checkThatFeatureIsSucess(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.errorSurrounded,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.errorSurrounded, {});
+    }
 }
 exports.checkThatFeatureIsSucess = checkThatFeatureIsSucess;
 function checkThatUserisNotBlocked(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.blockedCode,
-      util_1.accountBlocked,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.blockedCode, util_1.accountBlocked, {});
+    }
 }
 exports.checkThatUserisNotBlocked = checkThatUserisNotBlocked;
 function checkThatCommentsExistOrThrow(comment) {
-  if (!comment) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.commentNotFound,
-      {}
-    );
-  }
+    if (!comment) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.commentNotFound, {});
+    }
 }
 exports.checkThatCommentsExistOrThrow = checkThatCommentsExistOrThrow;
 function checkThatUserIsNotLucieOrThrow(user) {
-  if (user.username == util_1.lucie) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCodeLucie,
-      util_1.usernameIsLucie,
-      {}
-    );
-  }
+    if (user.username == util_1.lucie) {
+        throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
+    }
 }
 exports.checkThatUserIsNotLucieOrThrow = checkThatUserIsNotLucieOrThrow;
 function checkThatPugExistOrThrow(pug) {
-  if (!pug) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.pugDoesntExist,
-      {}
-    );
-  }
+    if (!pug) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugDoesntExist, {});
+    }
 }
 exports.checkThatPugExistOrThrow = checkThatPugExistOrThrow;
 function checkThatPugsExistOrThrow(userPug) {
-  if (!userPug) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.pugsDoesntExist,
-      {}
-    );
-  }
+    if (!userPug) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.pugsDoesntExist, {});
+    }
 }
 exports.checkThatPugsExistOrThrow = checkThatPugsExistOrThrow;
 function checkThatUserIsNotLucieOrThrowWithName(username) {
-  if (username == util_1.lucie) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCodeLucie,
-      util_1.usernameIsLucie,
-      {}
-    );
-  }
+    if (username == util_1.lucie) {
+        throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
+    }
 }
-exports.checkThatUserIsNotLucieOrThrowWithName =
-  checkThatUserIsNotLucieOrThrowWithName;
+
+exports.checkThatUserIsNotLucieOrThrowWithName = checkThatUserIsNotLucieOrThrowWithName;
 function checkThatUserIsLucie(user) {
-  if (user.username == util_1.lucie) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountNotAllowed,
-      {}
-    );
-  }
+    if (user.username == util_1.lucie) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotAllowed, {});
+    }
 }
 exports.checkThatUserIsLucie = checkThatUserIsLucie;
 function checkThatUsersExistsOrThrow(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountDoesntExist,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountDoesntExist, {});
+    }
 }
 exports.checkThatUsersExistsOrThrow = checkThatUsersExistsOrThrow;
 function checkThatUserNotAlreadyLike(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.alreadyLiked,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.alreadyLiked, {});
+    }
 }
 exports.checkThatUserNotAlreadyLike = checkThatUserNotAlreadyLike;
 function checkThatUserHasLiked(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.notAlreadyliked,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.notAlreadyliked, {});
+    }
 }
 exports.checkThatUserHasLiked = checkThatUserHasLiked;
 function checkThatUserIsNotAlreadyFollow(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountAlreadyFollow,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyFollow, {});
+    }
 }
 exports.checkThatUserIsNotAlreadyFollow = checkThatUserIsNotAlreadyFollow;
 function checkThatUserIsNotAlreadyBlocked(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountAlreadyBlocked,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyBlocked, {});
+    }
 }
 exports.checkThatUserIsNotAlreadyBlocked = checkThatUserIsNotAlreadyBlocked;
 function checkThatUserIsNotBanned(user) {
-  if (user.banned) {
-    throw new CustomError_1.CustomError(
-      util_1.bannedCode,
-      util_1.accountBanned,
-      {}
-    );
-  }
+    if (user.banned) {
+        throw new CustomError_1.CustomError(util_1.bannedCode, util_1.accountBanned, {});
+    }
 }
 exports.checkThatUserIsNotBanned = checkThatUserIsNotBanned;
 function checkThatUserNotFollowed(user) {
-  if (!user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountNotFollowed,
-      {}
-    );
-  }
+    if (!user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountNotFollowed, {});
+    }
 }
-
 exports.checkThatUserNotFollowed = checkThatUserNotFollowed;
-
 function checkThatConversationExist(conversations) {
-  if (!conversations) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.conversationDoesntExist,
-      {}
-    );
-  }
+    if (!conversations) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.conversationDoesntExist, {});
+    }
 }
-
 exports.checkThatConversationExist = checkThatConversationExist;
-
 function checkThatCompetitionExist(competition) {
-  if (!competition) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.competitionDoesntExist,
-      {}
-    );
-  }
+    if (!competition) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.competitionDoesntExist, {});
+    }
 }
-
 exports.checkThatCompetitionExist = checkThatCompetitionExist;
-
 function checkThatConversationsExist(conversations) {
-  if (conversations.length == 0) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.conversationsDoesntExist,
-      {}
-    );
-  }
+    if (conversations.length == 0) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.conversationsDoesntExist, {});
+    }
 }
-
 exports.checkThatConversationsExist = checkThatConversationsExist;
-
 function checkThatUserWithUsernameDoesntExistOrThrow(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountAlreadyExistWithUsername,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithUsername, {});
+    }
 }
-exports.checkThatUserWithUsernameDoesntExistOrThrow =
-  checkThatUserWithUsernameDoesntExistOrThrow;
+
+exports.checkThatUserWithUsernameDoesntExistOrThrow = checkThatUserWithUsernameDoesntExistOrThrow;
 function checkThatUserDoesntExistOrThrow(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountAlreadyExist,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExist, {});
+    }
 }
 exports.checkThatUserDoesntExistOrThrow = checkThatUserDoesntExistOrThrow;
 function checkThatUserWithPhoneNumberDoesntExistOrThrow(user) {
-  if (user) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.accountAlreadyExistWithPhoneNumber,
-      {}
-    );
-  }
+    if (user) {
+        throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithPhoneNumber, {});
+    }
 }
-exports.checkThatUserWithPhoneNumberDoesntExistOrThrow =
-  checkThatUserWithPhoneNumberDoesntExistOrThrow;
+
+exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = checkThatUserWithPhoneNumberDoesntExistOrThrow;

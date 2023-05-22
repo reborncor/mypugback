@@ -1,28 +1,31 @@
 import { Request, Response } from "express";
 import { decodeToken } from "../../util/security/tokenManagement";
+import { successCode } from "../../util/util";
 import { CustomError } from "../../util/error/CustomError";
+import { Competition } from "../../models/Competition";
 import UserRepository from "../../repository/UserRepository";
 import {
   checkThatCompetitionExist,
   checkThatUserExistsOrThrow,
 } from "../../util/validator/checkdata";
-import { Participant } from "../../models/Participant";
-import { ObjectId } from "bson";
 import CompetitionRepository from "../../repository/CompetitionRepository";
-import moment from "moment";
 
-export const participateToCompetition = async (req: Request, res: Response) => {
+export const getCompetitionByid = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
-    const { pugId, competitionId } = req.body;
-    const user = await execute(userId, pugId, competitionId);
-    res
-      .status(200)
-      .json({ code: user.code, message: user.message, payload: user.payload });
+    const { id } = req.params;
+
+    console.log("ID : ", id);
+
+    const result = await execute(userId, <string>id);
+    res.status(200).json({
+      code: successCode,
+      message: "Competition",
+      payload: result,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
-      console.log(err);
       res.status(400).json({ message: err.message, code: err.code });
     } else {
       console.log(err);
@@ -32,26 +35,11 @@ export const participateToCompetition = async (req: Request, res: Response) => {
 
 const execute = async (
   userId: string,
-  pugId: string,
   competitionId: string
-): Promise<any> => {
+): Promise<Competition> => {
   const currentUser = await UserRepository.findById(userId);
-
   checkThatUserExistsOrThrow(currentUser);
-
-  const participant: Participant = {
-    date: moment().unix(),
-    sex: currentUser.sex,
-    userId: new ObjectId(currentUser._id),
-    pugId: new ObjectId(pugId),
-  };
-  const result = await CompetitionRepository.addParticipant(
-    participant,
-    competitionId
-  );
-  checkThatCompetitionExist(result);
-  return {
-    code: 0,
-    message: "Inscription au concours effectué",
-  };
+  const competiton = await CompetitionRepository.findById(competitionId);
+  checkThatCompetitionExist(competiton);
+  return competiton;
 };

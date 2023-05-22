@@ -4,7 +4,7 @@ import { Participant } from "../../models/Participant";
 import { SelectedParticipant } from "../../models/SelectedParticipant";
 import { ObjectId } from "bson";
 
-const _ = require("loadsh");
+const loadsh = require("lodash");
 
 export const jobSelectParticipants = async () => {
   const date = moment().weekday(1).hour(12);
@@ -31,5 +31,5 @@ const getSelectedPaticipants = (
   const filteredParticipant = participants.filter(
     (participant) => participant.sex == sex
   );
-  return _.sampleSize(filteredParticipant, 2);
+  return loadsh.sampleSize(filteredParticipant, 2);
 };

@@ -3,8 +3,6 @@ import CompetitionRepository from "../../repository/CompetitionRepository";
 import { SelectedParticipant } from "../../models/SelectedParticipant";
 import { ObjectId } from "bson";
 
-const _ = require("loadsh");
-
 export const jobSetCompetitionsWinners = async () => {
   const date = moment().weekday(1).hour(12);
   const competiton = await CompetitionRepository.findByDate(date.unix());

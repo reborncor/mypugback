@@ -50,19 +50,14 @@ const util_1 = require("./util/util");
 const sendMessage_1 = require("./app/conversation/sendMessage");
 const seenConversation_1 = require("./app/conversation/seenConversation");
 const getConversations_1 = require("./app/conversation/getConversations");
-const EventHandler_1 = require("./app/competition/EventHandler");
+const JobCreateCompetition_1 = require("./app/competition/JobCreateCompetition");
 const VoteForParticipant_1 = require("./app/competition/VoteForParticipant");
-const swagger_1 = require("./swagger");
-const swaggerUi = require("swagger-ui-express");
+const JobSelectParticipants_1 = require("./app/competition/JobSelectParticipants");
+const JobSetCompetitionWinners_1 = require("./app/competition/JobSetCompetitionWinners");
 const schedule = require("node-schedule");
-const path = require("path");
 const init = () => {
   const app = (0, express_1.default)();
-  let finalPath = path.basename(__dirname);
-  finalPath = path.join("/usr/src/app/", "uploads");
   app.get("/file", (req, res) => {
-    console.log("DIR : ", __dirname);
-    console.log("DIR  2: ", finalPath);
     res.sendFile(__dirname + "/index.html");
   });
   app.get("/", (req, res) => {
@@ -71,20 +66,27 @@ const init = () => {
   });
   app.use(express_1.default.json());
   app.use(routes_1.default);
-  app.use("/pugs", express_1.default.static(path.join("", "uploads")));
-  app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(swagger_1.specsSwagger)
-  );
   const httpServer = require("http").createServer(app);
   const io = require("socket.io")(httpServer, {});
   httpServer.listen(config_1.env.PORT, () => {
     console.log(`Listening on port ${config_1.env.PORT}`);
   });
-  const job = schedule.scheduleJob("1 * 12 * * 1", function () {
+  // Tous les lundis à 12:01
+  const jobCompetition = schedule.scheduleJob("1 * 12 * * /1", function () {
     return __awaiter(this, void 0, void 0, function* () {
-      yield (0, EventHandler_1.createCompetition)();
+      yield (0, JobCreateCompetition_1.createCompetition)();
+    });
+  });
+  // Tous les lundis à 20:01
+  const jobParticipants = schedule.scheduleJob("1 * 20 * * /1", function () {
+    return __awaiter(this, void 0, void 0, function* () {
+      yield (0, JobSelectParticipants_1.jobSelectParticipants)();
+    });
+  });
+  // Tous les dimanche à 12:01
+  const jobWinner = schedule.scheduleJob("0 * 12 * * /1", function () {
+    return __awaiter(this, void 0, void 0, function* () {
+      yield (0, JobSetCompetitionWinners_1.jobSetCompetitionsWinners)();
     });
   });
   io.on("connection", (socket) => {

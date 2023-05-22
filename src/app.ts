@@ -92,8 +92,9 @@ const init = () => {
     socket.on("vote", async (msg: any) => {
       const result = await voteForParticipant(
         msg.currentUsername,
-        msg.conversationId,
-        msg.selectedParticipantId
+        msg.competitionId,
+        msg.pugId,
+        msg.username
       );
       console.log("Vote effectué");
       socket.emit("voteCallBack", result);
