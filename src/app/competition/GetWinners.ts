@@ -10,9 +10,8 @@ import {
 } from "../../util/validator/checkdata";
 import CompetitionRepository from "../../repository/CompetitionRepository";
 import moment from "moment";
-import { competitionToResponse } from "../../response/CompetitionResponse";
 
-export const getCompetition = async (req: Request, res: Response) => {
+export const getWinners = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
@@ -35,7 +34,9 @@ const execute = async (userId: string): Promise<Competition> => {
   const currentUser = await UserRepository.findById(userId);
   const date = moment().weekday(1).hour(12);
   checkThatUserExistsOrThrow(currentUser);
-  const competiton = await CompetitionRepository.findByDate(date.unix());
+  const competiton = await CompetitionRepository.findByDateWithWinnersOnly(
+    date.unix()
+  );
   checkThatCompetitionExist(competiton);
-  return competitionToResponse(competiton);
+  return competiton;
 };

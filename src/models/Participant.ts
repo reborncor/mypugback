@@ -5,5 +5,6 @@ export interface Participant {
   date: number;
   pugId: ObjectId;
   userId: ObjectId;
+  username: String;
   sex: "man" | "woman";
 }

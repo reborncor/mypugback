@@ -25,6 +25,26 @@ export default class CompetitionRepository {
     });
   }
 
+  static async findByDateWithWinnersOnly(
+    startDate: number
+  ): Promise<Competition> {
+    const call = db.get(collectionName);
+    return await call.findOne(
+      {
+        startDate,
+      },
+      {
+        projection: {
+          startDate: -1,
+          endDate: -1,
+          endVotingDate: -1,
+          participants: -1,
+          selectedParticipants: -1,
+        },
+      }
+    );
+  }
+
   static async findAll(): Promise<Competition[]> {
     const call = db.get(collectionName);
     return await call.find();

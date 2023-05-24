@@ -40,6 +40,7 @@ const execute = async (
   checkThatUserExistsOrThrow(currentUser);
 
   const participant: Participant = {
+    username: currentUser.username,
     date: moment().unix(),
     sex: currentUser.sex,
     userId: new ObjectId(currentUser._id),

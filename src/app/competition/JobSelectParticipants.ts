@@ -17,7 +17,7 @@ export const jobSelectParticipants = async () => {
       participants,
       "woman"
     );
-    await CompetitionRepository.addSelectedParticipants(
+    return await CompetitionRepository.addSelectedParticipants(
       [...selectedManParticipants, ...selectedWomanParticipants],
       new ObjectId(competiton._id)
     );

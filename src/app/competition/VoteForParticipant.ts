@@ -54,5 +54,5 @@ const execute = async (
       new ObjectId(competition._id)
     );
   }
-  return competition;
+  return competition.selectedParticipants;
 };
