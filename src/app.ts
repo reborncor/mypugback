@@ -97,7 +97,7 @@ const init = () => {
         msg.username
       );
       console.log("Vote effectué");
-      socket.emit("voteCallBack", result);
+      io.sockets.emit("voteCallBack", result);
     });
 
     socket.on("message", async (msg: any) => {

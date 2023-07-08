@@ -4,6 +4,7 @@ import { CustomError } from "../../util/error/CustomError";
 import UserRepository from "../../repository/UserRepository";
 import { checkThatUserExistsOrThrow } from "../../util/validator/checkdata";
 import { jobSelectParticipants } from "./JobSelectParticipants";
+import { successCode } from "../../util/util";
 
 export const changeSelectedParticipants = async (
   req: Request,
@@ -12,10 +13,14 @@ export const changeSelectedParticipants = async (
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
-    const user = await execute(userId);
-    res
-      .status(200)
-      .json({ code: user.code, message: user.message, payload: user.payload });
+    const { competitionId } = req.body;
+    const result = await execute(userId, competitionId);
+
+    res.status(200).json({
+      code: successCode,
+      message: "Participants modifié",
+      payload: result,
+    });
   } catch (err: any) {
     if (err instanceof CustomError) {
       console.log(err);
@@ -26,9 +31,9 @@ export const changeSelectedParticipants = async (
   }
 };
 
-const execute = async (userId: string): Promise<any> => {
+const execute = async (userId: string, competitionId: string): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
 
   checkThatUserExistsOrThrow(currentUser);
-  return jobSelectParticipants();
+  return jobSelectParticipants(competitionId);
 };

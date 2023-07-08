@@ -15,10 +15,10 @@ export const createCompetition = async () => {
       endDate: deadline.unix(),
       endVotingDate: endVotingDate.unix(),
       participants: [],
-      winnerMan: null,
-      winnerWoman: null,
-      pugWinnerMan: null,
-      pugWinnerWoman: null,
+      winnerMan: "",
+      winnerWoman: "",
+      pugWinnerMan: "",
+      pugWinnerWoman: "",
     };
     await CompetitionRepository.insert(newCompetition);
   }

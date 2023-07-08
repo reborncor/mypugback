@@ -15,8 +15,8 @@ export const participateToCompetition = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
     const { userId } = decodeToken(token);
-    const { pugId, competitionId } = req.body;
-    const user = await execute(userId, pugId, competitionId);
+    const { pugId, competitionId, pugPicture } = req.body;
+    const user = await execute(userId, pugId, competitionId, pugPicture);
     res
       .status(200)
       .json({ code: user.code, message: user.message, payload: user.payload });
@@ -33,7 +33,8 @@ export const participateToCompetition = async (req: Request, res: Response) => {
 const execute = async (
   userId: string,
   pugId: string,
-  competitionId: string
+  competitionId: string,
+  pugPicture: string
 ): Promise<any> => {
   const currentUser = await UserRepository.findById(userId);
 
@@ -42,9 +43,10 @@ const execute = async (
   const participant: Participant = {
     username: currentUser.username,
     date: moment().unix(),
-    sex: currentUser.sex,
+    sex: currentUser.sex ?? "man",
     userId: new ObjectId(currentUser._id),
     pugId: new ObjectId(pugId),
+    pugPicture: pugPicture,
   };
   const result = await CompetitionRepository.addParticipant(
     participant,

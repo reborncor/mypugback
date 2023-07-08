@@ -49,7 +49,6 @@ const execute = async (
     pug,
     username
   );
-  console.log(test);
 
   checkThatUserNotAlreadyLike(test);
 

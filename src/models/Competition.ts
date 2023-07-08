@@ -9,8 +9,8 @@ export interface Competition {
   endVotingDate: number;
   participants: Participant[];
   selectedParticipants: SelectedParticipant[];
-  winnerMan: ObjectId | null;
-  pugWinnerMan: ObjectId | null;
-  winnerWoman: ObjectId | null;
-  pugWinnerWoman: ObjectId | null;
+  winnerMan: ObjectId | String;
+  pugWinnerMan: ObjectId | String;
+  winnerWoman: ObjectId | String;
+  pugWinnerWoman: ObjectId | String;
 }

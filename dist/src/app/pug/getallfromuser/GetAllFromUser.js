@@ -107,7 +107,6 @@ const execute = (userId, username) =>
         username: otherUser.username,
         pugs: [],
       };
-    console.log(result);
     return (0,
     UserPugResponse_1.userPugToResponseNoComment)(result, currentUser, otherUser);
   });

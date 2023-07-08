@@ -6,7 +6,16 @@ export function competitionToResponse(
   competition: Competition
 ): CompetitionResponse {
   return {
-    ...competition,
+    _id: competition._id,
+    endDate: competition.endDate ?? 0,
+    endVotingDate: competition.endVotingDate ?? 0,
+    participants: competition.participants ?? [],
+    pugWinnerMan: competition.pugWinnerMan ?? "",
+    pugWinnerWoman: competition.pugWinnerWoman ?? "",
+    selectedParticipants: competition.selectedParticipants ?? [],
+    startDate: competition.startDate ?? 0,
+    winnerMan: competition.winnerMan ?? "",
+    winnerWoman: competition.winnerWoman ?? "",
   };
 }
 
