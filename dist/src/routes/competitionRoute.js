@@ -1,25 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const getConversations_1 = require("../app/conversation/getConversations");
-const createConversation_1 = require("../app/conversation/createConversation");
-const getConversationPageable_1 = require("../app/conversation/getConversationPageable");
+const Participate_1 = require("../app/competition/Participate");
+const GetCompetition_1 = require("../app/competition/GetCompetition");
+const GetCompetitionById_1 = require("../app/competition/GetCompetitionById");
+const GetWinners_1 = require("../app/competition/GetWinners");
+const ChangeSelectedParticipants_1 = require("../app/competition/ChangeSelectedParticipants");
 const competition = (0, express_1.Router)();
 const getAllCompetitionPath = "/all";
 const getCompetitionPath = "/";
+const getCompetitionByIdPath = "/:id";
 const getCompetitionWinnerPath = "/winner";
 const particiaptePath = "/participate";
+const changePath = "/change";
+competition.get(getCompetitionPath, GetCompetition_1.getCompetition);
 competition.get(
-  getAllCompetitionPath,
-  getConversationPageable_1.getConversationPageable
+  getCompetitionByIdPath,
+  GetCompetitionById_1.getCompetitionByid
 );
-competition.get(
-  getCompetitionPath,
-  getConversations_1.getAllConversationFromUser
+competition.get(getCompetitionWinnerPath, GetWinners_1.getWinners);
+competition.put(particiaptePath, Participate_1.participateToCompetition);
+competition.put(
+  changePath,
+  ChangeSelectedParticipants_1.changeSelectedParticipants
 );
-competition.get(
-  getCompetitionWinnerPath,
-  createConversation_1.createConversation
-);
-competition.put(particiaptePath, createConversation_1.createConversation);
 exports.default = competition;

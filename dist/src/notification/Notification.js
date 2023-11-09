@@ -42,32 +42,34 @@ var __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCompetition = void 0;
-const moment_1 = __importDefault(require("moment"));
-const CompetitionRepository_1 = __importDefault(
-  require("../../repository/CompetitionRepository")
-);
-const createCompetition = () =>
-  __awaiter(void 0, void 0, void 0, function* () {
-    const date = (0, moment_1.default)().weekday(1).hour(12);
-    const competiton = yield CompetitionRepository_1.default.findByDate(
-      date.unix()
-    );
-    if (!competiton) {
-      const deadline = (0, moment_1.default)().weekday(5).hour(20);
-      const endVotingDate = (0, moment_1.default)().weekday(6).hour(20);
-      const newCompetition = {
-        selectedParticipants: [],
-        startDate: date.unix(),
-        endDate: deadline.unix(),
-        endVotingDate: endVotingDate.unix(),
-        participants: [],
-        winnerMan: "",
-        winnerWoman: "",
-        pugWinnerMan: "",
-        pugWinnerWoman: "",
+exports.sendNotificationEventCreation = void 0;
+const firebase_admin_1 = __importDefault(require("firebase-admin"));
+
+function sendNotificationEventCreation(token, username, message, type) {
+  return __awaiter(this, void 0, void 0, function* () {
+    try {
+      var payload = {
+        notification: {
+          title: username + " vous a envoyé un" + type,
+          body: message,
+        },
+        data: { click_action: "FLUTTER_NOTIFICATION_CLICK" },
       };
-      yield CompetitionRepository_1.default.insert(newCompetition);
+      yield firebase_admin_1.default.messaging().send({
+        token,
+        notification: {
+          title:
+            type == "text"
+              ? username + " vous a envoyé un nouveau message"
+              : username + " vous a partagé un " + type,
+          body: message,
+        },
+        data: { click_action: "FLUTTER_NOTIFICATION_CLICK" },
+      });
+    } catch (e) {
+      console.log("Erreur :", e);
     }
   });
-exports.createCompetition = createCompetition;
+}
+
+exports.sendNotificationEventCreation = sendNotificationEventCreation;

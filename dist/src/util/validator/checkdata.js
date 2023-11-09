@@ -115,18 +115,14 @@ const util_1 = require("../util");
 const EmailValidator = __importStar(require("email-validator"));
 const CustomError_1 = require("../error/CustomError");
 const passwordManagement_1 = require("../security/passwordManagement");
-const awesome_phonenumber_1 = require("awesome-phonenumber");
 
 function checkThatUserSignUpCredentialsOrThrow(
   email,
   password,
-  phoneNumber,
   username,
   phoneRegion
 ) {
-  const pn = (0, awesome_phonenumber_1.parsePhoneNumber)(phoneNumber, {
-    regionCode: phoneRegion,
-  });
+  // const pn = parsePhoneNumber(phoneNumber, { regionCode: phoneRegion });
   if (!email || email == "" || !EmailValidator.validate(email)) {
     throw new CustomError_1.CustomError(
       util_1.errorCode,
@@ -148,17 +144,14 @@ function checkThatUserSignUpCredentialsOrThrow(
       {}
     );
   }
-  if (!pn.valid) {
-    throw new CustomError_1.CustomError(
-      util_1.errorCode,
-      util_1.phoneNumberInvalid,
-      {}
-    );
-  }
+  // if (!pn.valid) {
+  //   throw new CustomError(errorCode, phoneNumberInvalid, {});
+  // }
 }
 
 exports.checkThatUserSignUpCredentialsOrThrow =
   checkThatUserSignUpCredentialsOrThrow;
+
 function checkThatUserSignInCredentialsOrThrow(password, username) {
   if (!password || password == "") {
     throw new CustomError_1.CustomError(
@@ -178,9 +171,12 @@ function checkThatUserSignInCredentialsOrThrow(password, username) {
 
 exports.checkThatUserSignInCredentialsOrThrow =
   checkThatUserSignInCredentialsOrThrow;
+
 function checkThatPasswordsAreEqualsOrThrow(password, confirmedPassword) {
   return __awaiter(this, void 0, void 0, function* () {
-    if (!yield(0, passwordManagement_1.isSame)(confirmedPassword, password)) {
+    if (
+      !(yield (0, passwordManagement_1.isSame)(confirmedPassword, password))
+    ) {
       throw new CustomError_1.CustomError(
         util_1.errorCode,
         util_1.wrongPassword,
@@ -261,7 +257,6 @@ function checkThatUserIsNotLucieOrThrowWithName(username) {
         throw new CustomError_1.CustomError(util_1.errorCodeLucie, util_1.usernameIsLucie, {});
     }
 }
-
 exports.checkThatUserIsNotLucieOrThrowWithName = checkThatUserIsNotLucieOrThrowWithName;
 function checkThatUserIsLucie(user) {
     if (user.username == util_1.lucie) {
@@ -334,7 +329,6 @@ function checkThatUserWithUsernameDoesntExistOrThrow(user) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithUsername, {});
     }
 }
-
 exports.checkThatUserWithUsernameDoesntExistOrThrow = checkThatUserWithUsernameDoesntExistOrThrow;
 function checkThatUserDoesntExistOrThrow(user) {
     if (user) {
@@ -347,5 +341,4 @@ function checkThatUserWithPhoneNumberDoesntExistOrThrow(user) {
         throw new CustomError_1.CustomError(util_1.errorCode, util_1.accountAlreadyExistWithPhoneNumber, {});
     }
 }
-
 exports.checkThatUserWithPhoneNumberDoesntExistOrThrow = checkThatUserWithPhoneNumberDoesntExistOrThrow;

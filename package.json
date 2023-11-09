@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "postinstall": "tsc",
     "build": "tsc --build",
     "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
@@ -15,10 +14,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reborncor/socialgambling.git"
+    "url": "git+https://github.com/reborncor/mypugfront.git"
   },
   "engines": {
-    "node": "12.14.1"
+    "node": "16.20.2"
   },
   "author": "Reborn CORP",
   "license": "ISC",
@@ -43,6 +42,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.3",
     "express-validator": "^6.13.0",
+    "firebase-admin": "^11.11.0",
     "fs": "0.0.1-security",
     "husky": "^7.0.4",
     "jsonwebtoken": "^8.5.1",

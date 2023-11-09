@@ -64,6 +64,26 @@ class CompetitionRepository {
     });
   }
 
+  static findByDateWithWinnersOnly(startDate) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const call = db_1.db.get(collectionName);
+      return yield call.findOne(
+        {
+          startDate,
+        },
+        {
+          projection: {
+            startDate: -1,
+            endDate: -1,
+            endVotingDate: -1,
+            participants: -1,
+            selectedParticipants: -1,
+          },
+        }
+      );
+    });
+  }
+
   static findAll() {
     return __awaiter(this, void 0, void 0, function* () {
       const call = db_1.db.get(collectionName);

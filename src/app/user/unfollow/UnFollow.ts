@@ -39,20 +39,23 @@ const execute = async (userId: string, username: string): Promise<any> => {
     currentUser.username,
     otherUser.username
   );
+  console.log("data :" + userNotFollow);
   checkThatUserNotFollowed(userNotFollow);
 
-  await FollowerRepository.deleteUserFromFollowing(
+  const resultFollowing = await FollowerRepository.deleteUserFromFollowing(
     currentUser,
     userToUserFactoryResponse(otherUser)
   );
-  await FollowerRepository.deleteUserFromFollower(
+  if (resultFollowing) {
+    await UserRepository.updateUserFollowing(currentUser, -1);
+  }
+  const resultFollower = await FollowerRepository.deleteUserFromFollower(
     otherUser,
     userToUserFactoryResponse(currentUser)
   );
-
-  await UserRepository.updateUserFollowing(currentUser, -1);
-  await UserRepository.updateUserFollower(otherUser, -1);
-
+  if (resultFollower) {
+    await UserRepository.updateUserFollower(otherUser, -1);
+  }
   return {
     code: 0,
     message: "Nouvel utilisateur unfollow",

@@ -48,24 +48,26 @@ const CompetitionRepository_1 = __importDefault(
   require("../../repository/CompetitionRepository")
 );
 const bson_1 = require("bson");
-const loadsh = require("loadsh");
-const jobSelectParticipants = () =>
+const loadsh = require("lodash");
+const jobSelectParticipants = (competitionId) =>
   __awaiter(void 0, void 0, void 0, function* () {
     const date = (0, moment_1.default)().weekday(1).hour(12);
-    const competiton = yield CompetitionRepository_1.default.findByDate(
-      date.unix()
-    );
+    const competiton = competitionId
+      ? yield CompetitionRepository_1.default.findById(competitionId)
+      : yield CompetitionRepository_1.default.findByDate(date.unix());
     if (competiton && competiton.participants.length) {
       const participants = competiton.participants;
       const selectedManParticipants = getSelectedPaticipants(
         participants,
         "man"
       );
+      selectedManParticipants.map((value) => (value.vote = 0));
       const selectedWomanParticipants = getSelectedPaticipants(
         participants,
         "woman"
       );
-      yield CompetitionRepository_1.default.addSelectedParticipants(
+      selectedWomanParticipants.map((value) => (value.vote = 0));
+      return yield CompetitionRepository_1.default.addSelectedParticipants(
         [...selectedManParticipants, ...selectedWomanParticipants],
         new bson_1.ObjectId(competiton._id)
       );

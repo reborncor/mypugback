@@ -19,6 +19,7 @@ export const accountNotFound = "Aucun resultat";
 export const accountNotAllowed =
   "Vous ne pouvez pas interargir avec cet utilisarteur";
 export const usernameIsLucie = "Utilisateur invalide";
+export const sameUser = "fonctionalité sur soit meme non disponible";
 export const lucie = "lucie";
 export const accountAlreadyFollow = "Vous suivez déjà cet utilisateur";
 export const accountAlreadyBlocked = "Vous déjà bloqué cet utilisateur";
@@ -43,3 +44,4 @@ export const pugDoesntExist = "pug introuvable";
 export const pugsDoesntExist = "L'utilisateur sans publlication";
 
 export const allUsersConnected = new Map();
+export const allUsersNotificationToken = new Map();

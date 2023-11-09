@@ -54,8 +54,14 @@ const JobCreateCompetition_1 = require("./app/competition/JobCreateCompetition")
 const VoteForParticipant_1 = require("./app/competition/VoteForParticipant");
 const JobSelectParticipants_1 = require("./app/competition/JobSelectParticipants");
 const JobSetCompetitionWinners_1 = require("./app/competition/JobSetCompetitionWinners");
+const serviceAccount = require("./reborn-4ddb8-firebase-adminsdk-m93a0-fe3668baa0.json");
+const Notification_1 = require("./notification/Notification");
+var admin = require("firebase-admin");
 const schedule = require("node-schedule");
 const init = () => {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
   const app = (0, express_1.default)();
   app.get("/file", (req, res) => {
     res.sendFile(__dirname + "/index.html");
@@ -101,6 +107,10 @@ const init = () => {
     socket.on("credentials", (msg) => {
       util_1.allUsersConnected.set(msg, socket.id);
     });
+    socket.on("credentials_notification", (msg) => {
+      util_1.allUsersNotificationToken.set(msg.username, msg.token);
+      console.log("TOKEN :", msg.token);
+    });
     socket.on("notification", (msg) =>
       __awaiter(void 0, void 0, void 0, function* () {
         const result = yield (0,
@@ -125,15 +135,19 @@ const init = () => {
       __awaiter(void 0, void 0, void 0, function* () {
         const result = yield (0, VoteForParticipant_1.voteForParticipant)(
           msg.currentUsername,
-          msg.conversationId,
-          msg.selectedParticipantId
+          msg.competitionId,
+          msg.pugId,
+          msg.username
         );
         console.log("Vote effectué");
-        socket.emit("voteCallBack", result);
+        io.sockets.emit("voteCallBack", result);
       })
     );
     socket.on("message", (msg) =>
       __awaiter(void 0, void 0, void 0, function* () {
+        if (msg.senderUsername == msg.receiverUsername) {
+          socket.emit("messagesuccess", 1);
+        }
         const result = yield (0, sendMessage_1.sendMessage)(
           msg.senderUsername,
           msg.receiverUsername,
@@ -152,6 +166,17 @@ const init = () => {
             "messagesuccess",
             `${result.code.toString()}_${msg.receiverUsername}`
           );
+          //TODO: Notification
+          console.log(util_1.allUsersNotificationToken);
+          if (util_1.allUsersNotificationToken.has(msg.receiverUsername)) {
+            console.log("YES");
+            yield (0, Notification_1.sendNotificationEventCreation)(
+              util_1.allUsersNotificationToken.get(msg.receiverUsername),
+              msg.senderUsername,
+              msg.message,
+              msg.type
+            );
+          }
         } else {
           socket.emit("messagesuccess", result.code.toString());
         }

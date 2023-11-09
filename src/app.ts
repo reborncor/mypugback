@@ -3,7 +3,7 @@ import express from "express";
 import { env } from "./util/config";
 import router from "./routes/routes";
 import { Socket } from "socket.io";
-import { allUsersConnected } from "./util/util";
+import { allUsersConnected, allUsersNotificationToken } from "./util/util";
 import { sendMessage } from "./app/conversation/sendMessage";
 import { seenConversation } from "./app/conversation/seenConversation";
 import { executeConversationsFromUser } from "./app/conversation/getConversations";
@@ -11,10 +11,19 @@ import { createCompetition } from "./app/competition/JobCreateCompetition";
 import { voteForParticipant } from "./app/competition/VoteForParticipant";
 import { jobSelectParticipants } from "./app/competition/JobSelectParticipants";
 import { jobSetCompetitionsWinners } from "./app/competition/JobSetCompetitionWinners";
+import { sendNotificationEventMessage } from "./notification/Notification";
+import UserRepository from "./repository/UserRepository";
+import { userToUserFactoryResponse } from "./response/UserFactoryResponse";
+import serviceAccount = require("./reborn-4ddb8-firebase-adminsdk-m93a0-fe3668baa0.json");
+
+var admin = require("firebase-admin");
 
 const schedule = require("node-schedule");
 
 const init = () => {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
   const app = express();
 
   app.get("/file", (req: any, res: any) => {
@@ -65,11 +74,16 @@ const init = () => {
 
     socket.on("disconnect_user", (msg: any) => {
       allUsersConnected.delete(msg);
+      allUsersNotificationToken.delete(msg);
       console.log("Deconnecté !");
     });
 
     socket.on("credentials", (msg: any) => {
       allUsersConnected.set(msg, socket.id);
+    });
+    socket.on("credentials_notification", (msg: any) => {
+      allUsersNotificationToken.set(msg.username, msg.token);
+      console.log("TOKEN :", msg.token);
     });
 
     socket.on("notification", async (msg: any) => {
@@ -101,15 +115,20 @@ const init = () => {
     });
 
     socket.on("message", async (msg: any) => {
+      if (msg.senderUsername == msg.receiverUsername) {
+        socket.emit("messagesuccess", 1);
+      }
       const result = await sendMessage(
         msg.senderUsername,
         msg.receiverUsername,
         msg.content,
         msg.type
       );
-      console.log(result);
 
       if (result.code == 0) {
+        const senderUser = await UserRepository.findByUsername(
+          msg.senderUsername
+        );
         if (allUsersConnected.has(msg.receiverUsername)) {
           io.to(allUsersConnected.get(msg.receiverUsername)).emit(
             "instantmessage",
@@ -121,6 +140,17 @@ const init = () => {
           "messagesuccess",
           `${result.code.toString()}_${msg.receiverUsername}`
         );
+        //TODO: Notification
+        console.log(allUsersNotificationToken);
+        if (allUsersNotificationToken.has(msg.receiverUsername)) {
+          await sendNotificationEventMessage(
+            allUsersNotificationToken.get(msg.receiverUsername),
+            msg.senderUsername,
+            msg.message,
+            msg.type,
+            userToUserFactoryResponse(senderUser)
+          );
+        }
       } else {
         socket.emit("messagesuccess", result.code.toString());
       }

@@ -25,9 +25,9 @@ import {
   lucie,
   notAlreadyliked,
   passwordInvalid,
-  phoneNumberInvalid,
   pugDoesntExist,
   pugsDoesntExist,
+  sameUser,
   usernameInvalid,
   usernameIsLucie,
   wrongPassword,
@@ -41,17 +41,15 @@ import { Pug } from "../../models/Pug";
 import { UserPug } from "../../models/UserPug";
 import { SignalFactory } from "../../models/SignalFactory";
 import { UserFactory } from "../../models/UserFactory";
-import { parsePhoneNumber } from "awesome-phonenumber";
 import { Competition } from "../../models/Competition";
 
 export function checkThatUserSignUpCredentialsOrThrow(
   email: string,
   password: string,
-  phoneNumber: string,
   username: string,
   phoneRegion: string
 ) {
-  const pn = parsePhoneNumber(phoneNumber, { regionCode: phoneRegion });
+  // const pn = parsePhoneNumber(phoneNumber, { regionCode: phoneRegion });
   if (!email || email == "" || !EmailValidator.validate(email)) {
     throw new CustomError(errorCode, emailInvalid, {});
   }
@@ -62,10 +60,9 @@ export function checkThatUserSignUpCredentialsOrThrow(
   if (!username || username == "") {
     throw new CustomError(errorCode, usernameInvalid, {});
   }
-
-  if (!pn.valid) {
-    throw new CustomError(errorCode, phoneNumberInvalid, {});
-  }
+  // if (!pn.valid) {
+  //   throw new CustomError(errorCode, phoneNumberInvalid, {});
+  // }
 }
 
 export function checkThatUserSignInCredentialsOrThrow(
@@ -132,11 +129,19 @@ export function checkThatCommentsExistOrThrow(comment: any) {
     throw new CustomError(errorCode, commentNotFound, {});
   }
 }
+
 export function checkThatUserIsNotLucieOrThrow(user: User) {
   if (user.username == lucie) {
     throw new CustomError(errorCodeLucie, usernameIsLucie, {});
   }
 }
+
+export function checkThatUserIsNotTheSame(user: User, secondUser: User) {
+  if (user.username == secondUser.username) {
+    throw new CustomError(errorCode, sameUser, {});
+  }
+}
+
 export function checkThatPugExistOrThrow(pug: Pug) {
   if (!pug) {
     throw new CustomError(errorCode, pugDoesntExist, {});

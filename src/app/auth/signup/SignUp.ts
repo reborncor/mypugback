@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   checkThatUserDoesntExistOrThrow,
   checkThatUserSignUpCredentialsOrThrow,
-  checkThatUserWithPhoneNumberDoesntExistOrThrow,
   checkThatUserWithUsernameDoesntExistOrThrow,
 } from "../../../util/validator/checkdata";
 import { User } from "../../../models/User";
@@ -14,17 +13,10 @@ import { userToUserResponse } from "../../../response/UserResponse";
 import { executeAddFriend } from "../../user/follow/Follow";
 
 export const signUp = async (req: Request, res: Response) => {
-  const { email, username, phoneNumber, password, phoneRegion, sex } = req.body;
+  const { email, username, password, phoneRegion, sex } = req.body;
 
   try {
-    const user = await signUpUser(
-      email,
-      username,
-      password,
-      phoneNumber,
-      phoneRegion,
-      sex
-    );
+    const user = await signUpUser(email, username, password, phoneRegion, sex);
     await executeAddFriend(String(user._id), "lucie");
 
     res.status(201).json({
@@ -46,29 +38,18 @@ const signUpUser = async (
   email: string,
   username: string,
   password: string,
-  phoneNumber: string,
   phoneRegion: string,
   sex: "man" | "woman"
 ): Promise<User> => {
-  checkThatUserSignUpCredentialsOrThrow(
-    email,
-    password,
-    phoneNumber,
-    username,
-    phoneRegion
-  );
+  checkThatUserSignUpCredentialsOrThrow(email, password, username, phoneRegion);
 
   const existingUser = await UserRepository.findByEmail(email);
   const existingUserWithUserName = await UserRepository.findByUsername(
     username
   );
-  const existingUserWithPhoneNumber = await UserRepository.findByPhoneNumber(
-    phoneNumber
-  );
 
   checkThatUserDoesntExistOrThrow(existingUser);
   checkThatUserWithUsernameDoesntExistOrThrow(existingUserWithUserName);
-  checkThatUserWithPhoneNumberDoesntExistOrThrow(existingUserWithPhoneNumber);
 
   const hashedPassword = await encodePassword(password);
   const newUser: User = {
@@ -76,7 +57,7 @@ const signUpUser = async (
     admin: false,
     email,
     password: hashedPassword,
-    phoneNumber,
+    phoneNumber: "",
     username,
     followers: 0,
     following: 0,

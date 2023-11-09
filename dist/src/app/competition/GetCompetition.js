@@ -42,19 +42,20 @@ var __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.participateToCompetition = void 0;
+exports.getCompetition = void 0;
 const tokenManagement_1 = require("../../util/security/tokenManagement");
+const util_1 = require("../../util/util");
 const CustomError_1 = require("../../util/error/CustomError");
 const UserRepository_1 = __importDefault(
   require("../../repository/UserRepository")
 );
 const checkdata_1 = require("../../util/validator/checkdata");
-const bson_1 = require("bson");
 const CompetitionRepository_1 = __importDefault(
   require("../../repository/CompetitionRepository")
 );
 const moment_1 = __importDefault(require("moment"));
-const participateToCompetition = (req, res) =>
+const CompetitionResponse_1 = require("../../response/CompetitionResponse");
+const getCompetition = (req, res) =>
   __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
@@ -63,45 +64,29 @@ const participateToCompetition = (req, res) =>
           ? void 0
           : _a.split(" ")[1]) || "";
       const { userId } = (0, tokenManagement_1.decodeToken)(token);
-      const { pugId, competitionId, pugPicture } = req.body;
-      const user = yield execute(userId, pugId, competitionId, pugPicture);
-      res
-        .status(200)
-        .json({
-          code: user.code,
-          message: user.message,
-          payload: user.payload,
-        });
+      const result = yield execute(userId);
+      res.status(200).json({
+        code: util_1.successCode,
+        message: "Competition",
+        payload: result,
+      });
     } catch (err) {
       if (err instanceof CustomError_1.CustomError) {
-        console.log(err);
         res.status(400).json({ message: err.message, code: err.code });
       } else {
         console.log(err);
       }
     }
   });
-exports.participateToCompetition = participateToCompetition;
-const execute = (userId, pugId, competitionId, pugPicture) =>
+exports.getCompetition = getCompetition;
+const execute = (userId) =>
   __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
     const currentUser = yield UserRepository_1.default.findById(userId);
+    const date = (0, moment_1.default)().weekday(1).hour(12);
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
-    const participant = {
-      username: currentUser.username,
-      date: (0, moment_1.default)().unix(),
-      sex: (_b = currentUser.sex) !== null && _b !== void 0 ? _b : "man",
-      userId: new bson_1.ObjectId(currentUser._id),
-      pugId: new bson_1.ObjectId(pugId),
-      pugPicture: pugPicture,
-    };
-    const result = yield CompetitionRepository_1.default.addParticipant(
-      participant,
-      competitionId
+    const competiton = yield CompetitionRepository_1.default.findByDate(
+      date.unix()
     );
-    (0, checkdata_1.checkThatCompetitionExist)(result);
-    return {
-      code: 0,
-      message: "Inscription au concours effectué",
-    };
+    (0, checkdata_1.checkThatCompetitionExist)(competiton);
+    return (0, CompetitionResponse_1.competitionToResponse)(competiton);
   });

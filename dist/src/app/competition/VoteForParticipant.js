@@ -53,17 +53,14 @@ const CompetitionRepository_1 = __importDefault(
 );
 const util_1 = require("../../util/util");
 const bson_1 = require("bson");
-const voteForParticipant = (
-  currentUsername,
-  conversationId,
-  selectedParticipantId
-) =>
+const voteForParticipant = (currentUsername, competitionId, pugId, username) =>
   __awaiter(void 0, void 0, void 0, function* () {
     try {
       const message = yield execute(
         currentUsername,
-        conversationId,
-        selectedParticipantId
+        competitionId,
+        pugId,
+        username
       );
       return { message, code: util_1.successCode };
     } catch (err) {
@@ -76,7 +73,7 @@ const voteForParticipant = (
     }
   });
 exports.voteForParticipant = voteForParticipant;
-const execute = (currentUsername, conversationId, selectedParticipantId) =>
+const execute = (currentUsername, conversationId, pugId, username) =>
   __awaiter(void 0, void 0, void 0, function* () {
     const currentUser = yield UserRepository_1.default.findByUsername(
       currentUsername
@@ -87,7 +84,8 @@ const execute = (currentUsername, conversationId, selectedParticipantId) =>
     (0, checkdata_1.checkThatUserExistsOrThrow)(currentUser);
     (0, checkdata_1.checkThatCompetitionExist)(competition);
     const selectedParticipant = competition.selectedParticipants.find(
-      (value) => new bson_1.ObjectId(selectedParticipantId) == value._id
+      (value) =>
+        new bson_1.ObjectId(pugId) == value.pugId && username == value.username
     );
     if (selectedParticipant) {
       return yield CompetitionRepository_1.default.voteForParticipant(
@@ -96,5 +94,5 @@ const execute = (currentUsername, conversationId, selectedParticipantId) =>
         new bson_1.ObjectId(competition._id)
       );
     }
-    return competition;
+    return competition.selectedParticipants;
   });

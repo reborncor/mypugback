@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allUsersConnected =
+exports.allUsersNotificationToken =
+  exports.allUsersConnected =
   exports.pugsDoesntExist =
   exports.pugDoesntExist =
   exports.accountAlreadyExistWithPhoneNumber =
@@ -73,3 +74,4 @@ exports.accountAlreadyExistWithPhoneNumber = "Un utilisateur avec ce numéro exi
 exports.pugDoesntExist = "pug introuvable";
 exports.pugsDoesntExist = "L'utilisateur sans publlication";
 exports.allUsersConnected = new Map();
+exports.allUsersNotificationToken = new Map();
