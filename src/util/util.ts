@@ -16,9 +16,8 @@ export const errorSurrounded = "Une erreur est survenue";
 export const accountBanned = "Votre compte a été banni";
 export const commentNotFound = "Le commentaire a été supprimé";
 export const accountNotFound = "Aucun resultat";
-export const accountNotAllowed =
-  "Vous ne pouvez pas interargir avec cet utilisarteur";
-export const usernameIsLucie = "Utilisateur invalide";
+export const accountNotAllowed = "Vous ne pouvez pas interargir avec Lucie";
+export const usernameIsLucie = "Vous ne pouvez pas commenter un pug de Lucie";
 export const sameUser = "fonctionalité sur soit meme non disponible";
 export const lucie = "lucie";
 export const accountAlreadyFollow = "Vous suivez déjà cet utilisateur";
