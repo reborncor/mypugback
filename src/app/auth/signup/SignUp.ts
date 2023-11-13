@@ -11,13 +11,14 @@ import { CustomError } from "../../../util/error/CustomError";
 import { generateAccessToken } from "../../../util/security/tokenManagement";
 import { userToUserResponse } from "../../../response/UserResponse";
 import { executeAddFriend } from "../../user/follow/Follow";
+import { LUCIE } from "../../../util/util";
 
 export const signUp = async (req: Request, res: Response) => {
   const { email, username, password, phoneRegion, sex } = req.body;
 
   try {
     const user = await signUpUser(email, username, password, phoneRegion, sex);
-    await executeAddFriend(String(user._id), "lucie");
+    await executeAddFriend(String(user._id), LUCIE);
 
     res.status(201).json({
       code: 0,

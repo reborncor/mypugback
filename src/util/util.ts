@@ -3,6 +3,7 @@ export const blockedCode = 3;
 export const successCode = 0;
 export const errorCodeLucie = 403;
 export const bannedCode = 6;
+export const LUCIE = "lucie";
 
 export const usernameInvalid = "nom d'utilisateur invalide";
 export const passwordInvalid = "mot de passe invalide";
@@ -16,10 +17,10 @@ export const errorSurrounded = "Une erreur est survenue";
 export const accountBanned = "Votre compte a été banni";
 export const commentNotFound = "Le commentaire a été supprimé";
 export const accountNotFound = "Aucun resultat";
-export const accountNotAllowed = "Vous ne pouvez pas interargir avec Lucie";
+export const accountNotAllowed =
+  "Ceci est un compte d'exposition ne pouvez pas interargir avec";
 export const usernameIsLucie = "Vous ne pouvez pas commenter un pug de Lucie";
 export const sameUser = "fonctionalité sur soit meme non disponible";
-export const lucie = "lucie";
 export const accountAlreadyFollow = "Vous suivez déjà cet utilisateur";
 export const accountAlreadyBlocked = "Vous déjà bloqué cet utilisateur";
 export const accountNotFollowed = "Vous ne suivez pas cet utilisateur";

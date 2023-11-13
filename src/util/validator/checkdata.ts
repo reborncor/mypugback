@@ -54,7 +54,7 @@ export function checkThatUserSignUpCredentialsOrThrow(
     throw new CustomError(errorCode, emailInvalid, {});
   }
 
-  if (!password || password == "") {
+  if (!password || password == "" || password.length < 7) {
     throw new CustomError(errorCode, passwordInvalid, {});
   }
   if (!username || username == "") {
