@@ -38,8 +38,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 const execute = async (username: string): Promise<User> => {
   const existingUser = await UserRepository.findByUsername(username);
   await checkThatUserExistsOrThrow(existingUser);
-  const userId = existingUser._id?.toHexString() ?? "";
-  await sendEmail(existingUser.email, subjectEmail, htmlContentEmail(userId));
+  await sendEmail(existingUser.email, subjectEmail, htmlContentEmail(username));
 
   return existingUser;
 };

@@ -52,7 +52,7 @@ export const htmlContentEmail = (userId: string) => `
       Vous avez oublié votre mot de passe. Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe.
     </p>
     <div style="margin: 40px 0;">
-      <a href="${deeplink}/${userId}" style="padding: 15px 30px; background-color: #4CAF50; color: white; text-decoration: none; font-size: 16px; border-radius: 5px;">
+      <a href="${deeplink}?username=${userId}" style="padding: 15px 30px; background-color: #4CAF50; color: white; text-decoration: none; font-size: 16px; border-radius: 5px;">
         Réinitialiser mon mot de passe
       </a>
     </div>
