@@ -97,19 +97,15 @@ const init = () => {
   });
   io.on("connection", (socket) => {
     console.log("Connection ! :", socket.id);
-    socket.on("disconnect", (msg) => {
-      console.log("Deconnecté !");
-    });
+    socket.on("disconnect", (msg) => {});
     socket.on("disconnect_user", (msg) => {
       util_1.allUsersConnected.delete(msg);
-      console.log("Deconnecté !");
     });
     socket.on("credentials", (msg) => {
       util_1.allUsersConnected.set(msg, socket.id);
     });
     socket.on("credentials_notification", (msg) => {
       util_1.allUsersNotificationToken.set(msg.username, msg.token);
-      console.log("TOKEN :", msg.token);
     });
     socket.on("notification", (msg) =>
       __awaiter(void 0, void 0, void 0, function* () {
@@ -124,7 +120,7 @@ const init = () => {
           msg.senderUsername,
           msg.conversationId
         );
-        if (result.code == 0) {
+        if (result.code === 0) {
           socket.emit("seenCallback", result.code.toString());
         } else {
           socket.emit("seenCallback", result.code.toString());
@@ -139,7 +135,6 @@ const init = () => {
           msg.pugId,
           msg.username
         );
-        console.log("Vote effectué");
         io.sockets.emit("voteCallBack", result);
       })
     );
@@ -169,7 +164,6 @@ const init = () => {
           //TODO: Notification
           console.log(util_1.allUsersNotificationToken);
           if (util_1.allUsersNotificationToken.has(msg.receiverUsername)) {
-            console.log("YES");
             yield (0, Notification_1.sendNotificationEventCreation)(
               util_1.allUsersNotificationToken.get(msg.receiverUsername),
               msg.senderUsername,

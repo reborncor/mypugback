@@ -22,7 +22,7 @@ import {
   errorCode,
   errorCodeLucie,
   errorSurrounded,
-  lucie,
+  LUCIE,
   notAlreadyliked,
   passwordInvalid,
   pugDoesntExist,
@@ -54,7 +54,7 @@ export function checkThatUserSignUpCredentialsOrThrow(
     throw new CustomError(errorCode, emailInvalid, {});
   }
 
-  if (!password || password == "") {
+  if (!password || password == "" || password.length < 7) {
     throw new CustomError(errorCode, passwordInvalid, {});
   }
   if (!username || username == "") {
@@ -131,7 +131,7 @@ export function checkThatCommentsExistOrThrow(comment: any) {
 }
 
 export function checkThatUserIsNotLucieOrThrow(user: User) {
-  if (user.username == lucie) {
+  if (user.username == LUCIE) {
     throw new CustomError(errorCodeLucie, usernameIsLucie, {});
   }
 }
@@ -155,12 +155,12 @@ export function checkThatPugsExistOrThrow(userPug: UserPug) {
 }
 
 export function checkThatUserIsNotLucieOrThrowWithName(username: String) {
-  if (username == lucie) {
+  if (username == LUCIE) {
     throw new CustomError(errorCodeLucie, usernameIsLucie, {});
   }
 }
 export function checkThatUserIsLucie(user: User) {
-  if (user.username == lucie) {
+  if (user.username == LUCIE) {
     throw new CustomError(errorCode, accountNotAllowed, {});
   }
 }

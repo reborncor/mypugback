@@ -14,6 +14,8 @@ import { jobSetCompetitionsWinners } from "./app/competition/JobSetCompetitionWi
 import { sendNotificationEventMessage } from "./notification/Notification";
 import UserRepository from "./repository/UserRepository";
 import { userToUserFactoryResponse } from "./response/UserFactoryResponse";
+
+//TODO ADD firebase file JSON for notification
 import serviceAccount = require("./reborn-4ddb8-firebase-adminsdk-m93a0-fe3668baa0.json");
 
 var admin = require("firebase-admin");
@@ -25,10 +27,6 @@ const init = () => {
     credential: admin.credential.cert(serviceAccount),
   });
   const app = express();
-
-  app.get("/file", (req: any, res: any) => {
-    res.sendFile(__dirname + "/index.html");
-  });
 
   app.get("/", (req: any, res: any) => {
     console.log("MyPug server");
@@ -140,7 +138,6 @@ const init = () => {
           "messagesuccess",
           `${result.code.toString()}_${msg.receiverUsername}`
         );
-        //TODO: Notification
         console.log(allUsersNotificationToken);
         if (allUsersNotificationToken.has(msg.receiverUsername)) {
           await sendNotificationEventMessage(
