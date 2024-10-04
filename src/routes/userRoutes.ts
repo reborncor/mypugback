@@ -15,6 +15,8 @@ import { deblockUser } from "../app/user/deblock/DeblockUser";
 import { getUsersBlocked } from "../app/user/findBlocked/GetBlocked";
 import { updateInfoUser } from "../app/user/updateInfo/UpdateInfo";
 import { createPayment } from "../app/payment/Payment";
+import { resetPassword } from "../app/auth/passwordForgotten/ResetPassword";
+import { changePassword } from "../app/user/changePassword/ChangePassword";
 
 const userRouter = Router();
 
@@ -35,6 +37,8 @@ const followPath = "/follow";
 const unfollowPath = "/unfollow";
 const signalPath = "/signal";
 const createPaymentPath = "/createpayment";
+const resetPasswordPath = "/resetPassword";
+const changePassowrdPath = "/changePassword";
 
 userRouter.post(signUpPath, signUp);
 userRouter.post(signInPath, signIn);
@@ -53,5 +57,7 @@ userRouter.put(unfollowPath, unFollowUser);
 userRouter.post(signalPath, signalUser);
 userRouter.put(updateInfoPath, updateInfoUser);
 userRouter.post(createPaymentPath, createPayment);
+userRouter.post(resetPasswordPath, resetPassword);
+userRouter.put(changePassowrdPath, changePassword);
 
 export default userRouter;

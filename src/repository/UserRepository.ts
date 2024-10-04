@@ -107,6 +107,16 @@ export default class UserRepository {
     );
   }
 
+  static async updateUserPassword(user: User, password: string): Promise<User> {
+    const call = db.get(collectionName);
+    return await call.findOneAndUpdate(
+      { username: user.username },
+      {
+        $set: { password },
+      }
+    );
+  }
+
   static async deleteUser(user: User): Promise<any> {
     const call = db.get(collectionName);
     return await call.remove({ username: user.username });

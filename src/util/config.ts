@@ -5,4 +5,6 @@ export const env = load({
   JWTSECRET: String,
   DBURL: String,
   STRIPE_SECRET_KEY: String,
+  GMAIL_USER: String,
+  GMAIL_PASS: String,
 });
