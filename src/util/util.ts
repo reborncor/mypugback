@@ -162,7 +162,7 @@ export const htmlContentEmail = (username: string) => `
   <div class="container">
     <h2>Réinitialisation de mot de passe</h2>
     <p>Pour réinitialiser votre mot de passe, veuillez cliquer sur le bouton ci-dessous.</p>
-    <form action="https://ec2-user@ec2-13-38-71-167.eu-west-3.compute.amazonaws.com/user/resetPasswordPage/${username}" method="get">
+    <form action="http://ec2-user@ec2-13-38-71-167.eu-west-3.compute.amazonaws.com/user/resetPasswordPage/${username}" method="get">
         <button type="submit">Réinitialiser le mot de passe</button>
     </form>
     <p class="note">Si vous n'avez pas demandé à réinitialiser votre mot de passe, veuillez ignorer cette page.</p>

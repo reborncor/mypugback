@@ -47,20 +47,22 @@ const execute = async (
 
   const pug: Pug = data.pugs[0];
 
-  const test = await PugRepository.findUserInPugLike(
+  const user = await PugRepository.findUserInPugLike(
     currentUser.username,
     pug,
     username
   );
 
-  checkThatUserNotAlreadyLike(test);
+  checkThatUserNotAlreadyLike(user);
 
   await PugRepository.likeUserPug(currentUser, pug, username);
   if (allUsersNotificationToken.has(username)) {
     await sendNotificationEvent(
       allUsersNotificationToken.get(username),
       userToUserFactoryResponse(currentUser),
-      "like"
+      "like",
+      pugId,
+      username
     );
   }
 

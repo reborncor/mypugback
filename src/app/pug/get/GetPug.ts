@@ -11,6 +11,7 @@ import PugRepository from "../../../repository/PugRepository";
 import { successCode } from "../../../util/util";
 import { Pug } from "../../../models/Pug";
 import { pugToResponse } from "../../../response/PugResponse";
+import { userToUserResponse } from "../../../response/UserResponse";
 
 export const getPug = async (req: Request, res: Response) => {
   try {
@@ -40,8 +41,8 @@ const execute = async (
   checkThatUserExistsOrThrow(currentUser);
 
   const data = await PugRepository.findById(pugId, otherUser.username);
-
   const pug: Pug = data.pugs[0];
+
   checkThatPugExistOrThrow(pug);
-  return pugToResponse(pug, username, otherUser);
+  return pugToResponse(pug, username, userToUserResponse(otherUser));
 };
